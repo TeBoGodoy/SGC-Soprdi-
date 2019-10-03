@@ -7,3 +7,12 @@ C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.DataAccess\obj\Debug\SDI.Dat
 C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.DataAccess\obj\Debug\SDI.DataAccess.csproj.CopyComplete
 C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.DataAccess\obj\Debug\CRM.DataAccess.dll
 C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.DataAccess\obj\Debug\CRM.DataAccess.pdb
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Debug\CRM.DataAccess.dll
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Debug\CRM.DataAccess.pdb
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Debug\CRM.Entities.dll
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Debug\CRM.Entities.pdb
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Debug\SDI.DataAccess.csprojAssemblyReference.cache
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Debug\SDI.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Debug\SDI.DataAccess.csproj.CopyComplete
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Debug\CRM.DataAccess.dll
+C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Debug\CRM.DataAccess.pdb
