@@ -1,0 +1,6 @@
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.Entities\bin\Debug\CRM.Entities.dll
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.Entities\bin\Debug\CRM.Entities.pdb
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.Entities\obj\Debug\SDI.Entities.csprojAssemblyReference.cache
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.Entities\obj\Debug\SDI.Entities.csproj.CoreCompileInputs.cache
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.Entities\obj\Debug\CRM.Entities.dll
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.Entities\obj\Debug\CRM.Entities.pdb

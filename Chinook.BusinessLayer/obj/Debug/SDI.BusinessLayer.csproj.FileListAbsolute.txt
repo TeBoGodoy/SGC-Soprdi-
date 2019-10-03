@@ -1,0 +1,11 @@
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\bin\Debug\CRM.BusinessLayer.dll
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\bin\Debug\CRM.BusinessLayer.pdb
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\bin\Debug\CRM.DataAccess.dll
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\bin\Debug\CRM.Entities.dll
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\bin\Debug\CRM.DataAccess.pdb
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\bin\Debug\CRM.Entities.pdb
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\obj\Debug\SDI.BusinessLayer.csprojAssemblyReference.cache
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\obj\Debug\SDI.BusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\obj\Debug\SDI.BusinessLayer.csproj.CopyComplete
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\obj\Debug\CRM.BusinessLayer.dll
+C:\Users\esteb\source\repos\SoprodiApp_2017\Chinook.BusinessLayer\obj\Debug\CRM.BusinessLayer.pdb
