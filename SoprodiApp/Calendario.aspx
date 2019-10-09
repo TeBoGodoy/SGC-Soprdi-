@@ -1791,12 +1791,23 @@
                     alert("Seleccione tipo de Documento");
                     return false;
                 }
-                if (descripcion.length > 10) {
+                if (descripcion.length > 10)
+
+                {
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
                     alert("Descripción no debe superar 10 letras como máximo");
                     return false;
                 }
+
+                if (descripcion.includes('--'))
+                {
+                    var gif = document.getElementById("GIF_COMPLETO");
+                    gif.style.display = "none";
+                    alert("Descripción no puede tener doble guion (--)");
+                    return false;
+                }
+
 
                 var parameters = new Object();
                 parameters.id = id;
@@ -4588,7 +4599,7 @@
                                                         <div class="row"></div>
 
                                                         <div class="row"></div>
-                                                        <div style="overflow-y: auto; height: 430px">
+                                                        <div style="overflow-y: auto; height: 630px">
                                                             <asp:GridView ID="G_MOV_SOL" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar3" OnRowDataBound="G_MOV_SOL_RowDataBound" runat="server" Visible="true"
                                                                 ShowHeaderWhenEmpty="True" Font-Size="13px">
                                                                 <HeaderStyle CssClass="test no-sort" />
@@ -5302,7 +5313,7 @@
                                                                                                                     </select>
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="text" class="form-control" id="T_NUM_CHEQUE2" placeholder="Nº Cheque..." />
+                                                                                                                    <input type="text" maxlength="8" class="form-control" id="T_NUM_CHEQUE2" placeholder="Nº Cheque..." />
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <input type="text" class="form-control" id="T_Cuenta2" placeholder="Monto..." />

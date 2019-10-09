@@ -5434,14 +5434,10 @@ namespace SoprodiApp
                         if (d4 == 0) { aux4 = ""; } else { aux4 = d4.ToString("N0"); }
                         e.Row.Cells[3].Text = aux4;
                     }
-
-
-
                     string rut_ini = e.Row.Cells[4].Text.Trim().Substring(0, e.Row.Cells[4].Text.Trim().Length - 1);
                     double rut = 0;
                     try { rut = double.Parse(rut_ini); e.Row.Cells[4].Text = rut.ToString("N0") + "-" + e.Row.Cells[4].Text.Trim().Substring(e.Row.Cells[4].Text.Trim().Length - 1); }
                     catch { rut = double.Parse(e.Row.Cells[4].Text); e.Row.Cells[4].Text = rut.ToString("N0"); }
-
                 }
 
 
