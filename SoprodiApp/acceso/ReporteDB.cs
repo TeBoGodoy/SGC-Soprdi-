@@ -3307,11 +3307,14 @@ namespace SoprodiApp.acceso
                 //"     convert(varchar, GxActualizado, 103) as GxActualizado , GxEnviadoERP, convert(varchar, FechaCreacion, 103) as FechaCreacion ,  " + 
                 //"     ValorTipoCambio,LimiteSeguro, TipoCredito, CreditoDisponible, CreditoAutorizado, EmailVendedor from VPEDIDOCABECERA  " + where3;
 
-                string sql = "select b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, convert(varchar, b.FechaDespacho,103) as FechaDespacho, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
+                string sql = "select b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, convert(varchar, b.FechaDespacho,103) as FechaDespacho,  convert(varchar, d.Fecha_Despacho,103) as fPLAN, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
                 "  , convert(varchar, b.FechaEmision, 103) as FechaEmision , b.CodVendedor, b.NotaLibre, b.CodBodega , b.CodMoneda, b.DescEstadoDocumento, '' as Facturas,  b.GxEstadoSync,  " +
                 "     convert(varchar, b.GxActualizado, 103) as GxActualizado , b.GxEnviadoERP, convert(varchar, b.FechaCreacion, 103) as FechaCreacion ,  " +
                 "     b.ValorTipoCambio,b.LimiteSeguro, b.TipoCredito, b.CreditoDisponible, b.CreditoAutorizado, b.EmailVendedor, b.CodEstadoDocumento as ESTADO, a.CodProducto, a.Cantidad,isnull(c.coddocumento,'no')  as AprobadoFull " +
-                " , isnull(d.coddocumento,'no')  as Asignada,  e.estado as EstadoParcial    from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento      left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
+                " , isnull(d.coddocumento,'no')  as Asignada,  e.estado as EstadoParcial " +
+                "" +
+                "" +
+                " from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento      left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
                 "  left join [RESPALDO_NEW_THX].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join [RESPALDO_NEW_THX].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " + where3;
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;

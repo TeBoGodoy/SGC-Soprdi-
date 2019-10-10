@@ -5440,10 +5440,9 @@ namespace SoprodiApp
                     catch { rut = double.Parse(e.Row.Cells[4].Text); e.Row.Cells[4].Text = rut.ToString("N0"); }
                 }
 
-
                 ///eliminar pago directo 
                 ///
-                if (e.Row.Cells[6].Text == "PAGO DIRECTO")
+                if (e.Row.Cells[6].Text == "PAGO DIRECTO" || e.Row.Cells[6].Text == "NOTA_CREDITO" || e.Row.Cells[6].Text == "SALDO_FAVOR")
                 {
                     string script22 = string.Format("eliminar_pago_directo(&#39;{0}&#39;);", e.Row.Cells[1].Text);
                     string html_eliminar = "<a style='background-color: rgb(255, 97, 97);' class=\"btn btn-circle show-tooltip fa fa-trash\" onclick=\"" + script22 + "\"></a>";
@@ -5453,7 +5452,6 @@ namespace SoprodiApp
                 {
 
                 }
-
                 try
                 {
                     //e.Row.Cells[12].Visible = false;
@@ -6049,8 +6047,9 @@ namespace SoprodiApp
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>Tabla();</script>", false);
 
 
-            //tasa cambio
-            tasa_Cambio_q = tasa_Cambio_q / facturas_pagables.Rows.Count;
+            //tasa cambio para cheques 
+            tasa_Cambio_q = Math.Round(sum_peso / sum_dolar, 4); 
+
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "t_cambio", "<script language='javascript'> $('#T_CAMBIO_CHEQUES').val('"+ tasa_Cambio_q + "'); </script>", false);
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "peso", "<script language='javascript'> $('#monto_total_peso_f').val('" + Math.Round(sum_peso) + "'); </script>", false);

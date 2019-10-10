@@ -560,6 +560,11 @@
             $("#<%=CB_BODEGA.ClientID%>").trigger("chosen:updated");
         }
 
+        function click_reporte() {
+
+            document.getElementById("ContentPlaceHolder_Contenido_Button1").click();
+
+        }
 
         function CLICK_MODAL() {
 
@@ -959,7 +964,8 @@
             <asp:PostBackTrigger ControlID="btn_excel2" />
             <asp:PostBackTrigger ControlID="btn_excel" />
             <asp:PostBackTrigger ControlID="excel_error" />
-
+            
+             <asp:AsyncPostBackTrigger ControlID="btn_unidad" />
             <%--<asp:PostBackTrigger ControlID="btn_estimado" />--%>
         </Triggers>
         <ContentTemplate>
@@ -1398,7 +1404,40 @@
                                                             <%--table table-advance tablesorter filtrar3--%>
                                                             <asp:GridView ID="G_INFORME_TOTAL_VENDEDOR" ClientIDMode="Static" CssClass="table table-bordered table-advance filtrar" OnRowCommand="G_INFORME_TOTAL_VENDEDOR_RowCommand" OnRowDataBound="G_INFORME_TOTAL_VENDEDOR_RowDataBound" runat="server"
                                                                 ShowHeaderWhenEmpty="True"
-                                                                DataKeyNames="CodDocumento,FechaEmision,CodVendedor,NotaLibre,CodBodega,FechaDespacho,CodMoneda,MontoNeto,DescEstadoDocumento,Facturas,GxEstadoSync,GxActualizado,GxEnviadoERP,NombreVendedor,NombreCliente,DescBodega,FechaCreacion,ValorTipoCambio,LimiteSeguro,TipoCredito,CreditoDisponible,CreditoAutorizado,EmailVendedor"
+                                                                DataKeyNames="
+                                                                    CodDocumento,
+                                                                    NombreCliente,
+                                                                    NombreVendedor,
+                                                                    MontoNeto,
+                                                                    DescBodega,
+                                                                    FechaDespacho,
+                                                                    DifDias,
+                                                                    FechaEmision,
+                                                                    CodVendedor,
+                                                                    NotaLibre,
+                                                                    CodBodega,
+                                                                    CodMoneda,   
+                                                                    DescEstadoDocumento,
+                                                                    Facturas,
+                                                                    GxEstadoSync,
+                                                                    GxActualizado,
+                                                                    GxEnviadoERP,
+                                                                    FechaCreacion,
+                                                                    ValorTipoCambio,
+                                                                    LimiteSeguro, 
+                                                                    TipoCredito , 
+                                                                    CreditoDisponible ,
+                                                                    CreditoAutorizado,
+                                                                    EmailVendedor,
+                                                                    ESTADO,
+                                                                    CodProducto,
+                                                                    Cantidad,
+                                                                    AprobadoFull,
+                                                                    Asignada,
+                                                                    EstadoParcial,   
+                                                                    fPLAN
+                                                                            "
+
                                                                 Font-Size="12px">
                                                                 <HeaderStyle CssClass="test no-sort" />
                                                                 <Columns>
@@ -1411,7 +1450,7 @@
 
                                                                     <asp:TemplateField HeaderText="Planificar SP">
                                                                         <ItemTemplate>
-                                                                            <asp:ImageButton ID="B_enviar" runat="server" ImageUrl="img/add_page.png" Width="25"
+                                                                            <asp:ImageButton ID="B_enviar" Visible='<%# es_visible( Eval("DescEstadoDocumento").ToString() ) %>' runat="server" ImageUrl="img/add_page.png" Width="25"
                                                                                 CommandName="Enviar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
@@ -1841,7 +1880,7 @@
 
             </div>
             <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" onclick="esconde(); chosen_update();" aria-hidden="true">Cerrar</button>
+                <button class="btn" data-dismiss="modal" onclick="esconde(); chosen_update(); click_reporte();" aria-hidden="true">Cerrar</button>
             </div>
         </div>
     </div>

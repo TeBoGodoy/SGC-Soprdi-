@@ -611,85 +611,144 @@ namespace SoprodiApp
         double total_rows = 0;
         double cont_row = 0;
 
+        int GetColumnIndexByName(GridViewRow row, string columnName)
+        {
+            int columnIndex = 0;
+            foreach (DataControlFieldCell cell in row.Cells)
+            {
+                if (cell.ContainingField is BoundField)
+                    if (((BoundField)cell.ContainingField).DataField.Equals(columnName))
+                        break;
+                columnIndex++; // keep adding 1 while we don't have the correct name
+            }
+            return columnIndex;
+        }
+
         protected void G_INFORME_TOTAL_VENDEDOR_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            // aca
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                if (e.Row.Cells[30].Text != "no")
+                //[2] -CodDocumento
+                //[3] -NombreCliente
+                //[4] -NombreVendedor
+                //[5] -MontoNeto
+                //[6] -DescBodega
+                //[7] -FechaDespacho
+                //[8] -DifDias
+                //[9] -FechaEmision
+                //[10] -CodVendedor
+                //[11] -NotaLibre
+                //[12]    -CodBodega
+                //[13]    -CodMoneda    
+                //[14]    -DescEstadoDocumento
+                //[15]    -Facturas
+                //[16]    -GxEstadoSync
+                //[17]    -GxActualizado
+                //[18]    -GxEnviadoERP
+                //[19]    -FechaCreacion  
+                //[20]    -ValorTipoCambio
+                //[21]    -LimiteSeguro 
+                //[22]    -TipoCredito  
+                //[23]    -CreditoDisponible 
+                //[24]    -CreditoAutorizado
+                //[25]    -EmailVendedor
+                //[26]    -ESTADO
+                //[27]    -CodProducto
+                //[28]    -Cantidad
+                //[29]    -AprobadoFull       
+                //[30]    -Asignada
+                //[31]    -EstadoParcial          
+                //[32]    -fPLAN
+
+                int id_26 = GetColumnIndexByName(e.Row, "ESTADO");
+                int id_31 = GetColumnIndexByName(e.Row, "EstadoParcial");
+                int id_5 = GetColumnIndexByName(e.Row, "MontoNeto");
+                int id_2 = GetColumnIndexByName(e.Row, "CodDocumento");
+                int id_7 = GetColumnIndexByName(e.Row, "FechaDespacho");
+                int id_8 = GetColumnIndexByName(e.Row, "DifDias");
+                int id_11 = GetColumnIndexByName(e.Row, "NotaLibre");
+                int id_14 = GetColumnIndexByName(e.Row, "DescEstadoDocumento");
+                int id_15 = GetColumnIndexByName(e.Row, "Facturas");
+
+                int id_27 = GetColumnIndexByName(e.Row, "CodProducto");
+                int id_28 = GetColumnIndexByName(e.Row, "Cantidad");
+                int id_29 = GetColumnIndexByName(e.Row, "AprobadoFull");
+                int id_30 = GetColumnIndexByName(e.Row, "Asignada");
+              
+                //if (e.Row.Cells[30].Text != "no")
+                if (G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values["Asignada"].ToString() != "no")
                 {
-
                     e.Row.BackColor = Color.FromArgb(255, 228, 196);
-
-
-
                 }
+
+                string valor_ = G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values["fPLAN"].ToString();
+
                 ////Session["estados_planif"] 
                 //if (Session["estados_planif"].ToString().Contains((e.Row.Cells[30].Text)) || Session["estados_planif"].ToString() == "")
                 //{
+           
 
-                e.Row.Cells[26].Text = e.Row.Cells[26].Text.Trim();
-                if (Session["estados"].ToString().Contains((e.Row.Cells[26].Text.Trim())) || Session["estados"].ToString() == "")
+                e.Row.Cells[id_26].Text = e.Row.Cells[id_26].Text.Trim();
+                if (Session["estados"].ToString().Contains((e.Row.Cells[id_26].Text.Trim())) || Session["estados"].ToString() == "")
                 {
-                    if (e.Row.Cells[26].Text == "20")
+                    if (e.Row.Cells[id_26].Text == "20")
                     {
                         e.Row.Attributes["class"] = "estado20";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
-                    else if (e.Row.Cells[26].Text == "10P")
+                    else if (e.Row.Cells[id_26].Text == "10P")
                     {
                         e.Row.Attributes["class"] = "estado10P";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
-                    else if (e.Row.Cells[26].Text == "10S")
+                    else if (e.Row.Cells[id_26].Text == "10S")
                     {
                         e.Row.Attributes["class"] = "estado10S";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
-                    else if (e.Row.Cells[26].Text == "40")
+                    else if (e.Row.Cells[id_26].Text == "40")
                     {
                         e.Row.Attributes["class"] = "estado40";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
-                    else if (e.Row.Cells[26].Text == "30")
+                    else if (e.Row.Cells[id_26].Text == "30")
                     {
                         e.Row.Attributes["class"] = "estado30";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
-                    else if (e.Row.Cells[26].Text == "GxDef")
+                    else if (e.Row.Cells[id_26].Text == "GxDef")
                     {
                         e.Row.Attributes["class"] = "estadoGFX";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
-                    else if (e.Row.Cells[26].Text == "10")
+                    else if (e.Row.Cells[id_26].Text == "10")
                     {
                         e.Row.Attributes["class"] = "estado10";
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
-                            e.Row.Cells[31].Text = "pendiente";
+                            e.Row.Cells[id_31].Text = "pendiente";
                         }
                     }
 
-
-                    if (Session["estados_p_d"].ToString().Contains((e.Row.Cells[31].Text.Trim())) || Session["estados_p_d"].ToString() == "")
+                    if (Session["estados_p_d"].ToString().Contains((e.Row.Cells[id_31].Text.Trim())) || Session["estados_p_d"].ToString() == "")
                     {
 
                         //20
@@ -699,93 +758,76 @@ namespace SoprodiApp
                         //30
                         //GxDef
                         //10
-
-
-                        if (e.Row.Cells[31].Text == "&nbsp;")
+             
+                        if (e.Row.Cells[id_31].Text == "&nbsp;")
                         {
                             string combo = "";
-                            combo = " <select class=\"form-control input-sm\" style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[2].Text + "')\"> " +
+                            combo = " <select class=\"form-control input-sm\" style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[id_2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[id_2].Text + "')\"> " +
                                                "                                        <option value = \"\"></option>  " +
                                                        "                              <option value = \"pendiente\" selected> PENDIENTE...</option> " +
                                                         "                              <option value=\"cerrado\"> CERRADO...</option> " +
                                                           "                         </select > ";
-                            e.Row.Cells[31].Text = combo;
+                            e.Row.Cells[id_31].Text = combo;
                         }
 
-                        if (e.Row.Cells[31].Text == "pendiente")
+                        if (e.Row.Cells[id_31].Text == "pendiente")
                         {
                             string combo = "";
-                            combo = " <select class=\"form-control input-sm\" style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[2].Text + "')\"> " +
+                            combo = " <select class=\"form-control input-sm\" style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[id_2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[id_2].Text + "')\"> " +
                                                "                                        <option value = \"\"></option>  " +
                                                        "                              <option value = \"pendiente\" selected> PENDIENTE...</option> " +
                                                         "                              <option value=\"cerrado\"> CERRADO...</option> " +
                                                           "                         </select > ";
-                            e.Row.Cells[31].Text = combo;
+                            e.Row.Cells[id_31].Text = combo;
                         }
 
-                        if (e.Row.Cells[31].Text == "despachado")
+                        if (e.Row.Cells[id_31].Text == "despachado")
                         {
                             string combo = "";
-                            combo = " <select class=\"form-control input-sm\"  style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[2].Text + "')\"> " +
+                            combo = " <select class=\"form-control input-sm\"  style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[id_2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[id_2].Text + "')\"> " +
                                               "                                        <option value = \"\"></option>  " +
                                                       "                               <option value = \"pendiente\"> PENDIENTE...</option> " +
                                                         "                              <option value=\"cerrado\" selected> CERRADO...</option> " +
                                                          "                         </select > ";
 
-                            e.Row.Cells[31].Text = combo;
+                            e.Row.Cells[id_31].Text = combo;
                         }
-
-
-
 
                         clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
 
-
-                        if (e.Row.Cells[8].Text.Contains("-"))
+                        if (e.Row.Cells[id_8].Text.Contains("-"))
                         {
 
 
-                            if (e.Row.Cells[14].Text == "Sincronizado" || ((e.Row.Cells[14].Text == "Aprobado" && e.Row.Cells[15].Text == "&nbsp;")))
+                            if (e.Row.Cells[id_14].Text == "Sincronizado" || ((e.Row.Cells[id_14].Text == "Aprobado" && e.Row.Cells[id_15].Text == "&nbsp;")))
                             {
-                                e.Row.Cells[8].Style.Value = "color:red";
-                                e.Row.Cells[7].Style.Value = "color:red";
+                                e.Row.Cells[id_8].Style.Value = "color:red";
+                                e.Row.Cells[id_7].Style.Value = "color:red";
                             }
                         }
 
+                        string script1 = string.Format("javascript:fuera(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;);return false;", encriptador.EncryptData(e.Row.Cells[id_2].Text), encriptador.EncryptData(""), encriptador.EncryptData(""), encriptador.EncryptData("57"));
+                        e.Row.Cells[id_2].Text = "  <a href='javascript:' onclick='" + script1 + "'>" + e.Row.Cells[id_2].Text + " </a>";
 
-                        string script1 = string.Format("javascript:fuera(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;);return false;", encriptador.EncryptData(e.Row.Cells[2].Text), encriptador.EncryptData(""), encriptador.EncryptData(""), encriptador.EncryptData("57"));
-                        e.Row.Cells[2].Text = "  <a href='javascript:' onclick='" + script1 + "'>" + e.Row.Cells[2].Text + " </a>";
-
-
-
-
-                        if (e.Row.Cells[14].Text != "Sincronizado" && !((e.Row.Cells[14].Text == "Aprobado" && e.Row.Cells[15].Text == "&nbsp;")))
+                        if (e.Row.Cells[id_14].Text != "Sincronizado" && !((e.Row.Cells[id_14].Text == "Aprobado" && e.Row.Cells[id_15].Text == "&nbsp;")))
                         {
-
                             e.Row.Cells[0].Text = "";
                         }
 
-                        e.Row.Cells[15].Text = "<a href='REPORTE_LISTADO_DOC.aspx?F=" + e.Row.Cells[15].Text + "' target='_blank'>" + e.Row.Cells[15].Text + " </a> ";
+                        e.Row.Cells[id_15].Text = "<a href='REPORTE_LISTADO_DOC.aspx?F=" + e.Row.Cells[id_15].Text + "' target='_blank'>" + e.Row.Cells[id_15].Text + " </a> ";
 
-
-
-
-
-                        e.Row.Cells[5].Text = Base.monto_format(e.Row.Cells[5].Text.Replace(",000", ""));
+                        e.Row.Cells[id_5].Text = Base.monto_format(e.Row.Cells[id_5].Text.Replace(",000", ""));
                         //
 
-
-                        string textoOriginal = e.Row.Cells[11].Text;//transformación UNICODE
+                        string textoOriginal = e.Row.Cells[id_11].Text;//transformación UNICODE
                         string textoNormalizado = textoOriginal.Normalize(NormalizationForm.FormD);
                         //coincide todo lo que no sean letras y números ascii o espacio
 
-
-
-                        e.Row.Cells[11].ToolTip = System.Net.WebUtility.HtmlDecode(textoNormalizado);
+                        e.Row.Cells[id_11].ToolTip = System.Net.WebUtility.HtmlDecode(textoNormalizado);
 
                         try
                         {
-                            e.Row.Cells[11].Text = e.Row.Cells[11].Text.Substring(0, 15);
+                            e.Row.Cells[id_11].Text = e.Row.Cells[id_11].Text.Substring(0, 15);
                             //
                         }
                         catch
@@ -799,53 +841,44 @@ namespace SoprodiApp
                             e.Row.Cells[1].Visible = false;
                             G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[1].Visible = false;
 
-                            e.Row.Cells[31].Visible = false;
-                            G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[31].Visible = false;
-
-
+                            e.Row.Cells[id_31].Visible = false;
+                            G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[id_31].Visible = false;
                         }
 
-                        e.Row.Cells[27].Visible = false;
-                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[27].Visible = false;
+                        e.Row.Cells[id_27].Visible = false;
+                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[id_27].Visible = false;
 
-                        e.Row.Cells[28].Visible = false;
-                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[28].Visible = false;
+                        e.Row.Cells[id_28].Visible = false;
+                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[id_28].Visible = false;
 
+                        e.Row.Cells[id_29].Visible = false;
+                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[id_29].Visible = false;
 
-                        e.Row.Cells[29].Visible = false;
-                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[29].Visible = false;
+                        e.Row.Cells[id_30].Visible = false;
+                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[id_30].Visible = false;
 
-                        e.Row.Cells[30].Visible = false;
-                        G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[30].Visible = false;
-
-
-
+                        if (e.Row.Cells[id_14].Text != "Aprobado")
+                        {
+                            e.Row.Cells[1].Text = "";
+                            //G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[1].Visible = false;
+                        }
 
                     }
                     else
                     {
                         e.Row.Visible = false;
                     }
-
-
                     //}
                     //else
                     //{
                     //    e.Row.Visible = false;
-
-
                     //}
-
-
-
                 }
                 else
                 {
                     e.Row.Visible = false;
                 }
             }
-
-
         }
 
         [WebMethod]
@@ -1324,9 +1357,40 @@ namespace SoprodiApp
 
 
 
+
             //SPSP
             DataTable dt2 = ReporteRNegocio.VM_listar_sp_select(where3);
-
+            //[0] -CodDocumento
+            //[1] -NombreCliente
+            //[2] -NombreVendedor
+            //[3] -MontoNeto
+            //[4] -DescBodega
+            //[5] -FechaDespacho
+            //[6] -DifDias
+            //[7] -FechaEmision
+            //[8] -CodVendedor
+            //[9] -NotaLibre
+            //[10]    -CodBodega
+            //[11]    -CodMoneda    
+            //[12]    -DescEstadoDocumento
+            //[13]    -Facturas
+            //[14]    -GxEstadoSync
+            //[15]    -GxActualizado
+            //[16]    -GxEnviadoERP
+            //[17]    -FechaCreacion  
+            //[18]    -ValorTipoCambio
+            //[19]    -LimiteSeguro 
+            //[20]    -TipoCredito  
+            //[21]    -CreditoDisponible 
+            //[22]    -CreditoAutorizado
+            //[23]    -EmailVendedor
+            //[24]    -ESTADO
+            //[25]    -CodProducto
+            //[26]    -Cantidad
+            //[27]    -AprobadoFull       
+            //[28]    -Asignada
+            //[29]    -EstadoParcial          
+            //[30]    -fPLAN
             string cod_aux = "";
             string estado_aux = "";
             string facturas_aux = "";
@@ -1350,21 +1414,21 @@ namespace SoprodiApp
 
                 //0  coddoc //24 cod //25 cant
 
-                if (r[12].ToString() == "Aprobado" && r[27].ToString() == "no")
+                if (r["DescEstadoDocumento"].ToString() == "Aprobado" && r["AprobadoFull"].ToString() == "no")
                 {
                     if (cod_aux == "")
                     {
-                        cod_aux = r[0].ToString();
+                        cod_aux = r["CodDocumento"].ToString();
                         sp_for = new DataTable();
                         sp_for.Columns.Add("sp");
                         sp_for.Columns.Add("estado");
                         sp_for.Columns.Add("facturas");
                     }
 
-                    DataTable procesado = ReporteRNegocio.SP_Marcelo(r[0].ToString().Trim(), r[25].ToString().Trim(), r[26].ToString().Trim());
+                    DataTable procesado = ReporteRNegocio.SP_Marcelo(r["CodDocumento"].ToString().Trim(), r["CodProducto"].ToString().Trim(), r["Cantidad"].ToString().Trim());
                     DataRow row = procesado.Rows[0];
 
-                    if (r[0].ToString() == cod_aux)
+                    if (r["CodDocumento"].ToString() == cod_aux)
                     {
                         //if (row["estado"].ToString().Substring(0, 3) == "10P")
                         //{
@@ -1374,7 +1438,7 @@ namespace SoprodiApp
                         if (facturas_aux.Trim() != "")
                         {
                             facturas_x_sps += row["facturas"].ToString() + ", ";
-                            r[13] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 3);
+                            r["Facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 3);
                         }
 
                         DataRow row_sp1 = sp_for.NewRow();
@@ -1436,7 +1500,7 @@ namespace SoprodiApp
                             }
                         }
 
-                        cod_aux = r[0].ToString();
+                        cod_aux = r["CodDocumento"].ToString();
                         sp_for = new DataTable();
                         sp_for.Columns.Add("sp");
                         sp_for.Columns.Add("estado");
@@ -1444,7 +1508,7 @@ namespace SoprodiApp
                         facturas_x_sps = "";
 
                         facturas_x_sps += row["facturas"].ToString() + ", ";
-                        r[13] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
+                        r["Facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
 
                         DataRow row_sp1 = sp_for.NewRow();
                         row_sp1["sp"] = cod_aux;
@@ -1458,13 +1522,13 @@ namespace SoprodiApp
 
 
                 }
-                else if (r[12].ToString() == "Aprobado")
+                else if (r["DescEstadoDocumento"].ToString() == "Aprobado")
                 {
 
 
-                    DataTable procesado = ReporteRNegocio.SP_Marcelo(r[0].ToString().Trim(), r[25].ToString().Trim(), r[26].ToString().Trim());
+                    DataTable procesado = ReporteRNegocio.SP_Marcelo(r["CodDocumento"].ToString().Trim(), r["CodProducto"].ToString().Trim(), r["Cantidad"].ToString().Trim());
                     DataRow row = procesado.Rows[0];
-                    r[13] = row["facturas"].ToString();
+                    r["Facturas"] = row["facturas"].ToString();
 
 
 
@@ -1500,16 +1564,12 @@ namespace SoprodiApp
 
             foreach (DataRow r in dt2.Rows)
             {
-                if (r[12].ToString() == "Aprobado")
+                if (r["DescEstadoDocumento"].ToString() == "Aprobado")
                 {
-
-
-
                     foreach (DataRow r2 in sp_malas.Rows)
                     {
-                        if (r[0].ToString() == r2[0].ToString())
+                        if (r["CodDocumento"].ToString() == r2[0].ToString())
                         {
-
                             string cad = r2[1].ToString();
                             Dictionary<string, int> contador = new Dictionary<string, int>();
 
@@ -1539,22 +1599,22 @@ namespace SoprodiApp
                             if (r2[2].ToString() == "10S" && cadd.Trim() != "")
                             {
 
-                                r[13] = cadd;
-                                r[24] = "10P";
+                                r["Facturas"] = cadd;
+                                r["ESTADO"] = "10P";
 
                             }
                             else
                             {
 
-                                r[13] = cadd;
-                                r[24] = r2[2].ToString();
+                                r["Facturas"] = cadd;
+                                r["ESTADO"] = r2[2].ToString();
                             }
 
 
                         }
                     }
                 }
-                r[13] = r[13].ToString().Replace(",", ", ");
+                r["Facturas"] = r["Facturas"].ToString().Replace(",", ", ");
             }
 
             if (dt2.Rows.Count > 0)
@@ -1763,23 +1823,33 @@ namespace SoprodiApp
                     string CodDocumento = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[0].ToString());
                     string CodBodega = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[4].ToString());
 
+                    string estado_sp = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[12].ToString());
                     //string script1 = string.Format("javascript:fuera(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;);return false;", encriptador.EncryptData(e.Row.Cells[2].Text), encriptador.EncryptData(""), encriptador.EncryptData(""), encriptador.EncryptData("57"));
                     //e.Row.Cells[2].Text = "  <a href='javascript:' onclick='" + script1 + "'>" + e.Row.Cells[2].Text + " </a>";
 
-                    string asignado_por = "";
-                    if (Session["SW_PERMI"].ToString() == "1")
+                    if (estado_sp == "Aprobado")
                     {
-                        asignado_por = "ABARROTES";
+                        string asignado_por = "";
+                        if (Session["SW_PERMI"].ToString() == "1")
+                        {
+                            asignado_por = "ABARROTES";
+
+                        }
+                        else
+                        {
+                            asignado_por = "GRANOS";
+
+                        }
+                        ScriptManager.RegisterStartupScript(Page, this.GetType(), "te1asd11Q21mp", "<script language='javascript'>   sp_select(" + CodDocumento + ", '" + CodBodega + "', '" + asignado_por + "') </script>", false);
 
                     }
                     else
                     {
-                        asignado_por = "GRANOS";
+                        ScriptManager.RegisterStartupScript(Page, this.GetType(), "te1asd11Q21mp", "<script language='javascript'>  alert('Sp no aprobada'); </script>", false);
+
 
                     }
 
-
-                    ScriptManager.RegisterStartupScript(Page, this.GetType(), "te1asd11Q21mp", "<script language='javascript'>   sp_select(" + CodDocumento + ", '" + CodBodega + "', '" + asignado_por + "') </script>", false);
 
                     //string sUrl = "/ListadoProductosPlanificador.aspx?C=" + "12542;";
                     //string sScript = "<script language =javascript> ";
@@ -2351,5 +2421,20 @@ namespace SoprodiApp
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  document.getElementById('ContentPlaceHolder_Contenido_Button1').click();  </script>", false);
 
         }
+
+
+        public bool es_visible(string descdocumento)
+        {
+            if (descdocumento != "Aprobado")
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
     }
 }
