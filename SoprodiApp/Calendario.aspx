@@ -3123,10 +3123,11 @@
         }
 
 
-        function eliminar_pago_en_pag(factura, fecha) {
+        function eliminar_pago_en_pag(factura, fecha, obser) {
             var parameters = new Object();
             parameters.factura = factura;
             parameters.fecha = fecha;
+            parameters.obs = obser
 
             parameters = JSON.stringify(parameters)
 

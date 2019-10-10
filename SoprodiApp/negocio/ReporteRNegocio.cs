@@ -578,9 +578,9 @@ namespace SoprodiApp.negocio
             return ReporteDB.es_nuevo(periodo_para_nuevos, cliente, vendedor);
         }
 
-        internal static string eliminar_pago_fac(string factura, string fecha)
+        internal static string eliminar_pago_fac(string factura, string fecha, string obs)
         {
-            return ReporteDB.eliminar_pago_fac(factura, fecha);
+            return ReporteDB.eliminar_pago_fac(factura, fecha, obs);
         }
 
         internal static DataTable listar_clientes_cobranza(string where)
@@ -728,9 +728,9 @@ namespace SoprodiApp.negocio
             return ReporteDB._cltes_con_vta2(where);
         }
 
-        internal static string trae_obs_cobranza(string factura)
+        internal static string trae_obs_cobranza(string factura, string obs)
         {
-            return ReporteDB.trae_obs_cobranza(factura);
+            return ReporteDB.trae_obs_cobranza(factura, obs);
         }
 
         internal static string trae_num_factura_origen(string factura)
@@ -869,9 +869,9 @@ namespace SoprodiApp.negocio
             return ReporteDB.obtiene_todos_app();
         }
 
-        internal static string trae_ids_segui(string v, string fecha)
+        internal static string trae_ids_segui(string v, string fecha, string obs)
         {
-            return ReporteDB.trae_ids_segui(v, fecha);
+            return ReporteDB.trae_ids_segui(v, fecha, obs);
         }
 
         internal static DataTable PLANI_CAMIONES(string v)

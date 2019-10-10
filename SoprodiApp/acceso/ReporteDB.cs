@@ -3870,9 +3870,6 @@ namespace SoprodiApp.acceso
                 ap.Fill(dt);
             }
             return dt;
-
-
-
         }
 
         internal static DataTable VM_listar_detalle(string where3)
@@ -4396,7 +4393,7 @@ namespace SoprodiApp.acceso
             return scalar;
         }
 
-        internal static string trae_ids_segui(string v, string fecha)
+        internal static string trae_ids_segui(string v, string fecha, string obs)
         {
             string scalar = "";
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
@@ -4404,7 +4401,7 @@ namespace SoprodiApp.acceso
                 conn.Open();
                 string sql = @"(SELECT        STUFF
                              ((SELECT        CAST(',' AS varchar(MAX)) + CONVERT(varchar, X.id) FROM     Cobranza_Seguimiento X 
-                             WHERE  X.num_factura in (" + v + ") and X.estado = 'ABONO' and convert(datetime, X.fecha,103) = convert(datetime, '" + fecha + "',103)   ORDER BY X.id FOR XML PATH('')), 1, 1, ''))";
+                             WHERE  X.num_factura in (" + v + ") and X.estado = 'ABONO' and convert(datetime, X.fecha,103) = convert(datetime, '" + fecha + "',103)  and observacion = '"+obs+"' ORDER BY X.id FOR XML PATH('')), 1, 1, ''))";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
 
@@ -4471,13 +4468,13 @@ namespace SoprodiApp.acceso
             return scalar;
         }
 
-        internal static string trae_obs_cobranza(string factura)
+        internal static string trae_obs_cobranza(string factura, string observacion)
         {
             string scalar = "";
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select observacion from Cobranza_Seguimiento where estado = 'ABONO' and num_factura = '" + factura + "'";
+                string sql = @"select observacion from Cobranza_Seguimiento where estado = 'ABONO' and num_factura = '" + factura + "' and observacion = '"+ observacion + "'";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
 
@@ -4494,13 +4491,13 @@ namespace SoprodiApp.acceso
             return scalar;
         }
 
-        internal static string eliminar_pago_fac(string factura, string fecha)
+        internal static string eliminar_pago_fac(string factura, string fecha, string obser)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from COBRANZA_PAGOS " +
-                " where id_cobranza in (" + factura + ") and  convert(datetime, fecha, 103) = convert(datetime, '" + fecha + "', 103)";
+                " where id_cobranza in (" + factura + ") and  convert(datetime, fecha, 103) = convert(datetime, '" + fecha + "', 103) and descripcion = '" + obser + "'";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id", factura);

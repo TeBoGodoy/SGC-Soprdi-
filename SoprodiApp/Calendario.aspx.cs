@@ -358,6 +358,7 @@ namespace SoprodiApp
             //else {
 
             btn_pagables.Visible = false;
+            BTN_NETEO_2.Visible = false;
 
             //    ScriptManager.RegisterStartupScript(Page, this.GetType(), "tq121eeee", "<script> alert('Sin filtro fecha') </script>", false);
 
@@ -886,20 +887,20 @@ namespace SoprodiApp
             return tabla;
         }
         [WebMethod]
-        public static string EliminarPago_2(string factura, string fecha)
+        public static string EliminarPago_2(string factura, string fecha, string obs)
         {
-            string obs = ReporteRNegocio.trae_obs_cobranza(factura);
+
 
             if (obs.Contains("-"))
             {
                 string num_factura_origen = ReporteRNegocio.trae_num_factura_origen(factura);
-                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_origen.Replace("-", ",").Replace("'", ""), fecha);
+                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_origen.Replace("-", ",").Replace("'", ""), fecha, obs);
                 return elimina;
             }
             if (obs.Contains("Cheque"))
             {
                 string num_factura_cheque = ReporteRNegocio.trae_stuff_facturas_de_cheque(factura);
-                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_cheque.Replace("-", ",").Replace("'", ""), fecha);
+                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_cheque.Replace("-", ",").Replace("'", ""), fecha, obs);
                 return elimina;
             }
 
@@ -908,7 +909,7 @@ namespace SoprodiApp
 
                 string stuff_facturas = ReporteRNegocio.trae_stuff_facturas(factura);
 
-                string elimina = ReporteRNegocio.eliminar_pago_fac(stuff_facturas.Replace("-", ",").Replace("'", ""), fecha);
+                string elimina = ReporteRNegocio.eliminar_pago_fac(stuff_facturas.Replace("-", ",").Replace("'", ""), fecha, obs);
                 return elimina;
             }
             return "";
@@ -953,10 +954,6 @@ namespace SoprodiApp
         {
             string estado_ = "";
             string elimina = ReporteRNegocio.eliminar_accion_prio(id, id_cobranza);
-
-
-
-
             return estado_;
         }
 
@@ -980,20 +977,16 @@ namespace SoprodiApp
             {
                 string facturas_pagos = ReporteRNegocio.stuff_facturas_pagos(obs.Trim());
 
-                string ids = ReporteRNegocio.trae_ids_segui(agregar_comillas(num_factura_origen.Replace("-", ",")), fecha);
+                string ids = ReporteRNegocio.trae_ids_segui(agregar_comillas(num_factura_origen.Replace("-", ",")), fecha, obs);
                 string elimina = ReporteRNegocio.eliminar_segui_id(ids.Replace("'", ""));
                 return facturas_pagos.Replace(",", "-");
             }
             else
             {
                 string cheques_obs = obs.Split('*').ToList()[1];
-
                 string facturas_pagos = ReporteRNegocio.stuff_facturas_pagos(cheques_obs.Trim());
-
                 string elim = ReporteRNegocio.eliminar_por_like_obs(cheques_obs);
-
                 return facturas_pagos.Replace(",", "-");
-
             }
             return "";
         }
@@ -1217,12 +1210,13 @@ namespace SoprodiApp
                                     {
                                         if (dr["tipo_doc"].ToString() != "DM")
                                         {
-
-
                                             //factura.Trim()
-
                                             //ACA BORRAR PAGO EN CERO
-                                            string script22 = string.Format("eliminar_pago_en_pag(&#39;{0}&#39;, &#39;{1}&#39;);eliminar_pago_en_s(&#39;{2}&#39;,&#39;{3}&#39;,&#39;{4}&#39;,&#39;{5}&#39;,&#39;{6}&#39;, &#39;{7}&#39;);", dr["num_factura"].ToString().Trim(), dr["fecha_trans"].ToString().Trim(), dr["id"].ToString().Trim(), iidd.Trim(), rut, factura, tipo_doc, dr["fecha_trans"].ToString().Trim());
+                                            string script22 = string.Format("eliminar_pago_en_pag(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{8}&#39;);" +
+                                                                         "   eliminar_pago_en_s(&#39;{2}&#39;,&#39;{3}&#39;,&#39;{4}&#39;,&#39;{5}&#39;,&#39;{6}&#39;, &#39;{7}&#39;);", 
+                                                                            dr["num_factura"].ToString().Trim(), dr["fecha_trans"].ToString().Trim(),  
+                                                                            dr["id"].ToString().Trim(), iidd.Trim(), rut, factura, tipo_doc, dr["fecha_trans"].ToString().Trim()
+                                                                            , dr["observacion"].ToString());
                                             tabla += "<tr>";
                                             //< a id = "ContentPlaceHolder_Contenido_btn_excel" class="btn btn-circle show-tooltip fa fa-file-text-o" title="Exportar a Excel" href="javascript:__doPostBack('ctl00$ContentPlaceHolder_Contenido$btn_excel','')" style="margin-left: 5px"></a>
                                             tabla += "<td><a style='background-color: rgb(255, 97, 97);' class=\"btn btn-circle show-tooltip fa fa-trash\" onclick=\"" + script22 + "\"></a></td>";
@@ -1280,10 +1274,11 @@ namespace SoprodiApp
 
                                                 //ACA BORRAR PAGO EN CERO
                                                 //string script22 = string.Format("eliminar_pago_en_pag(&#39;{0}&#39;);eliminar_pago_en_s(&#39;{1}&#39;,&#39;{2}&#39;,&#39;{3}&#39;,&#39;{4}&#39;,&#39;{5}&#39;);", dr["num_factura"].ToString().Trim(), dr["id"].ToString().Trim(), iidd.Trim(), rut, factura, tipo_doc);
-
-                                                string script22 = string.Format("eliminar_pago_en_pag(&#39;{0}&#39;, &#39;{1}&#39;);eliminar_pago_en_s(&#39;{2}&#39;,&#39;{3}&#39;,&#39;{4}&#39;,&#39;{5}&#39;,&#39;{6}&#39;, &#39;{7}&#39;);", dr["num_factura"].ToString().Trim(), dr["fecha_trans"].ToString().Trim(), dr["id"].ToString().Trim(), iidd.Trim(), rut, factura, tipo_doc, dr["fecha_trans"].ToString().Trim());
-
-
+                                                string script22 = string.Format("eliminar_pago_en_pag(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{8}&#39;);" +
+                                                                 "   eliminar_pago_en_s(&#39;{2}&#39;,&#39;{3}&#39;,&#39;{4}&#39;,&#39;{5}&#39;,&#39;{6}&#39;, &#39;{7}&#39;);",
+                                                                    dr["num_factura"].ToString().Trim(), dr["fecha_trans"].ToString().Trim(),
+                                                                    dr["id"].ToString().Trim(), iidd.Trim(), rut, factura, tipo_doc, dr["fecha_trans"].ToString().Trim()
+                                                                    , dr["observacion"].ToString());
 
                                                 tabla += "<tr>";
                                                 //< a id = "ContentPlaceHolder_Contenido_btn_excel" class="btn btn-circle show-tooltip fa fa-file-text-o" title="Exportar a Excel" href="javascript:__doPostBack('ctl00$ContentPlaceHolder_Contenido$btn_excel','')" style="margin-left: 5px"></a>
