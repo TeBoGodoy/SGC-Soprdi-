@@ -1342,21 +1342,10 @@ namespace SoprodiApp
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'none'; </script>", false);
 
                 where3 = Session["WHERE"].ToString();
-
-
                 //Session["estados"] = Session["estados_param"].ToString();
-
-
                 //Session["WHERE"] = "";
-
-
             }
             where3 += " and a.codproducto not in (select distinct(codproducto)  from VPEDIDODETALLE_THX where ISNUMERIC(CodProducto) <> 1) order by convert(datetime, FechaDespacho,103) desc";
-
-
-
-
-
 
             //SPSP
             DataTable dt2 = ReporteRNegocio.VM_listar_sp_select(where3);

@@ -590,9 +590,103 @@
 
         }
 
+        function creagrilla() {
+            try {
+                var fecha1 = $('th:contains("FechaDespacho")').index();
+                var fecha2 = $('th:contains("FechaEmision")').index();
+                var fecha3 = $('th:contains("GxActualizado")').index();
+                var fecha4 = $('th:contains("FechaCreacion")').index();
+
+
+                $("#G_INFORME_TOTAL_VENDEDOR").DataTable({
+                    "order": [[7, "asc"]],
+                    "lengthChange": false,
+                    "searching": false,
+                    "destroy": true,
+                    "stateSave": true,
+                    "pageLength": -1,
+                    "paging": false,
+                    columnDefs: [
+                        { type: 'date-uk', targets: [fecha1, fecha2, fecha3, fecha4] }
+                    ],
+                    "language": {
+                        "decimal": ",",
+                        "thousands": "."
+                    }
+                });
+                super_ff();
+            } catch (e) {
+                //alert(e.message);
+            }
+
+        }
 
 
 
+        function CargarEvento_Tabla(id) {
+
+            //alert(id);
+            //alert(id + "---" + rut + "---" + fact + "---" + tipo_doc)
+            var parameters = new Object();
+            parameters.id = id;
+            parameters = JSON.stringify(parameters)
+
+            $.ajax({
+                type: "POST",
+                url: "REPORTE_CASIGNADOS.aspx/CargarEvento55",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("Fin de la session");
+                        location.href = "Acceso.aspx";
+                    } else {
+                        alert("Error al cargar evento");
+                    }
+                }
+            }).done(function (result) {
+
+
+
+                $('#acciones_f').html(result.d);
+                $('#modal_5').click();
+
+            });
+        }
+
+        function CargarEvento_Tabla2(id) {
+
+            //alert(id);
+            //alert(id + "---" + rut + "---" + fact + "---" + tipo_doc)
+            var parameters = new Object();
+            parameters.id = id;
+            parameters = JSON.stringify(parameters)
+
+            $.ajax({
+                type: "POST",
+                url: "REPORTE_CASIGNADOS.aspx/CargarEventolog",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("Fin de la session");
+                        location.href = "Acceso.aspx";
+                    } else {
+                        alert("Error al cargar evento");
+                    }
+                }
+            }).done(function (result) {
+
+
+                $('#acciones_f').html(result.d);
+                $('#modal_5').click();
+
+            });
+        }
 
     </script>
 
@@ -774,6 +868,34 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal" onclick="esconde(); chosen_update(); load_chosen_combos();" aria-hidden="true">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- MODAL DE acciones ( F ) -->
+        <a id="modal_5" name="modal_5" href="#modal-5" role="button" class="btn" data-toggle="modal"></a>
+        <div id="modal-5" class="modal fade">
+            <div class="modal-dialog modal-lg" style="width: 90%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="btn_modal_5_cerrar" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <%--  <h3 id="H1"><i id="I1"></i></h3>--%>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-horizontal">
+                                    <h3>DETALLE PLANIFICACIÓN</h3>
+                                    <div id="acciones_f">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true" id="Button98">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -1274,6 +1396,12 @@
 
                                                         <asp:ImageButton ID="B_enviar" runat="server" ImageUrl="img/accept.png" OnClientClick="return validar_disponibles();CARGANDO();" OnClick="B_enviar_Click" />
 
+
+
+
+                                                        <asp:ImageButton ID="b_sumar" runat="server" ImageUrl="img/add.png" OnClientClick="return validar_disponibles();CARGANDO();" OnClick="B_enviar_Click" />
+
+
                                                         <%--<img src="img/accept.png" style="cursor: pointer;" onclick="alert('SP Asignado')" OnClick="B_enviar_Click"   />--%>
 
                                                         <asp:Label runat="server" Style="float: right; margin-right: 5%" Font-Size="25" ID="l_disponible" Text="0"></asp:Label>
@@ -1285,6 +1413,134 @@
 
                                             </div>
 
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="box box-green" style="margin-top: 1%;">
+                                                    <div class="box-title">
+                                                        <h3><i class="fa fa-bars"></i>PLANIFICACIONES DE ESTA SP</h3>
+                                                        <div class="box-tool">
+                                                            <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="box-content">
+                                                        <div class="form-horizontal">
+                                                            <div class="row" style="margin-right: 10px; margin-left: 10px;">
+
+
+                                                                <%--table table-advance tablesorter filtrar3--%>
+                                                                <asp:GridView ID="G_INFORME_TOTAL_VENDEDOR" ClientIDMode="Static" CssClass="table table-bordered table-advance filtrar" OnRowCommand="G_INFORME_TOTAL_VENDEDOR_RowCommand" OnRowDataBound="G_INFORME_TOTAL_VENDEDOR_RowDataBound" runat="server"
+                                                                    ShowHeaderWhenEmpty="True" AutoGenerateColumns="false"
+                                                                    DataKeyNames="id, coddocumento, cod_trans, estado, nombre_trans, codbodega, nombrecliente, fecha_despacho2, tiene_log, cod_camion, cod_chofer, observacion, bodega_plani, carga_inicial, patente, nombre_chofer, fecha_type_date, vuelta"
+                                                                    Font-Size="12px">
+                                                                    <HeaderStyle CssClass="test no-sort" />
+                                                                    <Columns>
+
+                                                                        <asp:TemplateField HeaderText="Quitar">
+                                                                            <ItemTemplate>
+                                                                                <asp:ImageButton  AutoPostBack="true" ID="btn_quitar" runat="server" ImageUrl="img/delete.png" Width="25"
+                                                                                    CommandName="Eliminar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" OnClientClick='<%# confirmDelete( Eval("CODDOCUMENTO").ToString() ) %>' />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+
+                                                                        <asp:TemplateField HeaderText="Editar" Visible="false">
+                                                                            <ItemTemplate>
+                                                                                <asp:ImageButton ID="btn_img" runat="server" ImageUrl="img/pencil.png" Width="25"
+                                                                                    CommandName="Editar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+
+                                                                        <asp:TemplateField HeaderText="Completar" Visible="false">
+                                                                            <ItemTemplate>
+                                                                                <asp:ImageButton runat="server" ImageUrl="img/accept.png" Width="25"
+                                                                                    CommandName="Enviar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+
+                                                                        <asp:BoundField DataField="coddocumento" HeaderText="CodDocum.">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="nombrecliente" HeaderText="Cliente">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="nombrevendedor" HeaderText="Vendedor">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="nombre_transporte_todo" HeaderText="Transporte">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <%--                      <asp:BoundField DataField="patente" HeaderText="Patente Camión">
+                                                                        <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:BoundField>
+
+                                                                    <asp:BoundField DataField="nombre_chofer" HeaderText="Chofer">
+                                                                        <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:BoundField>--%>
+
+                                                                        <asp:BoundField DataField="observacion" HeaderText="OBS">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="disponible_2" HeaderText="DisponibleCamion">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="fecha_despacho2" HeaderText="FechaDespacho">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="codbodega" HeaderText="Bodega">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <asp:BoundField DataField="descbodega" HeaderText="DescBodega">
+                                                                            <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                            <ItemStyle HorizontalAlign="Center" />
+                                                                        </asp:BoundField>
+
+                                                                        <%----------%>
+
+                                                                        <%--                                                                    <asp:BoundField DataField="cod_camion" HeaderText="1">
+                                                                        <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:BoundField>
+
+                                                                    <asp:BoundField DataField="cod_chofer" HeaderText="2">
+                                                                        <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:BoundField>--%>
+                                                                    </Columns>
+
+
+
+                                                                    <EmptyDataTemplate>
+                                                                        No existen datos.
+                                                                    </EmptyDataTemplate>
+                                                                </asp:GridView>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -1401,6 +1657,11 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+
+
                                     </div>
                                 </div>
                             </div>

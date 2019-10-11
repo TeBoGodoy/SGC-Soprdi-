@@ -400,6 +400,15 @@ namespace SoprodiApp {
         protected global::System.Web.UI.WebControls.ImageButton B_enviar;
         
         /// <summary>
+        /// Control b_sumar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton b_sumar;
+        
+        /// <summary>
         /// Control l_disponible.
         /// </summary>
         /// <remarks>
@@ -416,6 +425,15 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cargando_gif;
+        
+        /// <summary>
+        /// Control G_INFORME_TOTAL_VENDEDOR.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView G_INFORME_TOTAL_VENDEDOR;
         
         /// <summary>
         /// Control factura.

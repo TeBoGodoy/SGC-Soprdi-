@@ -62,7 +62,7 @@ namespace SoprodiApp
                 USER = User.Identity.Name.ToString();
 
                 Session["user"] = USER;
-                     
+
                 string sp = Request.QueryString["c"].ToString();
                 string codbodega = Request.QueryString["b"].ToString().Trim();
                 string asignado_por = Request.QueryString["a"].ToString().Trim();
@@ -79,6 +79,10 @@ namespace SoprodiApp
                 Session["cod_codega"] = codbodega;
                 Session["asignado_por"] = asignado_por;
                 bodega.InnerText = "(" + codbodega + ")";
+
+
+                Session["sp_planificada"] = sp.Trim();
+
                 //string estado = Request.QueryString["c"].ToString();
 
                 correo_vendedor.InnerText = ReporteRNegocio.trae_correo_sp(sp);
@@ -102,7 +106,40 @@ namespace SoprodiApp
 
                 tx_vuelta.Text = "1";
 
+                DataTable dt2 = ReporteRNegocio.listar_camiones_asignados("  and coddocumento in (" + agregra_comillas(sp) + ")");
+                G_INFORME_TOTAL_VENDEDOR.DataSource = dt2;
+                G_INFORME_TOTAL_VENDEDOR.DataBind();
+                JQ_Datatable();
+
+
             }
+        }
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            MakeAccessible(G_INFORME_TOTAL_VENDEDOR);
+            //MakeAccessible(G_ASIGNADOS);
+            //MakeAccessible(G_QR);
+            //MakeAccessible(G_LISTA);
+        }
+        public void JQ_Datatable()
+        {
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd1Q21mp", "<script language='javascript'>creagrilla();</script>", false);
+        }
+        protected override void Render(HtmlTextWriter writer)
+        {
+            Page.ClientScript.RegisterForEventValidation(this.UniqueID);
+            base.Render(writer);
+        }
+
+        public static void MakeAccessible(GridView grid)
+        {
+            if (grid.Rows.Count <= 0) return;
+            grid.UseAccessibleHeader = true;
+            grid.HeaderRow.TableSection = TableRowSection.TableHeader;
+            grid.PagerStyle.CssClass = "GridPager";
+            if (grid.ShowFooter)
+                grid.FooterRow.TableSection = TableRowSection.TableFooter;
         }
 
         private void cargar_bodega(string bodega)
@@ -637,7 +674,7 @@ namespace SoprodiApp
                         {
                             stkunit = Convert.ToString(item["stkunit"]),
                             valor = Convert.ToString(item["valor"]),
-                            unidades  = Convert.ToString(item["unidad_equivale"]),
+                            unidades = Convert.ToString(item["unidad_equivale"]),
                         };
             return query.ToList<RESPUESTA_UNIDAD>();
         }
@@ -651,7 +688,7 @@ namespace SoprodiApp
             string respt = "";
             try
             {
-                string oka = ReporteRNegocio.guardar_valor_equivale_sp( sw,  tipo,valor, unidades );
+                string oka = ReporteRNegocio.guardar_valor_equivale_sp(sw, tipo, valor, unidades);
 
                 if (oka == "OK")
                 {
@@ -1298,6 +1335,13 @@ namespace SoprodiApp
 
                                     notificar_vendedor(correo_vendedor.InnerText, select_scope, sp, fecha, transporte_completo, obs, nombre_trans, patente, chofer);
 
+                                    DataTable dt2 = ReporteRNegocio.listar_camiones_asignados("  and coddocumento in (" + agregra_comillas(sp) + ")");
+                                    G_INFORME_TOTAL_VENDEDOR.DataSource = dt2;
+                                    G_INFORME_TOTAL_VENDEDOR.DataBind();
+                                    JQ_Datatable();
+
+
+
                                 }
 
                             }
@@ -1415,14 +1459,14 @@ namespace SoprodiApp
                 {
 
                 }
-                if (tipo_unidad=="TON")
+                if (tipo_unidad == "TON")
                 {
                     despachado = despachado / 1000;
                 }
                 tabla += "<tr>";
                 tabla += "<td>" + dr["codproducto"].ToString() + "</td>";
                 tabla += "<td>" + dr["SP_descproducto"].ToString().Replace(",000", "") + "</td>";
-                tabla += "<td>" + Math.Round(despachado, 2) + "</td>";            
+                tabla += "<td>" + Math.Round(despachado, 2) + "</td>";
                 tabla += "<td>" + tipo_unidad + "</td>";
                 tabla += "<td>" + dr["SP_preciounitario"].ToString().Replace(",000", "") + "</td>";
                 tabla += "<td>" + dr["SP_descuento"].ToString().Replace(",000", "") + "</td>";
@@ -1430,7 +1474,7 @@ namespace SoprodiApp
                 double monto_neto = 0;
                 try
                 {
-                    monto_neto= Convert.ToDouble(dr["montonetofinal"].ToString());
+                    monto_neto = Convert.ToDouble(dr["montonetofinal"].ToString());
                     total_neto += monto_neto;
                 }
                 catch
@@ -1474,11 +1518,11 @@ namespace SoprodiApp
                 }
             }
             catch { }
-            
+
             //enviar_email(tabla, correo_vend, sp, fecha, fecha_emi, nombre_trans, fecha_desp, total_kg, SP_formato, total_neto, datos_comuna_, obs, vendedor, moneda_sp);
             enviar_email(tabla, correo_vend, sp, fecha, "", tabla_transporte, "", total_kg, SP_formato, total_neto, "", obs, "", "");
-
-            ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee6ee", "<script> alert('SP ASIGNADA');</script>", false);
+            
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee6ee", "<script> alert('SP ASIGNADA'); document.getElementById('BTN_REFRESH_2').click();</script>", false);
         }
 
 
@@ -1789,7 +1833,7 @@ namespace SoprodiApp
             email.Subject = "SP Asignada " + sp + " " + cliente_2.InnerText + "( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
             //email.CC.Add("informatica@soprodi.cl");
             //email.CC.Add("informatica@soprodi.cl");
-            //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+            //CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCccccccccccccccccc
 
             if (Session["asignado_por"].ToString() == "ABARROTES")
             {
@@ -1825,7 +1869,7 @@ namespace SoprodiApp
             email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
             email.Body += "</div>";
             //usuario que envia
-            email.Body += "<div><span style='float: left;font-size:7pt;'>"+ ReporteRNegocio.corr_usuario(User.Identity.Name).Rows[0][0] +" </span></div>";
+            email.Body += "<div><span style='float: left;font-size:7pt;'>" + ReporteRNegocio.corr_usuario(User.Identity.Name).Rows[0][0] + " </span></div>";
             email.Body += "<div><img src='http://a58.imgup.net/Sopro4d9d.png' style='    float: right;     width: 90px;'> </div><br><br><br>";
             email.Body += "<div> <p style='font-size: 22px;' ><b>PLANIFICACIÓN </b></p><br> <br>  <b> </b>";
             email.Body += "<div>  <b style='font-size: 20px;color: #d25557;'> SP: " + sp + "</b> <br>";
@@ -2103,6 +2147,278 @@ namespace SoprodiApp
 
         }
 
+        protected void b_sumar_Click(object sender, ImageClickEventArgs e)
+        {
+            //string fecha = t_fecha_despacho.Text;
+            //string carga_inicial = inputTitle.Text;
+            //string cod_trans = l_transpor.Text;
+            //string patente = ReporteRNegocio.nombre_camion(" where cod_camion = " + l_camion.Text);
+            //string chofer = ReporteRNegocio.nombre_chofer(" where cod_chofer = " + l_chofer.Text);
+            //string nombre_trans = ReporteRNegocio.nombre_transporte(" where cod_trans = " + cod_trans);
+            //string transporte_completo = "(" + patente + ") " + nombre_trans + " Chofer: " + chofer;
+            //string sp = detalle.InnerText.Replace("Detalle Venta Movil: ", "").Trim();
+            //string disponible = "";
+            //string cod_camion = l_camion.Text;
+            //string cod_chofer = l_chofer.Text;
+            //string obs = tx_obs_plani.Text;
+            //string carga_total = l_suma.Text;
+            //string orden_cargar = tx_orden.Text;
+            //string vuelta = tx_vuelta.Text;
+            //try
+            //{
+            //    disponible = (Convert.ToDouble(carga_inicial) - Convert.ToDouble(l_suma.Text)).ToString();
+            //}
+            //catch { }
+            //string asignado_por = Session["asignado_por"].ToString();
 
+
+        }
+
+
+        protected void G_INFORME_TOTAL_VENDEDOR_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                if (e.CommandName == "Eliminar")
+                {
+
+                    string id_select_scope = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[0].ToString());
+                    DataTable produ_desch = ReporteRNegocio.lista_det_sp_asignada(id_select_scope);
+
+                    string update_ok = ReporteRNegocio.desplanificar_sp(id_select_scope, 30);
+                    //string update_ok = "OK";
+                    if (update_ok == "OK")
+                    {
+                        ////id, coddocumento, cod_trans, estado, nombre_trans, codbodega
+                        string CODdocumetno = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[1].ToString());
+                        //string EmailVendedor = ReporteRNegocio.trae_correo_sp(CODdocumetno);
+                        //string fechaEmision = ReporteRNegocio.trae_fecha_emision_sp(CODdocumetno);
+                        //string cliente_1 = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[6].ToString());
+
+                        //string tabla = "";
+                        //tabla += "<table class=\"table fill-head table-bordered\" style=\"width:100%;\">";
+                        //tabla += "<thead class=\"test\" style=\"background-color:rgb(156,205,249)\">";
+                        //tabla += "<tr>";
+
+                        //tabla += "<th>Código</th>";
+                        //tabla += "<th>Nombre</th>";
+                        //tabla += "<th>CantDespachado</th>";
+                        //tabla += "<th>TipoUnidad</th>";
+                        //tabla += "<th>PrecioUnitario</th>";
+                        //tabla += "<th>Descuento</th>";
+                        //tabla += "<th>PrecioUnitarioFinal</th>";
+                        //tabla += "<th>Neto</th>";
+
+                        //tabla += "</tr>";
+                        //tabla += "</thead>";
+                        //tabla += "<tbody>";
+                        //foreach (DataRow dr in produ_desch.Rows)
+                        //{
+                        //    tabla += "<tr>";
+                        //    tabla += "<td>" + dr["codproducto"].ToString() + "</td>";
+                        //    tabla += "<td>" + dr["SP_descproducto"].ToString() + "</td>";
+                        //    tabla += "<td>" + dr["despachado"].ToString() + "</td>";
+                        //    tabla += "<td>" + dr["SP_CodUnVenta"].ToString() + "</td>";
+                        //    tabla += "<td>" + dr["SP_preciounitario"].ToString() + "</td>";
+                        //    tabla += "<td>" + dr["SP_descuento"].ToString() + "</td>";
+                        //    tabla += "<td>" + dr["SP_preciounitariofinal"].ToString() + "</td>";
+                        //    tabla += "<td>" + Base.monto_format(dr["montonetofinal"].ToString()) + "</td>";
+                        //    tabla += "</tr>";
+
+                        //}
+                        //tabla += "</tbody>";
+                        //tabla += "</table>";
+                        //tabla = tabla.Replace("'", "");
+
+                        //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  document.getElementById('ContentPlaceHolder_Contenido_Button1').click();  </script>", false);
+
+                        //notificar_vendedor(EmailVendedor, id_select_scope, CODdocumetno, fechaEmision, tabla, cliente_1);
+
+                        //enviar_email_cambio(CodDocumento, FechaEmision, CodVendedor, NotaLibre, CodBodega, FechaDespacho, CodMoneda, MontoNeto, DescEstadoDocumento, Facturas, GxEstadoSync, GxActualizado, GxEnviadoERP, NombreVendedor, NombreCliente, DescBodega, FechaCreacion, ValorTipoCambio, LimiteSeguro, TipoCredito, CreditoDisponible, CreditoAutorizado, EmailVendedor);
+
+                        //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  document.getElementById('ContentPlaceHolder_Contenido_Button1').click();  </script>", false);
+                        DataTable dt2 = ReporteRNegocio.listar_camiones_asignados("  and coddocumento in (" + agregra_comillas(CODdocumetno) + ")");
+                        G_INFORME_TOTAL_VENDEDOR.DataSource = dt2;
+                        G_INFORME_TOTAL_VENDEDOR.DataBind();
+                        JQ_Datatable();
+
+                        ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'> alert('Quitado');document.getElementById('BTN_REFRESH_2').click(); </script>", false);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'> alert('Algo ocurrió :(') </script>", false);
+
+
+                    }
+
+                }
+                if (e.CommandName == "Enviar")
+                {
+
+                    //string trans_ = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[2].ToString());
+                    //string nom_trans_ = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[4].ToString());
+                    //string coddocum = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[1].ToString());
+                    //string bodega = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[5].ToString());
+
+                    //Session["id_asignada"] = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[0].ToString());
+
+                    ////string correos = ReporteRNegocio.trae_correos_bodega(bodega.Trim());
+
+                    ////tx_para.Text = correos;
+
+                    //carga_camion(" cod_trans = '" + trans_ + "'");
+                    ////carga_chofer(" cod_trans = '" + trans_ + "'");
+
+                    //UpdatePanel4.Update();
+                    ////string script1 = string.Format("javascript:fuera(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;);return false;", encriptador.EncryptData(e.Row.Cells[2].Text), encriptador.EncryptData(""), encriptador.EncryptData(""), encriptador.EncryptData("57"));
+                    ////e.Row.Cells[2].Text = "  <a href='javascript:' onclick='" + script1 + "'>" + e.Row.Cells[2].Text + " </a>";
+
+                    //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  modal_unidad_1('" + coddocum + "').click();  </script>", false);
+
+                    //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  document.getElementById('ContentPlaceHolder_Contenido_Button1').click();  </script>", false);
+                    ////modal_unidad_1(" + Name + ");
+
+                    ////string sUrl = "/ListadoProductosPlanificador.aspx?C=" + "12542;";
+                    ////string sScript = "<script language =javascript> ";
+                    ////sScript += "window.open('" + sUrl + "',null,'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=100%,height=100%,left=100,top=100');";
+                    ////sScript += "</script> ";
+                    ////Response.Write(sScript);
+                    ////Response.Redirect("ListadoProductosPlanificador.aspx?C=10346");
+
+                    ////G_INFORME_TOTAL_VENDEDOR.DataBind();
+
+                }
+
+                if (e.CommandName == "Editar")
+                {
+                    //string trans_ = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[2].ToString());
+                    //string nom_trans_ = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[4].ToString());
+                    //string coddocum = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[1].ToString());
+                    //string bodega = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[5].ToString());
+                    //string fecha = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[7].ToString());
+                    //string camion = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[9].ToString());
+                    //string chofer = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[10].ToString());
+                    //string observacion = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[11].ToString());
+                    //string bodega_plani = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[12].ToString());
+                    //string carga_inicial = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[13].ToString());
+                    //string fecha_type_date = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[16].ToString());
+                    //string vuelta = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[17].ToString());
+
+                    //Session["id_asignada"] = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[0].ToString());
+
+                    //cargar_bodega_3(bodega_plani);
+                    //cargar_trans(bodega_plani, trans_);
+
+                    //try
+                    //{
+                    //    cargar_camion(trans_, camion);
+                    //    cargar_chofer(trans_, chofer);
+                    //}
+                    //catch { }
+                    //tx_obs_plani.Text = observacion;
+                    //inputTitle.Text = carga_inicial;
+                    //t_fecha_despach2.Text = fecha_type_date;
+
+                    //l_bodega.Text = bodega_plani;
+                    //l_transpor.Text = trans_;
+                    //l_camion.Text = camion;
+                    //l_chofer.Text = chofer;
+
+                    //tx_vuelta.Text = vuelta;
+
+                    //Session["bodega_plani"] = bodega_plani;
+                    //Session["trans_"] = trans_;
+                    //Session["camion"] = camion;
+                    //Session["chofer"] = chofer;
+                    ////DataTable dt = new DataTable();
+
+                    ////dt = ReporteRNegocio.lista_det_sp_asignada(Session["id_asignada"].ToString());
+
+                    ////G_DETALLE_PLANIFICADO.DataSource = dt;
+                    ////G_DETALLE_PLANIFICADO.DataBind();
+                    //ScriptManager.RegisterStartupScript(Page, this.GetType(), "chosen", "<script language='javascript'>  load_chosen_combos();  </script>", false);
+
+                    //UpdatePanel4.Update();
+
+                    //Session["coddocumento"] = coddocum;
+
+                    //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  modal_unidad_1('" + coddocum + "');  </script>", false);
+                    //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd11Q21mp", "<script language='javascript'>  document.getElementById('ContentPlaceHolder_Contenido_Button1').click();  </script>", false);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
+        public string confirmDelete(string Name)
+        {
+            return @"javascript:if(!confirm('Esta acción va eliminar la planificación del documento: "
+               + Name.ToUpper()
+               + @". ¿Estás seguro?')){return false;} ; CARGANDO();";
+        }
+
+        protected void G_INFORME_TOTAL_VENDEDOR_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            // aca
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values[3].ToString().Trim() == "1")
+                {
+                    e.Row.Attributes["class"] = "estado20";
+                }
+                else
+                {
+                    e.Row.Cells[2].Text = "";
+                    //e.Row.Cells[0].Text = "";
+                    //e.Row.Cells[0].Visible = false;
+                    ImageButton ts = new ImageButton();
+                    ts = (ImageButton)e.Row.Cells[0].FindControl("btn_quitar");
+                    //ts.Attributes["style"] = "visibility:hidden;";
+                    e.Row.Attributes["class"] = "estado10";
+                }
+
+                clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
+
+                string script = string.Format("javascript:CargarEvento_Tabla(&#39;{0}&#39;);", G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values[0].ToString().Trim());
+                e.Row.Cells[3].Text = "  <a href='javascript:' onclick='" + script + "'>" + e.Row.Cells[3].Text + " </a>";
+
+                if (ReporteRNegocio.esvendedor(User.Identity.Name) == "2")
+                {
+
+                    e.Row.Cells[0].Visible = false;
+                    G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[0].Visible = false;
+                    e.Row.Cells[2].Visible = false;
+                    G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[2].Visible = false;
+
+
+
+                }
+                e.Row.Cells[2].Visible = false;
+                G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[2].Visible = false;
+
+
+
+                Session["fecha_transporte"] = e.Row.Cells[9].Text;
+                //h3_transporte.InnerText = e.Row.Cells[6].Text + " --FECHA : " + e.Row.Cells[9].Text;
+
+
+
+                if (G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values[8].ToString().Trim() != "0")
+                {
+
+                    string script2 = string.Format("javascript:CargarEvento_Tabla2(&#39;{0}&#39;);", G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values[8].ToString().Trim());
+                    e.Row.Cells[9].Text = "  <a href='javascript:' onclick='" + script2 + "'>" + e.Row.Cells[9].Text + " </a>";
+
+                }
+
+
+
+                //e.Row.Cells[1].Visible = false;
+                //G_INFORME_TOTAL_VENDEDOR.HeaderRow.Cells[1].Visible = false;
+            }
+        }
     }
 }

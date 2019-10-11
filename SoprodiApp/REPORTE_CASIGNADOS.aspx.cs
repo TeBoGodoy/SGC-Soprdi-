@@ -2404,7 +2404,7 @@ namespace SoprodiApp
             tabla += "<th>Nombre</th>";
 
             tabla += "<th>Cant.SP</th>";
-            tabla += "<th>Cant.Despachado</th>";
+            tabla += "<th>Cant.Planificada</th>";
             tabla += "<th>Cant.Facturado</th>";
             //tabla += "<th>TipoUnidad</th>";
             //tabla += "<th>PrecioUnitario</th>";

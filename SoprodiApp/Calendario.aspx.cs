@@ -991,7 +991,6 @@ namespace SoprodiApp
             return "";
         }
 
-
         [WebMethod]
         public static List<Evento_objeto> CargarEvento55(string id, string rut, string factura, string tipo_doc)
         {
