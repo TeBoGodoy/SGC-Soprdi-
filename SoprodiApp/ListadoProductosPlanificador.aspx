@@ -1399,7 +1399,7 @@
 
 
 
-                                                        <asp:ImageButton ID="b_sumar" runat="server" ImageUrl="img/add.png" OnClientClick="return validar_disponibles();CARGANDO();" OnClick="B_enviar_Click" />
+                                                        <asp:ImageButton ID="b_sumar" runat="server" ImageUrl="img/add.png" visible="false" OnClientClick="return validar_disponibles();CARGANDO();" OnClick="B_enviar_Click" />
 
 
                                                         <%--<img src="img/accept.png" style="cursor: pointer;" onclick="alert('SP Asignado')" OnClick="B_enviar_Click"   />--%>

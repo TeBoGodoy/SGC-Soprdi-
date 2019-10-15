@@ -15,6 +15,24 @@
         .fa-input {
             font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
+        input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 10px;
+}
+
+/* Might want to wrap a span around your checkbox text */
+.checkboxtext
+{
+  /* Checkbox text */
+  font-size: 110%;
+  display: inline;
+}
 
         .gif {
             background: url('/img/carg.gif');
@@ -2245,12 +2263,61 @@
 
 
 
+        function valida_num_cheq(banco_, num_cheque_) {
+            var respuesta;
+
+            var parameters = new Object();
+
+            parameters.banco = banco_;
+            parameters.num_cheque = num_cheque_;
+
+            parameters = JSON.stringify(parameters);
+
+            $.ajax({
+                type: "POST",
+                url: "Calendario.aspx/validar_cheque_",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("Fin de la session");
+                        location.href = "Acceso.aspx";
+                    } else {
+                        alert("Error al cargar evento");
+                    }
+                }
+            }).done(function (resp) {             
+                resp = resp.d;
+
+                if (resp == "0") {
+                    //ok cheque
+                    respuesta = "OK";
+                }
+                else
+                {
+                    respuesta = "EXISTE";
+                    
+                }
+
+            });
+
+
+            return respuesta;
+
+        }
+
+
         function Agregar_Cheque2() {
 
             //<input type="text" class="form-control" id="T_OBS_CHEQUES" placeholder="Obs..." />
 
             //<input type="text" class="form-control" id="T_CAMBIO_CHEQUES" placeholder="TipoCambio..." />
             //28/08/2019
+
+
+
 
             var id = $('#fact_sele').val();
             var moneda = document.getElementById("<%=cb_tipo_pago_cheque.ClientID%>").value;
@@ -2288,6 +2355,9 @@
 
             if (tcamb_OBS_VEN_2 == "") { alert("Ingrese un tipo dolar de cheque"); return false; }
 
+
+            var respt = valida_num_cheq(banco, num_cheque);
+            if (respt == "OK") { } else { alert('Ya Existe número cheque con mismo banco'); return false; }
 
             var monto = $('#T_Cuenta2').val().replace(',', '.');
             sum_cheques_2 = sum_cheques_2 + parseFloat(monto);
@@ -2363,7 +2433,7 @@
             } catch (e) { }
 
             try {
-                document.getElementById('T_CAMBIO_CHEQUES').value = "";
+              
             } catch (e) { }
             try {
                 document.getElementById('T_OBS_CHEQUES').value = "";

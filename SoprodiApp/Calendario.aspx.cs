@@ -3105,7 +3105,7 @@ namespace SoprodiApp
                                 }
                                 else
                                 {
-                                    if (!id.Contains("-"))
+                                    if (!id.Contains("--"))
                                     {
                                         monto = suma_deposit.ToString();
                                         suma_deposit -= double.Parse(monto);
@@ -3547,6 +3547,25 @@ namespace SoprodiApp
         private static DataTable facturas_pagables;
         private static int cn_fact = 0;
         private static string cheques_insert;
+
+
+
+
+        [WebMethod]
+        public static string validar_cheque_(string banco, string num_cheque)
+                                                     
+        {
+            DBUtil db = new DBUtil();
+            DataTable dt = new DataTable();
+            dt = db.consultar(" select COUNT(*) " +
+                              "       from cobranza_seguimiento CS " +
+                              "      left OUTER JOIN COBRANZA_BANCOS CB ON CB.ID = " + banco +
+                              "         where num_factura = CB.cod_banco + '" + num_cheque + "' ");
+
+            
+
+            return dt.Rows[0][0].ToString();
+        }
 
 
 
@@ -5843,7 +5862,10 @@ namespace SoprodiApp
                     }
                     if (tipo_doc == "IN" || tipo_doc == "DM" || tipo_doc == "CM" || (tipo_doc == "PA" && !IsNumeric(num_fact)))
                     {
-                        cont_pagables++;
+                        if (tipo_doc == "IN" || tipo_doc == "DM")
+                        {
+                            cont_pagables++;
+                        }
 
                         row[0] = num_fact;
                         row[1] = valors_peso;
