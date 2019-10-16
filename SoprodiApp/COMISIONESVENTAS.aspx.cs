@@ -807,8 +807,6 @@ namespace SoprodiApp
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd121m123k3mp", "<script language='javascript'>tabla_refresh();</script>", false);
 
-
-
             //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd121mk3mp", "<script language='javascript'>tabla();</script>", false);
         }
 
