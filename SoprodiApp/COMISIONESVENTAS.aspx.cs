@@ -166,16 +166,6 @@ namespace SoprodiApp
 
             foreach (DataRow r1 in usuarios_firman.Rows)
             {
-                //string usuario = "";
-                //if (r1[2].ToString().Trim() == "")
-                //{
-                //    usuario = r1[0].ToString().Trim();
-                //}
-                //else
-                //{
-                //    usuario = r1[2].ToString().Trim().ToUpper();
-                //}
-
                 HTML += "<th colspan=1; class='test' style='border-right: 2px solid rgb(50, 48, 48);' >" + r1[0].ToString().Trim() + "</th>";
             }
             HTML += "</tr>";
@@ -186,22 +176,22 @@ namespace SoprodiApp
             HTML += "<tr>";
 
             string check_FINANZA_ = "";
-
+            bool enviar_correo_firmas = true;
             foreach (DataRow r1 in usuarios_firman.Rows)
             {
                 string usuario = user;
                 //click_firma
-                string script22 = string.Format("javascript:abre_cargando(); click_firma(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;); return false;", usuario, periodo, "0");
-                string script22_no = string.Format("javascript:abre_cargando(); click_firma(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;); return false;", usuario, periodo, "1");
+                string grupo = r1[0].ToString().Trim();
+
+                string script22 = string.Format("javascript:abre_cargando(); click_firma(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;); return false;", usuario, periodo, "0", grupo);
+                string script22_no = string.Format("javascript:abre_cargando(); click_firma(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;); return false;", usuario, periodo, "1", grupo);
 
                 string check = "<a onclick=\"" + script22 + "\" style='cursor: pointer;'><img style='width: 26px;' src='img/accept.png'></a>";
                 string uncheck = "<a onclick=\"" + script22_no + "\" style='cursor: pointer;'><img style='width: 26px;' src='img/delete.png'></a>";
 
-
                 if (r1[1].ToString().Trim() == "True")
                 {
                     HTML += "<td colspan=1; >" + check + "(" + r1[3].ToString().Trim().ToUpper() + ")</td>";
-
                 }
                 else
                 {
@@ -217,8 +207,6 @@ namespace SoprodiApp
                 }
             }
             HTML += "</tr>";
-
-
             HTML += "</tbody>";
             HTML += "  </table>";
 
@@ -470,11 +458,12 @@ namespace SoprodiApp
         }
 
         [WebMethod]
-        public static string guardar_firma(string usuario_, string periodo_, string si_no)
+        public static string guardar_firma(string usuario_, string periodo_, string si_no, string grupo_)
         {
             string ok = "";
 
-            ok = ReporteRNegocio.eliminar_firma(usuario_, periodo_, si_no);
+            ok = ReporteRNegocio.eliminar_firma(usuario_, periodo_, si_no, grupo_);
+            
             return ok;
         }
 
@@ -3844,7 +3833,6 @@ namespace SoprodiApp
             tabla_cobranza += "</table>";
             tabla_cobranza += "</br> ";
 
-
             Session["dt_cobranza_com_resu"] = dt_total_cobranza;
 
             tabla_final += tabla_cobranza;
@@ -3890,13 +3878,8 @@ namespace SoprodiApp
             email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
             email.Body += "</div>";
             email.Body += "<div><img src='http://a58.imgup.net/Sopro4d9d.png' style='    float: right;     width: 90px;'> </div><br><br><br><br><br>";
-
             email.Body += "<div> Estimados :<br> <br> Resumen Comisión :  <b>" + "" + "USUARIO SGC(" + User.Identity.Name + ") </b> <br><br>";
-
-
             email.Body += "<div>Finanzas a autorizado el pago de las siguientes comisiones (ADJUNTAS)</div> <br><br>";
-
-
             email.Body += "<br> Para más detalles diríjase a:  <a href='http://srv-app.soprodi.cl' > srv-app.soprodi.cl  </a> <span style='font:5px; color:gray; float:right;'>No Responder Este Correo</span> <br><br>";
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
@@ -3908,7 +3891,6 @@ namespace SoprodiApp
             email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
             email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
             email.Body += "</div>";
-
 
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
@@ -5632,11 +5614,121 @@ namespace SoprodiApp
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "t3mp", "<script language='javascript'>firmas_j('" + txt_periodo.Text + "', '" + User.Identity.Name + "');</script>", false);
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd121m123k3mp", "<script language='javascript'>tabla_refresh();</script>", false);
+        }
+
+        protected void btn_avisa_firmas_Click(object sender, EventArgs e)
+        {
+            MailMessage email = new MailMessage();
+            //email.To.Add(new MailAddress("comisiones@soprodi.cl"));
+            email.To.Add(new MailAddress("informatica@soprodi.cl"));
+            email.From = new MailAddress("informes@soprodi.cl");
+            string periodo = txt_periodo.Text;
+
+            email.Subject = "FIRMAS LISTAS DE COMISIONES (" + periodo + " ) ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
+
+            string cc = ReporteRNegocio.trae_correo(7);
+
+            //string correo_vendedor_por_cliente = ReporteRNegocio.trae_corr_vend_por_cliente(rutcliente.Replace("-", "").Replace(".", ""));
+            //if (correo_vendedor_por_cliente != "")
+            //{
+            email.CC.Add(cc);
+            //}
+            email.Body += "<div style='text-align:center;     display: block !important;' > ";
+            email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "</div>";
+            email.Body += "<div><img src='http://a58.imgup.net/Sopro4d9d.png' style='    float: right;     width: 90px;'> </div><br><br><br><br><br>";
+
+            email.Body += "<div> Estimados :<br> <br> El periodo ya tiene las firmas necesarias para terminar el proceso :  </b> <br><br>";
+
+            string HTML = "";
+            HTML += "<table class=\"table fill-head table-bordered\" style=\"width:100%;\">";
+            HTML += "<thead class=\"test\" style=\"background-color:rgb(156,205,249)\">";
+            HTML += "<tr>";
+
+            HTML += "<th>GRUPO</th>";
+            HTML += "<th>NOMBRE</th>";
+
+            HTML += "</tr>";
+            HTML += "</thead>";
+            HTML += "<tbody>";
+
+            DataTable dt = ReporteRNegocio.firmas_listas(periodo);
+            foreach (DataRow r2 in dt.Rows)
+            {
+                if (r2[0].ToString().Trim() != "FINANZAS")
+                {
+                    HTML += "<tr>";
+                    HTML += "<td colspan=1; class='test'>" + r2[0].ToString().Trim() + "</td>";
+                    HTML += "<td colspan=1; class='test'>" + r2[1].ToString().Trim() + "</td>";
+                    HTML += "</tr>";
+                }
+            }
+            HTML += "</tbody>";
+            HTML += "</table><br>";
+
+            email.Body += HTML;
+            email.Body += "<br> Para más detalles diríjase a:  <a href='http://srv-app.soprodi.cl' > srv-app.soprodi.cl  </a> <span style='font:5px; color:gray; float:right;'>No Responder Este Correo</span> <br><br>";
+            email.Body += "<div style='text-align:center;     display: block !important;' > ";
+            email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+            email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
+            email.Body += "</div>";
 
 
+            email.IsBodyHtml = true;
+            email.Priority = MailPriority.Normal;
+            email.BodyEncoding = System.Text.Encoding.UTF8;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "srv-correo-2.soprodi.cl";
+            smtp.Port = 25;
+            smtp.EnableSsl = false;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            try
+            {
+                smtp.Send(email);
+                email.Dispose();
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "13", "<script language='javascript'>cierre_firmas();alert('Correo Enviado!');</script>", false);
+            }
+            catch (Exception ex)
+            {
 
+            }
 
+            /////desde gmail
 
+            //email.IsBodyHtml = true;
+            //email.Priority = MailPriority.Normal;
+            //email.BodyEncoding = System.Text.Encoding.UTF8;
+            //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            //smtp.EnableSsl = true;
+            //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //smtp.UseDefaultCredentials = false;
+
+            //////smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+            //try
+            //{
+            //    smtp.Send(email);
+            //    email.Dispose();
+            //    ScriptManager.RegisterStartupScript(Page, this.GetType(), "13", "<script language='javascript'>cierre_firmas();alert('Correo Enviado!');</script>", false);
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
 
         }
     }

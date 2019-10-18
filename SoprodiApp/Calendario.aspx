@@ -16,23 +16,23 @@
             font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
         input[type=checkbox]
-{
-  /* Double-sized Checkboxes */
-  -ms-transform: scale(2); /* IE */
-  -moz-transform: scale(2); /* FF */
-  -webkit-transform: scale(2); /* Safari and Chrome */
-  -o-transform: scale(2); /* Opera */
-  transform: scale(2);
-  padding: 10px;
-}
+        {
+          /* Double-sized Checkboxes */
+          -ms-transform: scale(2); /* IE */
+          -moz-transform: scale(2); /* FF */
+          -webkit-transform: scale(2); /* Safari and Chrome */
+          -o-transform: scale(2); /* Opera */
+          transform: scale(2);
+          padding: 10px;
+        }
 
-/* Might want to wrap a span around your checkbox text */
-.checkboxtext
-{
-  /* Checkbox text */
-  font-size: 110%;
-  display: inline;
-}
+        /* Might want to wrap a span around your checkbox text */
+        .checkboxtext
+        {
+          /* Checkbox text */
+          font-size: 110%;
+          display: inline;
+        }
 
         .gif {
             background: url('/img/carg.gif');
@@ -224,12 +224,8 @@
 
 
         function cerrar_modal5() {
-
             $("#modal-77").modal("hide");
-
             $('#div_trael_scroll').click();
-
-
         }
 
 
@@ -248,15 +244,9 @@
 
 
         function volver_scroll() {
-
             scrollLeft = $(window).scrollLeft();
             scrollTop = $(window).scrollTop();
-
-
             setTimeout(function () { $(window).scrollLeft(scrollLeft); $(window).scrollTop(scrollTop); }, 500);
-
-
-
         }
 
         function devul_fal() {

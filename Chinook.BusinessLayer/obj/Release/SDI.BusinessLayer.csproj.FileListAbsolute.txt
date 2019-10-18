@@ -20,3 +20,14 @@ C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SD
 C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csproj.CopyComplete
 C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\CRM.BusinessLayer.dll
 C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\CRM.BusinessLayer.pdb
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.BusinessLayer.dll
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.BusinessLayer.pdb
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.DataAccess.dll
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.Entities.dll
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.DataAccess.pdb
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.Entities.pdb
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csprojAssemblyReference.cache
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csproj.CopyComplete
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\CRM.BusinessLayer.dll
+C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\CRM.BusinessLayer.pdb

@@ -208,7 +208,7 @@
 
 
 
-        function click_firma(usuario, periodo, sn) {
+        function click_firma(usuario, periodo, sn, grupo) {
 
 
             var parameters = new Object();
@@ -216,6 +216,7 @@
             parameters.usuario_ = usuario;
             parameters.periodo_ = periodo;
             parameters.si_no = sn;
+            parameters.grupo_ = grupo;
 
             parameters = JSON.stringify(parameters);
 
@@ -228,28 +229,48 @@
                 async: true,
                 success: guarda,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Error al guardar porcentaje");
+                    alert("Error al guardar");
                 }
             });
+
+        }
+
+        function click_enviar()
+        {
+              document.getElementById("ContentPlaceHolder_Contenido_btn_filtra_grilla").click();
+              return false;
 
         }
 
         function guarda(resp) {
             $("#cargando_firma").show();
             resp = resp.d;
-            if (resp == "OK") {
+            if (resp != "ERROR") {
+                alert(resp);
+                if (resp >= 4)
+                {             
+                     click_enviar();        
+                }
 
                 alert("Guardado");
+               <%-- var perido = document.getElementById("<%=periodo.ClientID %>").value;
+                var use = document.getElementById("<%=user_q.ClientID %>").value;
+                firmas_j(perido, use);
+                cierra_cargando();--%>
+               
+            }
+            else {
+                alert("error");
+                cierra_cargando();
+            }
+        }
+
+        function cierre_firmas()
+        {
                 var perido = document.getElementById("<%=periodo.ClientID %>").value;
                 var use = document.getElementById("<%=user_q.ClientID %>").value;
                 firmas_j(perido, use);
                 cierra_cargando();
-            }
-            else {
-                alert("error");
-
-            }
-
         }
 
 
@@ -365,6 +386,19 @@
         .modal-content {
             height: 99%;
         }
+
+
+        .scale1
+        {
+          /* Double-sized Checkboxes */
+          -ms-transform: scale(1); /* IE */
+          -moz-transform: scale(1); /* FF */
+          -webkit-transform: scale(1); /* Safari and Chrome */
+          -o-transform: scale(1); /* Opera */
+          transform: scale(1);
+          padding: 10px;
+        }
+
 
         /*teble {
             table-layout: fixed;
@@ -500,7 +534,7 @@
             <asp:AsyncPostBackTrigger ControlID="btn_correo" />--%>
 
             <asp:AsyncPostBackTrigger ControlID="btn_correo_pdf" />
-
+     
 
 
 
@@ -772,8 +806,7 @@
                                             <asp:PostBackTrigger ControlID="b_vovler" />
                                             <%--                     <asp:AsyncPostBackTrigger ControlID="btn_correo2" />--%>
                                             <asp:AsyncPostBackTrigger ControlID="btn_correo_pdf" />
-
-
+                                           
                                         </Triggers>
                                         <ContentTemplate>
                                             <div class="row">
@@ -781,16 +814,17 @@
                                                          <a onclick='cierra_cargando()' style='cursor: pointer;'><img style='width: 26px;' src='img/delete.png'></a>--%>
                                                 <div class="col-md-10" id="div_firmas">
                                                 </div>
-                                                <asp:LinkButton ID="btn_correo_pdf" class="btn btn-circle show-tooltip fa fa-envelope" OnClientClick="if(!confirm('¿Estas seguro de enviar correo?')) return false;" Style="margin-left: 5px; visibility: hidden" title="Correo" runat="server" OnClick="btn_correo_2_Click"></asp:LinkButton>
+                                                <asp:LinkButton ID="btn_correo_pdf" class="btn btn-success btn-circle show-tooltip fa fa-envelope scale1" OnClientClick="if(!confirm('¿Estas seguro de enviar correo?')) return false;" Style="margin-left: 5px; visibility: hidden" title="Correo" runat="server" OnClick="btn_correo_2_Click"></asp:LinkButton>
+                                                <%--<asp:LinkButton ID="btn_avisa_firmas" class="btn btn-warning btn-circle show-tooltip fa fa-envelope scale1" Style="margin-left: 5px;" title="Correo" runat="server" OnClick="btn_avisa_firmas_Click"></asp:LinkButton>--%>
+
+                                                <asp:Button ID="btn_filtra_grilla" Style="visibility: hidden; position: absolute;" CssClass="btn btn-lime" Text="Filtrar" runat="server" OnClick="btn_avisa_firmas_Click" />
+
                                                 <asp:TextBox ID="periodo" runat="server" Style="visibility: hidden; position: absolute;"></asp:TextBox>
                                                 <asp:TextBox ID="user_q" runat="server" Style="visibility: hidden; position: absolute;"></asp:TextBox>
                                             </div>
 
                                         </ContentTemplate>
                                     </asp:UpdatePanel>
-
-
-
                                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                                         <Triggers>
                                             <asp:PostBackTrigger ControlID="b_vovler" />

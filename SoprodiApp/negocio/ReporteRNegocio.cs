@@ -447,9 +447,9 @@ namespace SoprodiApp.negocio
             return ReporteDB.listar_ALL_vendedores(where);
         }
 
-        internal static string eliminar_firma(string usuario_, string periodo, string si_no)
+        internal static string eliminar_firma(string usuario_, string periodo, string si_no, string grupo)
         {
-            return ReporteDB.eliminar_firma(usuario_, periodo, si_no);
+            return ReporteDB.eliminar_firma(usuario_, periodo, si_no, grupo);
         }
 
         public static DataTable listar_prod_client(string vendedor, string cliente, string periodos, string user1)
@@ -2069,6 +2069,11 @@ namespace SoprodiApp.negocio
         internal static DataTable actualizar_saldos(string nombre_sp, List<SPVars> vars)
         {
             return ReporteDB.actualizar_saldos(nombre_sp, vars);
+        }
+
+        internal static DataTable firmas_listas(string periodo)
+        {
+            return ReporteDB.firmas_listas(periodo);
         }
     }
 }

@@ -193,6 +193,15 @@ namespace SoprodiApp {
         protected global::System.Web.UI.WebControls.LinkButton btn_correo_pdf;
         
         /// <summary>
+        /// Control btn_filtra_grilla.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_filtra_grilla;
+        
+        /// <summary>
         /// Control periodo.
         /// </summary>
         /// <remarks>

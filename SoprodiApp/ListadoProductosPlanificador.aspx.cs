@@ -55,7 +55,6 @@ namespace SoprodiApp
         {
             if (!IsPostBack)
             {
-
                 clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
                 es_costo_import = false;
 
@@ -80,7 +79,6 @@ namespace SoprodiApp
                 Session["asignado_por"] = asignado_por;
                 bodega.InnerText = "(" + codbodega + ")";
 
-
                 Session["sp_planificada"] = sp.Trim();
 
                 //string estado = Request.QueryString["c"].ToString();
@@ -91,17 +89,13 @@ namespace SoprodiApp
 
                 estado_sp.Text = buscar_Estado(sp);
 
-
                 cargar_detalle(sp, asignado_por);
-
                 try
                 {
 
                     check_tran.Text = "";
                 }
                 catch { }
-
-
                 cargar_bodega(codbodega);
 
                 tx_vuelta.Text = "1";
