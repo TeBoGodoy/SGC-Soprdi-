@@ -1473,7 +1473,6 @@ namespace SoprodiApp
                 }
                 catch
                 {
-
                 }
                 tabla += "<td>" + Base.monto_format2(monto_neto) + "</td>";
                 tabla += "</tr>";

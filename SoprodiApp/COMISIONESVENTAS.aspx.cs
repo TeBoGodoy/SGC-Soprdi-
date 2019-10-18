@@ -5645,7 +5645,7 @@ namespace SoprodiApp
             email.Body += "</div>";
             email.Body += "<div><img src='http://a58.imgup.net/Sopro4d9d.png' style='    float: right;     width: 90px;'> </div><br><br><br><br><br>";
 
-            email.Body += "<div> Estimados :<br> <br> El periodo ya tiene las firmas necesarias para terminar el proceso :  </b> <br><br>";
+            email.Body += "<div> Estimados :<br> <br> El periodo ya tiene las firmas necesarias para terminar el proceso, favor autorizar para su pago :  </b> <br><br>";
 
             string HTML = "";
             HTML += "<table class=\"table fill-head table-bordered\" style=\"width:100%;\">";
@@ -5685,7 +5685,6 @@ namespace SoprodiApp
             email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
             email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
             email.Body += "</div>";
-
 
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;

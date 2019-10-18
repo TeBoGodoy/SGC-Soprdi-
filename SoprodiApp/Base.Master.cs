@@ -1377,13 +1377,13 @@ namespace SoprodiApp
             SP_formato += "                     <tr> ";
             SP_formato += "                         <td style='padding:0cm 0cm 0cm 0cm'> ";
             //ACA SE SACO A PETICION soprodi
-            if (sp_datos_class.t_cambio.Contains("DOLAR"))
+            if (sp_datos_class.moneda_sp.Contains("PESO"))
             {
-                SP_formato += "                             <span class='table' align='center' style='text-align:center'><b><span style='font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;'></span></b><u></u><u></u></span> ";
+                SP_formato += "                             <span class='table' align='center' style='text-align:center'><b><span style='font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;'>Tipo de Cambio : " + sp_datos_class.valor_t_cambio + "</span></b><u></u><u></u></span> ";
             }
             else
             {
-                SP_formato += "                             <span class='table' align='center' style='text-align:center'><b><span style='font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;'>Tipo de Cambio : " + sp_datos_class.valor_t_cambio + "</span></b><u></u><u></u></span> ";
+                SP_formato += "                             <span class='table' align='center' style='text-align:center'><b><span style='font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;'></span></b><u></u><u></u></span> ";
             }
             SP_formato += "                         </td> ";
             SP_formato += "                     </tr> ";
@@ -1442,16 +1442,16 @@ namespace SoprodiApp
                         PdfPTable tabla5 = new PdfPTable(1);
                         tabla5.WidthPercentage = 100;
 
-                        if (sp_datos_class.t_cambio.Contains("DOLAR"))
+                        if (sp_datos_class.moneda_sp.Contains("PESO"))
                         {
-                            PdfPCell celda80 = new PdfPCell(new Phrase("", FontFactory.GetFont(FontFactory.HELVETICA, 8)));
+                            PdfPCell celda80 = new PdfPCell(new Phrase("Tipo de Cambio: " + sp_datos_class.valor_t_cambio, FontFactory.GetFont(FontFactory.HELVETICA, 8)));
                             celda80.HorizontalAlignment = Element.ALIGN_LEFT;
                             celda80.BorderWidth = 0;
-                            tabla5.AddCell(celda80);
+                            tabla5.AddCell(celda80);                 
                         }
                         else
                         {
-                            PdfPCell celda80 = new PdfPCell(new Phrase("Tipo de Cambio: " + sp_datos_class.valor_t_cambio, FontFactory.GetFont(FontFactory.HELVETICA, 8)));
+                            PdfPCell celda80 = new PdfPCell(new Phrase("", FontFactory.GetFont(FontFactory.HELVETICA, 8)));
                             celda80.HorizontalAlignment = Element.ALIGN_LEFT;
                             celda80.BorderWidth = 0;
                             tabla5.AddCell(celda80);
