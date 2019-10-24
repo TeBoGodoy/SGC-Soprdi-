@@ -16,6 +16,9 @@
 
     <script>
 
+        $(document).ready(function () {
+            creagrilla();
+        });
 
         $(document).keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -35,18 +38,16 @@
             }
         }
 
-
-
-        var config = {
-            '.chosen-select': {},
-            '.chosen-select-deselect': { allow_single_deselect: true },
-            '.chosen-select-no-single': { disable_search_threshold: 10 },
-            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
-            '.chosen-select-width': { width: "90%" }
-        }
-        for (var selector in config) {
-            $(selector).chosen(config[selector]);
-        }
+        //var config = {
+        //    '.chosen-select': {},
+        //    '.chosen-select-deselect': { allow_single_deselect: true },
+        //    '.chosen-select-no-single': { disable_search_threshold: 10 },
+        //    '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+        //    '.chosen-select-width': { width: "90%" }
+        //}
+        //for (var selector in config) {
+        //    $(selector).chosen(config[selector]);
+        //}
 
         //function SORT_GRILLA() {
         //    new Tablesort(document.getElementById('ContentPlaceHolder_Contenido_G_PRODfUCTOS'));
@@ -246,6 +247,7 @@
         //     { type: 'date-uk', targets: [entry_date_col_num] }
 
         function creagrilla() {
+
             try {
                 var fecha1 = $('th:contains("FechaDespacho")').index();
                 var fecha2 = $('th:contains("FechaEmision")').index();
@@ -253,7 +255,7 @@
                 var fecha4 = $('th:contains("FechaCreacion")').index();
 
                 $("#G_INFORME_TOTAL_VENDEDOR").DataTable({
-                    "order": [[7, "asc"]],
+                    "order": [[10, "asc"]],
                     "lengthChange": false,
                     "searching": false,
                     "destroy": true,
@@ -269,8 +271,10 @@
                     }
                 });
                 super_ff();
-            } catch (e) {
+            }
+            catch (e) {
                 //alert(e.message);
+                console.log(e.message);
             }
 
         }
@@ -600,7 +604,6 @@
         }
         function chosen_update() {
 
-
             $("#<%=CB_BODEGA.ClientID%>").chosen();
             $("#<%=CB_BODEGA.ClientID%>").trigger("chosen:updated");
 
@@ -612,8 +615,6 @@
 
             $("#<%=d_bodega_2.ClientID%>").chosen();
             $("#<%=d_bodega_2.ClientID%>").trigger("chosen:updated");
-
-
         }
 
 
@@ -1634,43 +1635,43 @@
                                                                 Font-Size="12px">
                                                                 <HeaderStyle CssClass="test no-sort" />
                                                                 <Columns>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     0    --------------%>
                                                                     <asp:TemplateField HeaderText="Quitar">
                                                                         <ItemTemplate>
                                                                             <asp:ImageButton ID="btn_quitar" runat="server" ImageUrl="img/delete.png" Width="25"
                                                                                 CommandName="Eliminar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" OnClientClick='<%# confirmDelete( Eval("CODDOCUMENTO").ToString() ) %>' />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     1    --------------%>
                                                                     <asp:TemplateField HeaderText="Editar">
                                                                         <ItemTemplate>
                                                                             <asp:ImageButton ID="btn_img" runat="server" ImageUrl="img/pencil.png" Width="25"
                                                                                 CommandName="Editar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     2    --------------%>
                                                                     <asp:TemplateField HeaderText="Completar">
                                                                         <ItemTemplate>
                                                                             <asp:ImageButton runat="server" ImageUrl="img/accept.png" Width="25"
                                                                                 CommandName="Enviar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     3    --------------%>
                                                                     <asp:BoundField DataField="coddocumento" HeaderText="CodDocum.">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     4    --------------%>
                                                                     <asp:BoundField DataField="nombrecliente" HeaderText="Cliente">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     5    --------------%>
                                                                     <asp:BoundField DataField="nombrevendedor" HeaderText="Vendedor">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     6    --------------%>
                                                                     <asp:BoundField DataField="nombre_transporte_todo" HeaderText="Transporte">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
@@ -1685,27 +1686,37 @@
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>--%>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     7    --------------%>
                                                                     <asp:BoundField DataField="observacion" HeaderText="OBS">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
-                                                                    <asp:BoundField DataField="disponible_2" HeaderText="DisponibleCamion">
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     8    --------------%>
+                                                                    <asp:BoundField DataField="carga_total" DataFormatString="{0:N0}" HeaderText="CargaCamion">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     9    --------------%>
+                                                                    <asp:BoundField DataField="disponible_2" DataFormatString="{0:N0}" HeaderText="DisponibleCamion">
+                                                                        <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:BoundField>
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     10    --------------%>
+                                                                    <asp:BoundField DataField="fin" DataFormatString="{0:N0}" HeaderText="NetoPeso">
+                                                                        <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:BoundField>
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     11    --------------%>
                                                                     <asp:BoundField DataField="fecha_despacho2" HeaderText="FechaDespacho">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     12    --------------%>
                                                                     <asp:BoundField DataField="codbodega" HeaderText="Bodega">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
                                                                     </asp:BoundField>
-
+                                                                    <%--     -----------------------------------------------------------------------------------------------------------     13    --------------%>
                                                                     <asp:BoundField DataField="descbodega" HeaderText="DescBodega">
                                                                         <HeaderStyle HorizontalAlign="Center" CssClass="text-center" />
                                                                         <ItemStyle HorizontalAlign="Center" />
@@ -1733,6 +1744,47 @@
 
                                                         </div>
 
+                                                        <div id="div_totales" runat="server" class="row" visible="false">
+                                                            <div class="col-md-4 col-md-offset-8">
+                                                                <div class="box box-blue" style="margin-top: 1%;">
+
+                                                                    <div class="box-title">
+                                                                        <h3><i class="fa fa-bars"></i>TOTALES</h3>
+                                                                        <div class="box-tool">
+                                                                        </div>
+                                                                    </div>
+                                                                 
+                                                                    <div class="box-content" style="background-color: #f7f7f7;">
+                                                                        <div class="form-horizontal">
+                                                                            <div class="row" style="margin-right: 10px; margin-left: 10px;">
+                                                                                <div class="col-md-5">
+                                                                                    <div class="form-group">
+                                                                                        <div class="img">
+                                                                                            <i class="fa fa-truck" style="font-size: 30px;"></i>
+                                                                                        </div>
+                                                                                        <div class="content">
+                                                                                            <p class="big" id="total_carga" style="font-size: 20px;"></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                </div>
+                                                                                <div class="col-md-5">
+                                                                                    <div class="form-group">
+                                                                                        <div class="img">                                                 
+                                                                                            <span class="glyphicon glyphicon-usd" style="font-size: 30px;"></span>
+                                                                                        </div>
+                                                                                        <div class="content">
+                                                                                            <p class="big" id="total_peso" style="font-size: 20px;"></p>                                                    
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
                                                         <div class="box-content">
                                                             <div class="row">
@@ -1758,8 +1810,8 @@
                                                                                 <h3><i class="fa fa-check"></i>ADJUNTAR DOCUMENTOS AL CORREO</h3>
                                                                                 <div class="box-tool">
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="box-content" style="height: 100px;">
+                                                                            </div> 
+                                                                            <div class="box-content" style="background-color: #f7f7f7;height: 100px; ">
                                                                                 <div class="form-group">
                                                                                     <label class="col-sm-3 col-lg-2 control-label">Archivos</label>
                                                                                     <div class="col-sm-9 col-lg-10 controls">
@@ -2292,7 +2344,7 @@
 
                                                     </div>
                                                 </div>
-                                  
+
                                                 <div class="col-sm-6 col-lg-6">
                                                     <label>Vuelta: </label>
                                                     <div class="controls">

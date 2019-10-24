@@ -238,6 +238,15 @@ namespace SoprodiApp {
         protected global::System.Web.UI.WebControls.GridView G_INFORME_TOTAL_VENDEDOR;
         
         /// <summary>
+        /// Control div_totales.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_totales;
+        
+        /// <summary>
         /// Control UpdatePanel5.
         /// </summary>
         /// <remarks>

@@ -2178,8 +2178,6 @@ namespace SoprodiApp.acceso
                 conn.Open();
                 string sql = @"SELECT top 1 (select count( distinct(coddocumento) ) from V_Sp_Asignados where id in (" + v + ")) as sps, (select count( distinct(rut) ) from V_Sp_Asignados where id in (" + v + ")) as clientes, " +
                 "  (select sum(Cant_despachado_kg) from [V_SP_ASIG_KG] where id_asignado in (" + v + ") ) as kilos  from SP_Asignados  where id in (" + v + ")";
-
-
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 try

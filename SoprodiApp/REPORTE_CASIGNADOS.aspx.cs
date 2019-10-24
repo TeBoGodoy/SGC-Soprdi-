@@ -55,6 +55,7 @@ namespace SoprodiApp
                 if (ids != "JJ" && ids != null)
                 {
                     div_agregar_facturas.Visible = true;
+                    div_totales.Visible = true;
                     div_adjuntar_documentos.Visible = true;
                     Session["ids"] = ids;
                     DataTable dt_facturas = new DataTable();
@@ -141,6 +142,10 @@ namespace SoprodiApp
                 }
                 ImageClickEventArgs ex = new ImageClickEventArgs(1, 2);
                 b_Click(sender, ex);
+
+
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "datatable_", "<script language='javascript'> creagrilla();</script>", false);
+
             }
         }
         protected override void OnPreRender(EventArgs e)
@@ -153,7 +158,7 @@ namespace SoprodiApp
         }
         public void JQ_Datatable()
         {
-            ScriptManager.RegisterStartupScript(Page, this.GetType(), "teasd1Q21mp", "<script language='javascript'>creagrilla();</script>", false);
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "asd", "<script language='javascript'>creagrilla();</script>", false);
         }
         protected override void Render(HtmlTextWriter writer)
         {
@@ -541,7 +546,6 @@ namespace SoprodiApp
         double utilidad_exce = 0;
         double utilidad_compra = 0;
 
-
         double total_rows = 0;
         double cont_row = 0;
 
@@ -564,6 +568,20 @@ namespace SoprodiApp
                     //ts.Attributes["style"] = "visibility:hidden;";
                     e.Row.Attributes["class"] = "estado10";
                 }
+                double total_cargado_kg = Convert.ToDouble(Session["total_cargado_kg"]);
+                double total_cargado_peso = Convert.ToDouble(Session["total_cargado_peso"]);
+
+                double cargado_kg = 0;
+                double cargado_peso = 0;
+
+                double.TryParse(e.Row.Cells[8].Text, out cargado_kg);
+                double.TryParse(e.Row.Cells[10].Text, out cargado_peso);
+
+                total_cargado_kg += cargado_kg;
+                total_cargado_peso += cargado_peso;
+
+                Session["total_cargado_kg"] = total_cargado_kg;
+                Session["total_cargado_peso"] = total_cargado_peso;
 
                 clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
 
@@ -588,8 +606,8 @@ namespace SoprodiApp
 
                 if (Session["ids"].ToString() != "JJ")
                 {
-                    Session["fecha_transporte"] = e.Row.Cells[9].Text;
-                    h3_transporte.InnerText = e.Row.Cells[6].Text + " --FECHA : " + e.Row.Cells[9].Text;
+                    Session["fecha_transporte"] = e.Row.Cells[11].Text;
+                    h3_transporte.InnerText = e.Row.Cells[6].Text + " --FECHA : " + e.Row.Cells[11].Text;
 
 
                 }
@@ -598,7 +616,7 @@ namespace SoprodiApp
                 {
 
                     string script2 = string.Format("javascript:CargarEvento_Tabla2(&#39;{0}&#39;);", G_INFORME_TOTAL_VENDEDOR.DataKeys[e.Row.RowIndex].Values[8].ToString().Trim());
-                    e.Row.Cells[9].Text = "  <a href='javascript:' onclick='" + script2 + "'>" + e.Row.Cells[9].Text + " </a>";
+                    e.Row.Cells[11].Text = "  <a href='javascript:' onclick='" + script2 + "'>" + e.Row.Cells[11].Text + " </a>";
 
                 }
 
@@ -1062,12 +1080,21 @@ namespace SoprodiApp
             }
             catch
             { }
+            Session["total_cargado_kg"] = 0;
+            Session["total_cargado_peso"] = 0;
 
             G_INFORME_TOTAL_VENDEDOR.DataSource = dt2;
 
             G_INFORME_TOTAL_VENDEDOR.DataBind();
             JQ_Datatable();
 
+
+            //totales
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "total_cargado_kg", "<script language='javascript'> document.getElementById('total_carga').innerHTML = '" + Base.monto_format(Session["total_cargado_kg"].ToString()) + " (kg.)'; </script>", false);
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "total_cargado_peso", "<script language='javascript'> document.getElementById('total_peso').innerHTML = '" + Base.monto_format(Session["total_cargado_peso"].ToString()) + "'; </script>", false);
+
+            //Session["total_cargado_kg"].ToString();
+            //Session["total_cargado_peso"].ToString();
         }
 
         private bool IsNumeric(string v)
@@ -1322,7 +1349,7 @@ namespace SoprodiApp
                     Session["trans_"] = trans_;
                     Session["camion"] = camion;
                     Session["chofer"] = chofer;
-                   //DataTable dt = new DataTable();
+                    //DataTable dt = new DataTable();
 
                     //dt = ReporteRNegocio.lista_det_sp_asignada(Session["id_asignada"].ToString());
 

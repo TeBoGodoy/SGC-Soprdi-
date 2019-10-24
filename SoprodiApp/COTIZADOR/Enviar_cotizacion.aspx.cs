@@ -136,7 +136,7 @@ namespace CRM
                                             writer.PageEvent = PageEventHandler;
 
                                             DataTable dt_detalle = new DataTable();
-                                            dt_detalle = db.consultar("select * from V_CTZ_COTIZACION_DET where id_cotizacion = " + ctz.id_cotizacion + " order by nom_categ, nom_producto");
+                                            dt_detalle = db.consultar("select * from V_CTZ_COTIZACION_DET2 where id_cotizacion = " + ctz.id_cotizacion + " order by nom_categ, nom_producto");
 
                                             // CONFIGURACION PDF
                                             //doc.SetPageSize(PageSize.LEGAL.Rotate());
@@ -176,7 +176,6 @@ namespace CRM
                                             {
 
                                             }
-
                                             //agregacelda(ref titulo, "SOCIEDAD PRODUCTORA Y DISTRIBUIDORA S.A", titulo_font, 0, "c");
                                             //agregacelda(ref titulo, "SOPRODI S.A", titulo_font, 0, "c");
                                             //agregacelda(ref titulo, "IMPORTACIONES, EXPORTACIONES,", fuente_negrita, 0, "c");
@@ -346,7 +345,7 @@ namespace CRM
                                             string aux_cat = "";
                                             foreach (DataRow dr in dt_detalle.Rows)
                                             {
-                                               
+
                                                 if (aux_cat != dr["nom_categ"].ToString())
                                                 {
                                                     //
@@ -377,14 +376,14 @@ namespace CRM
                                                     td_categoria2.BorderWidth = 0;
 
                                                     tablaOTZ.AddCell(td_categoria2);
-                                                    tablaOTZ.AddCell(td_categoria);   
+                                                    tablaOTZ.AddCell(td_categoria);
                                                     //
                                                     tabla_correo += "<tr>";
                                                     agregacelda(ref tablaOTZ, contador.ToString(), fuente_normal, 1, "c");
                                                     tabla_correo += "<td>" + contador.ToString() + "</td>";
                                                     //agregacelda(ref tablaOTZ, dr["producto"].ToString(), fuente_normal, 1, "c");
-                                                    agregacelda(ref tablaOTZ, dr["nom_producto"].ToString(), fuente_normal, 1, "i");
-                                                    tabla_correo += "<td>" + dr["nom_producto"].ToString() + "</td>";
+                                                    agregacelda(ref tablaOTZ, dr["nomcod"].ToString(), fuente_normal, 1, "i");
+                                                    tabla_correo += "<td>" + dr["nomcod"].ToString() + "</td>";
                                                     for (int i = 1; i <= contador_bodegas; i++)
                                                     {
                                                         agregacelda(ref tablaOTZ, "$ " + int.Parse(dr["precio_con_descuento_" + i].ToString()).ToString("#,##0"), fuente_normal, 1, "d");
@@ -407,8 +406,8 @@ namespace CRM
                                                     agregacelda(ref tablaOTZ, contador.ToString(), fuente_normal, 1, "c");
                                                     tabla_correo += "<td>" + contador.ToString() + "</td>";
                                                     //agregacelda(ref tablaOTZ, dr["producto"].ToString(), fuente_normal, 1, "c");
-                                                    agregacelda(ref tablaOTZ, dr["nom_producto"].ToString(), fuente_normal, 1, "i");
-                                                    tabla_correo += "<td>" + dr["nom_producto"].ToString() + "</td>";
+                                                    agregacelda(ref tablaOTZ, dr["nomcod"].ToString(), fuente_normal, 1, "i");
+                                                    tabla_correo += "<td>" + dr["nomcod"].ToString() + "</td>";
                                                     for (int i = 1; i <= contador_bodegas; i++)
                                                     {
                                                         agregacelda(ref tablaOTZ, "$ " + int.Parse(dr["precio_con_descuento_" + i].ToString()).ToString("#,##0"), fuente_normal, 1, "d");
@@ -423,7 +422,7 @@ namespace CRM
                                                         tabla_correo += "<td style='text-align:right'><b> " + dr["cantidad_" + i].ToString() + "</b></td>";
                                                         tabla_correo += "<td style='text-align:right'><b>$ " + int.Parse(dr["total_" + i].ToString()).ToString("#,##0") + "</b></td>";
                                                     }
-                                                }                                                    
+                                                }
                                                 contador++;
                                                 tabla_correo += "</tr>";
                                             }
@@ -537,9 +536,16 @@ namespace CRM
                                                 htmlcorreo += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
                                                 htmlcorreo += "</div>";
                                                 htmlcorreo += "<div><img src='http://a58.imgup.net/Sopro4d9d.png' style='float:right; width:90px;'> </div>";
-                                                htmlcorreo += "<h4>Cliente: " + x.nombrecliente + " </h4>";
+                                                if (enc_pdf.COMENTARIO != "")
+                                                {
+                                                    htmlcorreo += "<h4>" + enc_pdf.COMENTARIO + "</h4>";
+                                                }
+                                                else
+                                                {
+                                                    htmlcorreo += "<h4>Cliente: " + x.nombrecliente + " </h4>";
+                                                }
                                                 htmlcorreo += "<p>Con fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " envío la siguiente cotización adjunta. </p>";
-                                                htmlcorreo += "<p>" + enc_pdf.COMENTARIO + "</p>";
+                                                //htmlcorreo += "<p>" + enc_pdf.COMENTARIO + "</p>";
                                                 // AGREGAR LISTA AQUI //
                                                 htmlcorreo += tabla_correo;
                                                 //
@@ -547,6 +553,15 @@ namespace CRM
                                                 htmlcorreo += "<h4>" + vend.nombre_.ToUpper() + "</h4>";
                                                 htmlcorreo += "<h4>" + telefono_vendedor + "</h4>";
                                                 htmlcorreo += "<p>------------------------------------------</p>";
+                                                try
+                                                {
+                                                    string fecha_lista_precio = db.Scalar("select convert(date,MAX(fecha),103) as 'fecha' from Stock_Excel_2").ToString();
+                                                    htmlcorreo += "<p>Precios vigentes desde: <b>" + Convert.ToDateTime(fecha_lista_precio).ToString("dd/MM/yyyy") + "</b></p>";
+                                                }
+                                                catch (Exception ex)
+                                                {
+
+                                                }
                                                 htmlcorreo += "<p>Precios válidos hasta: <b>" + DateTime.Now.AddDays(2).ToString("dd/MM/yyyy") + "</b></p>";
                                                 htmlcorreo += "<p><b>Condiciones de entrega: </b></p>";
                                                 htmlcorreo += "<p>1. Despachos por pallets (algunos ítems se pueden entregar por medio pallets).</p>";
@@ -576,7 +591,7 @@ namespace CRM
                                                     {
                                                         AUX_CC = "rmc@soprodi.cl, mazocar@soprodi.cl, ialfaro@soprodi.cl, " + vend.correo + ", " + enc_pdf.CC;
                                                     }
-                                                    string aux_asunto = enc_pdf.ASUNTO + " " + x.nombrecliente;                                          
+                                                    string aux_asunto = enc_pdf.ASUNTO + " " + x.nombrecliente;
                                                     // PARA PRODUCCION
                                                     string respuesta_correo = cr.EnviarCorreoCotizacion(correo_de_reyes, pass_de_reyes, correo_de_reyes, x.correocliente, aux_asunto, htmlcorreo, AUX_CC, pdfPath, "COTIZADOR SOPRODI");
                                                     // PARA TESTING
