@@ -152,6 +152,8 @@
         var nume_cheques_2 = "";
         var monto_cheques = "";
 
+        var g_init_datatable;
+
         var scrollLeft;
         var scrollTop;
         //  ---------------------------------------- LOAD JAVASCRIPT --------------------------------------------- //
@@ -268,50 +270,51 @@
                 try {
 
                     //alert('ac');
-                    $("#G_INIT").DataTable({
+                    g_init_datatable = $("#G_INIT").DataTable({
 
-                        "dom": 'T<"clear">lfrtip',
-                        "tableTools": {
-                            "sSwfPath": "js/sq/media/swf/copy_csv_xls_pdf.swf",
-                            "aButtons": [
-                                "copy",
-                                "print",
-                                {
-                                    "sExtends": "collection",
-                                    "sButtonText": "Save",
-                                    "aButtons": ["csv", {
-                                        "sExtends": "xls",
-                                        "sTitle": "Listado"
-                                    }, {
-                                            "sExtends": "pdf",
-                                            "sPdfOrientation": "landscape",
-                                            "sTitle": "Listado"
-                                        }]
-                                }
-                            ]
-                        }
-                        ,
-                        "stateSave": true,
-                        "lengthChange": true,
-                        "searching": false,
-                        "destroy": true,
-                        "pageLength": 100,
-                        "paging": true,
+                                            "dom": 'T<"clear">lfrtip',
+                                            "tableTools": {
+                                                "sSwfPath": "js/sq/media/swf/copy_csv_xls_pdf.swf",
+                                                "aButtons": [
+                                                    "copy",
+                                                    "print",
+                                                    {
+                                                        "sExtends": "collection",
+                                                        "sButtonText": "Save",
+                                                        "aButtons": ["csv", {
+                                                            "sExtends": "xls",
+                                                            "sTitle": "Listado"
+                                                        }, {
+                                                                "sExtends": "pdf",
+                                                                "sPdfOrientation": "landscape",
+                                                                "sTitle": "Listado"
+                                                            }]
+                                                    }
+                                                ]
+                                            }
+                                            ,
+                                            "stateSave": true,
+                                            "lengthChange": true,
+                                            "searching": false,
+                                            "destroy": true,
+                                            "pageLength": 100,
+                                            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, 'Todos']],
+                                            "paging": true,
 
-                        columnDefs: [
-                            { type: 'date-uk', targets: [5] }
-                        ],
-                        columnDefs: [
-                            { type: 'date-uk', targets: [6] }
-                        ],
-                        columnDefs: [
-                            { type: 'date-uk', targets: [7] }
-                        ],
-                        "language": {
-                            "decimal": ",",
-                            "thousands": "."
-                        }
-                    });
+                                            columnDefs: [
+                                                { type: 'date-uk', targets: [5] }
+                                            ],
+                                            columnDefs: [
+                                                { type: 'date-uk', targets: [6] }
+                                            ],
+                                            columnDefs: [
+                                                { type: 'date-uk', targets: [7] }
+                                            ],
+                                            "language": {
+                                                "decimal": ",",
+                                                "thousands": "."
+                                            }
+                                        });
 
                     $("#G_DETALLE_ESTIMADOS").DataTable({
                         "lengthChange": false,
@@ -410,11 +413,21 @@
 
         }
         function carga_tablax_2() {
+            try {
+               g_init_datatable.destroy();
+            
+            } catch (e) {
+                alert('catch');
+                console.log(e);
+            }
+           
 
             var gif = document.getElementById("GIF_COMPLETO");
             gif.style.display = "block";
 
             document.getElementById("BTN_NETEO").style.display = "none";
+
+         
         }
 
         function combos_refresh() {
@@ -511,6 +524,7 @@
 
             $('#titulo_panel_finanza').html('<i class="fa fa-list"></i>Cobranza -- Tabla');
 
+            //creagrilla();
         }
 
 
@@ -5389,7 +5403,7 @@
                                                                                                                     <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender12" TargetControlID="T_VENCIMIENTO_CHEQUE2"></ajaxToolkit:CalendarExtender>
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="text" class="form-control" maxlength="20" id="T_OBS_CHEQUES" placeholder="Obs..." />
+                                                                                                                    <input type="text" class="form-control" maxlength="30" id="T_OBS_CHEQUES" placeholder="Obs..." />
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <input type="text" class="form-control" id="T_CAMBIO_CHEQUES" placeholder="TipoCambio..." />

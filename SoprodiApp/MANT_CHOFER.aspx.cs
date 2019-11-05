@@ -63,6 +63,35 @@ namespace SoprodiApp
             }
         }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            MakeAccessible(G_Banco);
+            //MakeAccessible(G_ASIGNADOS);
+            //MakeAccessible(G_QR);
+            //MakeAccessible(G_LISTA);
+        }
+        public void JQ_Datatable()
+        {
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "asd", "<script language='javascript'>creagrilla();</script>", false);
+        }
+        protected override void Render(HtmlTextWriter writer)
+        {
+            Page.ClientScript.RegisterForEventValidation(this.UniqueID);
+            base.Render(writer);
+        }
+
+        public static void MakeAccessible(GridView grid)
+        {
+            if (grid.Rows.Count <= 0) return;
+            grid.UseAccessibleHeader = true;
+            grid.HeaderRow.TableSection = TableRowSection.TableHeader;
+            grid.PagerStyle.CssClass = "GridPager";
+            if (grid.ShowFooter)
+                grid.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+
+
         private void cargar_trans()
         {
             DataTable dt; DataView dtv = new DataView();
@@ -99,6 +128,8 @@ namespace SoprodiApp
             t_fono.Enabled = true;
             
             btn_nuevo_banco.Visible = false;
+
+            JQ_Datatable();
         }
 
         protected void B_Guardar_Click(object sender, EventArgs e)
@@ -200,6 +231,8 @@ namespace SoprodiApp
 
 
                 }
+
+                JQ_Datatable();
             }
         }
 
@@ -256,6 +289,7 @@ namespace SoprodiApp
 
                     }
                 }
+                JQ_Datatable();
             }
 
             catch (Exception ex)
@@ -279,6 +313,7 @@ namespace SoprodiApp
             }
             G_Banco.DataSource = db.consultar("Select * from V_Chofer_Trans" + where1);
             G_Banco.DataBind();
+            JQ_Datatable();
         }
     }
 }

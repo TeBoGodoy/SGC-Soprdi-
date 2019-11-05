@@ -1,8 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Base.Master" AutoEventWireup="true" CodeBehind="MANT_TRANSPORT.aspx.cs" Inherits="SoprodiApp.MANT_TRANSPORT" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder_Master" runat="server">
+    
+    <%--INCLUIR JQUERY !!--%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script>
+
+        var g_init_datatable;
+            //  **********************************************************************************************************
+     
+        $(document).ready(function () {
+            creagrilla();
+        });
 
         function chosen_upd() {
 
@@ -16,15 +26,189 @@
 
         }
 
+        function super_ff() {
+
+            $(".filtrar tr:has(td)").each(function () {
+                var t = $(this).text().toLowerCase();
+                $("<td class='indexColumn'></td>")
+                    .hide().text(t).appendTo(this);
+            });
+            //Agregar el comportamiento al texto (se selecciona por el ID) 
+            $("#btn_filtro_nuevo").click(function () {
+                var s = $('#t_filtro_memoria').val().toLowerCase().split(" ");
+                $(".filtrar tr:hidden").show();
+                $.each(s, function () {
+                    $(".filtrar tr:visible .indexColumn:not(:contains('"
+                        + this + "'))").parent().hide();
+                });
+            });
+
+            $("#t_filtro_memoria").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    var s = $('#t_filtro_memoria').val().toLowerCase().split(" ");
+                    $(".filtrar tr:hidden").show();
+                    $.each(s, function () {
+                        $(".filtrar tr:visible .indexColumn:not(:contains('"
+                            + this + "'))").parent().hide();
+                    });
+                }
+            });
+        }
+
+
+         function creagrilla() {
+
+
+            (function ($) {
+                // You pass-in jQuery and then alias it with the $-sign
+                // So your internal code doesn't change
+
+                try {
+
+                    //alert('ac');
+                   $("#G_Banco").DataTable({
+                        "lengthChange": false,
+                        "searching": true,
+                        "destroy": true,
+                        "stateSave": true,
+                        "pageLength": -1,
+                        "paging": false,
+                        "order": [[2, "asc"]],
+                        "language": {
+                            "decimal": ",",
+                            "thousands": "."
+                        }
+                    });
+
+                    
+                } catch (e) {
+
+                     //alert('catch' + e);
+
+                }
+
+
+            })(jQuery);
+        }
+
+
 
     </script>
 
-    <style>
+   <style>
         .test {
             background-color: #428bca !important;
             color: white !important;
         }
+
+        .overlay {
+            position: fixed;
+            z-index: 0;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            background-color: #aaa;
+            filter: alpha(opacity=80);
+            opacity: 0.8;
+        }
+
+        .Grheader {
+            overflow: hidden;
+            width: 26px;
+            position: relative;
+            top: 0px;
+            z-index: 10;
+            vertical-align: top;
+            margin-right: 16px;
+        }
+
+        .GrCuerpo {
+            width: 80%;
+            position: relative;
+            left: 16px;
+            z-index: 1;
+            overflow: auto;
+            height: 100%;
+        }
+
+
+
+        td.locked, th.locked {
+            position: relative;
+            left: expression((this.parentElement.parentElement.parentElement.parentElement.scrollLeft-2)+'px');
+        }
+
+        th.sort-header::-moz-selection {
+            background: transparent;
+        }
+
+        th.sort-header::selection {
+            background: transparent;
+        }
+
+        th.sort-header {
+            cursor: pointer;
+        }
+
+        table th.sort-header:after {
+            content: '';
+            float: right;
+            margin-top: -4px;
+            border-width: 0 6px 6px;
+            border-style: solid;
+            border-color: #404040 transparent;
+            visibility: hidden;
+        }
+
+        table th.sort-header:hover:after {
+            visibility: visible;
+        }
+
+        table th.sort-up:after,
+        table th.sort-down:after,
+        table th.sort-down:hover:after {
+            visibility: visible;
+            opacity: 0.9;
+        }
+
+        table th.sort-up:after {
+            border-bottom: none;
+            border-width: 6px 6px 0;
+        }
+
+
+        .estado10 {
+            border-left-color: #fa5a35 !important;
+        }
+
+        .estado20 {
+            border-left-color: #4e53ff !important;
+        }
+
+        .estado30 {
+            border-left-color: #10ff23 !important;
+        }
+
+        .estado40 {
+            border-left-color: #ff10c0 !important;
+        }
+
+        .estado10S {
+            border-left-color: #c2c506 !important;
+        }
+
+        .estado10P {
+            border-left-color: #06c5c5 !important;
+        }
+
+        .estadoGFX {
+            border-left-color: #30441f !important;
+        }
     </style>
+
+
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_Contenido" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="ScriptManager1" runat="server" EnableScriptGlobalization="True" EnableScriptLocalization="True">
@@ -122,7 +306,7 @@
                                             </div>
 
                                             <div class="col-sm-1 col-sm-offset-1 controls">
-                                                <button id="btn_nuevo_banco" class="btn btn-success icon-plus btn-circle" runat="server" onserverclick="btn_nuevo_banco_ServerClick"><i class="fa fa-plus"></i></button>
+                                                <button id="btn_nuevo_banco" class="btn btn-success icon-plus btn-circle" runat="server" onclientclick="creagrilla();" onserverclick="btn_nuevo_banco_ServerClick"><i class="fa fa-plus"></i></button>
                                             </div>
 
                                         </div>
@@ -139,10 +323,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <asp:GridView CssClass="table fill-head table-bordered filtrar" ID="G_Banco" runat="server" AutoGenerateColumns="true" ShowHeaderWhenEmpty="True" Width="100%" OnRowCommand="G_Banco_RowCommand" DataKeyNames="cod_trans">
-                                            <HeaderStyle CssClass="test" />
+                                        <asp:GridView ID="G_Banco" ClientIDMode="Static" CssClass="table table-bordered table-advance filtrar"
+                                            runat="server" AutoGenerateColumns="true" ShowHeaderWhenEmpty="True" Width="100%" OnRowCommand="G_Banco_RowCommand" DataKeyNames="cod_trans">
+                                            <HeaderStyle CssClass="test no-sort" />
                                             <Columns>
                                                 <asp:TemplateField HeaderText="Editar">
                                                     <ItemTemplate>

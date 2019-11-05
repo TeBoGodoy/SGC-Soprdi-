@@ -1141,19 +1141,15 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = "select cc from Lista_Correos where id = " + id_correo;
-
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
             }
             foreach (DataRow r in dt.Rows)
             {
-
                 correo = r[0].ToString();
-
             }
             return correo;
-
         }
 
         internal static DataTable periodos_productos(string periodo)
@@ -4029,11 +4025,11 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"      select hh.peso , uu.dolar from (
-                                       (select sum(monto) as peso from V_COBRANZA_MOVIMIENTOS  ww where ww.monto > 0  	 and ww.OBS NOT LIKE '%NETEO%' 
+                                       (select sum(monto) as peso from V_COBRANZA_MOVIMIENTOS  ww where ww.monto > 0  	 and ww.OBS NOT LIKE '%NET%'   
                                      and  DATEPART(wk, case when ww.OBS not like '%Pago Con Cheque%' then FechaVenc else FechaEvento end ) = " + v +
                                      " and 	 DATEPART(year, case when ww.OBS not like '%Pago Con Cheque%' then FechaVenc else FechaEvento end ) =" + an +
                                 "     and ww.[T.Doc] <> 'DM' and REPLACE(SUBSTRING(obs, len(obs) -5, 5),'(','') = 'peso')) as hh , " +
-                                 "    (select sum(monto) as dolar from V_COBRANZA_MOVIMIENTOS  ww where ww.monto > 0  	 and ww.OBS NOT LIKE '%NETEO%' " +
+                                 "    (select sum(monto) as dolar from V_COBRANZA_MOVIMIENTOS  ww where ww.monto > 0  	 and ww.OBS NOT LIKE '%NET%' " +
                                   "   and  DATEPART(wk,  case when ww.OBS not like '%Pago Con Cheque%' then FechaVenc else FechaEvento end) = " + v +
                                   " and 	 DATEPART(year, case when ww.OBS not like '%Pago Con Cheque%' then FechaVenc else FechaEvento end ) =" + an +
                                 "  and ww.[T.Doc] <> 'DM' and REPLACE(SUBSTRING(obs, len(obs) -5, 5),'(','') = 'dolar')   as uu";

@@ -110,6 +110,17 @@ namespace SoprodiApp
             }
         }
 
+        private string obtener_periodo(string text)
+        {
+            List<string> datos_fecha = text.Split('/').ToList();
+            if (datos_fecha[1].ToString().Length == 1)
+            {
+                datos_fecha[1] = "0" + datos_fecha[1];
+            }
+            string año_mes = datos_fecha[2] + datos_fecha[1];
+            return año_mes;
+        }
+
         internal static PdfPTable detalle_sp_pdf(string num_sp)
         {
             PdfPCell celda_bordeTop = new PdfPCell(new Phrase(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8)));

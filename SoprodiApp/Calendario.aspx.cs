@@ -973,7 +973,7 @@ namespace SoprodiApp
                 fecha = r["fecha"].ToString();
             }
 
-            if (estado == "ABONO" && !obs.Contains("Cheque"))
+            if (estado == "ABONO" && !obs.Contains("Cheque") || estado == "NOTA_CREDITO")
             {
                 string facturas_pagos = ReporteRNegocio.stuff_facturas_pagos(obs.Trim());
 
@@ -6062,15 +6062,14 @@ namespace SoprodiApp
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>Tabla();</script>", false);
 
-
             //tasa cambio para cheques 
             tasa_Cambio_q = Math.Round(sum_peso / sum_dolar, 4); 
-
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "t_cambio", "<script language='javascript'> $('#T_CAMBIO_CHEQUES').val('"+ tasa_Cambio_q + "'); </script>", false);
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "peso", "<script language='javascript'> $('#monto_total_peso_f').val('" + Math.Round(sum_peso) + "'); </script>", false);
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "dolar", "<script language='javascript'> $('#monto_total_dolar_f').val('" + sum_dolar + "'); </script>", false);
 
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "creagrilla", "<script language='javascript'>creagrilla();</script>", false);
         }
 
         protected void b_Click(object sender, ImageClickEventArgs e)

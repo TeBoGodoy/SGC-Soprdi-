@@ -19,8 +19,12 @@ namespace SoprodiApp
 {
     public partial class MANT_TRANSPORT : System.Web.UI.Page
     {
+        //private static Page page;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            //JQ_Datatable();
+            //page = this.Page;
             if (!IsPostBack)
             {
                 //List<string> u_negocio = ReporteRNegocio.trae_app(User.Identity.Name).Split(',').ToList();
@@ -62,6 +66,34 @@ namespace SoprodiApp
                 //CleanControl(this.Controls);
 
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            MakeAccessible(G_Banco);
+            //MakeAccessible(G_ASIGNADOS);
+            //MakeAccessible(G_QR);
+            //MakeAccessible(G_LISTA);
+        }
+        public void JQ_Datatable()
+        {
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "asd", "<script language='javascript'>creagrilla();</script>", false);
+        }
+        protected override void Render(HtmlTextWriter writer)
+        {
+            Page.ClientScript.RegisterForEventValidation(this.UniqueID);
+            base.Render(writer);
+        }
+
+        public static void MakeAccessible(GridView grid)
+        {
+            if (grid.Rows.Count <= 0) return;
+            grid.UseAccessibleHeader = true;
+            grid.HeaderRow.TableSection = TableRowSection.TableHeader;
+            grid.PagerStyle.CssClass = "GridPager";
+            if (grid.ShowFooter)
+                grid.FooterRow.TableSection = TableRowSection.TableFooter;
         }
 
         public void CleanControl(ControlCollection controles)
@@ -123,6 +155,7 @@ namespace SoprodiApp
             t_inicial.Enabled = true;
             CB_BODEGA.Enabled = true;
             btn_nuevo_banco.Visible = false;
+            JQ_Datatable();
         }
 
         protected void B_Guardar_Click(object sender, EventArgs e)
@@ -250,6 +283,8 @@ namespace SoprodiApp
                     CB_BODEGA.Enabled = false;
                 }
             }
+
+            JQ_Datatable();
         }
 
         protected void G_Banco_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -304,6 +339,8 @@ namespace SoprodiApp
 
                     }
                 }
+
+                JQ_Datatable();
             }
 
             catch (Exception ex)
