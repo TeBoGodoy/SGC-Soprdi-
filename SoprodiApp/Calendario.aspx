@@ -15,23 +15,22 @@
         .fa-input {
             font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
-        input[type=checkbox]
-        {
-          /* Double-sized Checkboxes */
-          -ms-transform: scale(2); /* IE */
-          -moz-transform: scale(2); /* FF */
-          -webkit-transform: scale(2); /* Safari and Chrome */
-          -o-transform: scale(2); /* Opera */
-          transform: scale(2);
-          padding: 10px;
+
+        input[type=checkbox] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(2); /* IE */
+            -moz-transform: scale(2); /* FF */
+            -webkit-transform: scale(2); /* Safari and Chrome */
+            -o-transform: scale(2); /* Opera */
+            transform: scale(2);
+            padding: 10px;
         }
 
         /* Might want to wrap a span around your checkbox text */
-        .checkboxtext
-        {
-          /* Checkbox text */
-          font-size: 110%;
-          display: inline;
+        .checkboxtext {
+            /* Checkbox text */
+            font-size: 110%;
+            display: inline;
         }
 
         .gif {
@@ -272,49 +271,49 @@
                     //alert('ac');
                     g_init_datatable = $("#G_INIT").DataTable({
 
-                                            "dom": 'T<"clear">lfrtip',
-                                            "tableTools": {
-                                                "sSwfPath": "js/sq/media/swf/copy_csv_xls_pdf.swf",
-                                                "aButtons": [
-                                                    "copy",
-                                                    "print",
-                                                    {
-                                                        "sExtends": "collection",
-                                                        "sButtonText": "Save",
-                                                        "aButtons": ["csv", {
-                                                            "sExtends": "xls",
-                                                            "sTitle": "Listado"
-                                                        }, {
-                                                                "sExtends": "pdf",
-                                                                "sPdfOrientation": "landscape",
-                                                                "sTitle": "Listado"
-                                                            }]
-                                                    }
-                                                ]
-                                            }
-                                            ,
-                                            "stateSave": true,
-                                            "lengthChange": true,
-                                            "searching": false,
-                                            "destroy": true,
-                                            "pageLength": 100,
-                                            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, 'Todos']],
-                                            "paging": true,
+                        "dom": 'T<"clear">lfrtip',
+                        "tableTools": {
+                            "sSwfPath": "js/sq/media/swf/copy_csv_xls_pdf.swf",
+                            "aButtons": [
+                                "copy",
+                                "print",
+                                {
+                                    "sExtends": "collection",
+                                    "sButtonText": "Save",
+                                    "aButtons": ["csv", {
+                                        "sExtends": "xls",
+                                        "sTitle": "Listado"
+                                    }, {
+                                            "sExtends": "pdf",
+                                            "sPdfOrientation": "landscape",
+                                            "sTitle": "Listado"
+                                        }]
+                                }
+                            ]
+                        }
+                        ,
+                        "stateSave": true,
+                        "lengthChange": true,
+                        "searching": false,
+                        "destroy": true,
+                        "pageLength": 100,
+                        "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, 'Todos']],
+                        "paging": true,
 
-                                            columnDefs: [
-                                                { type: 'date-uk', targets: [5] }
-                                            ],
-                                            columnDefs: [
-                                                { type: 'date-uk', targets: [6] }
-                                            ],
-                                            columnDefs: [
-                                                { type: 'date-uk', targets: [7] }
-                                            ],
-                                            "language": {
-                                                "decimal": ",",
-                                                "thousands": "."
-                                            }
-                                        });
+                        columnDefs: [
+                            { type: 'date-uk', targets: [5] }
+                        ],
+                        columnDefs: [
+                            { type: 'date-uk', targets: [6] }
+                        ],
+                        columnDefs: [
+                            { type: 'date-uk', targets: [7] }
+                        ],
+                        "language": {
+                            "decimal": ",",
+                            "thousands": "."
+                        }
+                    });
 
                     $("#G_DETALLE_ESTIMADOS").DataTable({
                         "lengthChange": false,
@@ -414,20 +413,20 @@
         }
         function carga_tablax_2() {
             try {
-               g_init_datatable.destroy();
-            
+                g_init_datatable.destroy();
+
             } catch (e) {
                 alert('catch');
                 console.log(e);
             }
-           
+
 
             var gif = document.getElementById("GIF_COMPLETO");
             gif.style.display = "block";
 
             document.getElementById("BTN_NETEO").style.display = "none";
 
-         
+
         }
 
         function combos_refresh() {
@@ -1792,9 +1791,8 @@
                 var descripcion = $('#T_BANCO_2_LABEL').text() + $('#T_DESCRIPCION_PAGO2').val();
 
                 var fecha = document.getElementById('t_fech_efec').value;
-
-                if (id == "")
-                {
+    
+                if (id == "") {
                     alert("error");
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
@@ -1813,17 +1811,14 @@
                     alert("Seleccione tipo de Documento");
                     return false;
                 }
-                if (descripcion.length > 10)
-
-                {
+                if (descripcion.length > 10) {
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
                     alert("Descripción no debe superar 10 letras como máximo");
                     return false;
                 }
 
-                if (descripcion.includes('--'))
-                {
+                if (descripcion.includes('--')) {
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
                     alert("Descripción no puede tener doble guion (--)");
@@ -2292,17 +2287,16 @@
                         alert("Error al cargar evento");
                     }
                 }
-            }).done(function (resp) {             
+            }).done(function (resp) {
                 resp = resp.d;
 
                 if (resp == "0") {
                     //ok cheque
                     respuesta = "OK";
                 }
-                else
-                {
+                else {
                     respuesta = "EXISTE";
-                    
+
                 }
 
             });
@@ -2437,7 +2431,7 @@
             } catch (e) { }
 
             try {
-              
+
             } catch (e) { }
             try {
                 document.getElementById('T_OBS_CHEQUES').value = "";
@@ -3760,21 +3754,18 @@
         }
 
 
-        function CAMBIA_PESO_DOLAR_CHEQ()
-        {
+        function CAMBIA_PESO_DOLAR_CHEQ() {
             var MONEDA = document.getElementById("ContentPlaceHolder_Contenido_cb_tipo_pago_cheque").value;
-            if (MONEDA == "peso")
-            {
+            if (MONEDA == "peso") {
                 var total_peso = document.getElementById("monto_total_peso_f").value;
                 $('#T_Cuenta2').val(total_peso);
             }
-            else
-            {
+            else {
                 var total_dolar = document.getElementById("monto_total_dolar_f").value;
                 $('#T_Cuenta2').val(total_dolar);
             }
         }
-        
+
         function CAMBIA_PESO_DOLAR() {
             var MONEDA = document.getElementById("CB_TIPO_MONEDA2").value;
             if (MONEDA == "peso") {
@@ -3941,7 +3932,7 @@
 
 
             var num = $('#fact_sele').val().substring(1, 7);
-            $('#T_DESCRIPCION_PAGO2').val('NET' + num );
+            $('#T_DESCRIPCION_PAGO2').val('NET' + num);
 
             let date = new Date();
 
@@ -3956,15 +3947,19 @@
                 fecha_hoy = day + '/' + month + '/' + year;
             }
 
-            $('#t_fech_efec').val(fecha_hoy);
+            var fecha_neteo = $('#T_FECHA_NETEO').val();
 
-
-
+            $('#t_fech_efec').val(fecha_neteo);
             document.getElementById("BTN_NETEO").style.display = "block";
         }
 
 
+        function rescatarfecha() {
+            
+            var fecha_neteo = $('#T_FECHA_NETEO').val();
 
+            $('#t_fech_efec').val(fecha_neteo);
+        }
 
 
         function CAMBIA_ACCION2() {
@@ -4682,7 +4677,9 @@
 
                                                                     <asp:TemplateField HeaderText="">
                                                                         <ItemTemplate>
-                                                                            <asp:CheckBox ID="chkAccept2" runat="server" EnableViewState="true" Checked='<%#Convert.ToBoolean(Eval("estado_ingresado")) %>'
+                                                                            <%--   <asp:CheckBox ID="chkAccept2" runat="server" EnableViewState="true" Checked='<%#Convert.ToBoolean(Eval("estado_ingresado")) %>'
+                                                                                OnCheckedChanged="chkAccept_CheckedChanged" />--%>
+                                                                            <asp:CheckBox ID="chkAccept2" runat="server" EnableViewState="true" Checked="false"
                                                                                 OnCheckedChanged="chkAccept_CheckedChanged" />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
@@ -5114,9 +5111,19 @@
                                                             <%--<asp:Button ID="BTN_NETEO" runat="server" Text="NETEO" Visible="false" OnClientClick="REGISTRAR_PAGO2();" class="btn btn-success" />--%>
                                                             <%--<input type="button" id="BTN_NETEO" style="display:none;" class="btn btn-primary" value="NETEO" onclick="REGISTRAR_PAGO2();" />--%>
 
-                                                            <asp:LinkButton ID="BTN_NETEO_2" Visible="false" runat="server" OnClientClick="CARGANDO_G();"
-                                                                                                                Style="color: white;" Class="btn btn-lime"
-                                                                                                                OnClick="btn_pago2_Click" Text="NETEO" />
+                                                                <asp:Panel runat="server" Visible="false" ID="P_FECHA_NET" ClientIDMode="Static">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <asp:TextBox runat="server" ID="T_FECHA_NETEO" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
+                                                                        <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender23" TargetControlID="T_FECHA_NETEO"></ajaxToolkit:CalendarExtender>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                    </asp:Panel>
+                                                            <asp:LinkButton ID="BTN_NETEO_2" Visible="false" runat="server" OnClientClick="CARGANDO_G();rescatarfecha();"
+                                                                Style="color: white;" Class="btn btn-lime"
+                                                                OnClick="btn_pago2_Click" Text="NETEO" />
 
 
                                                             <div id="montos_totales" runat="server"></div>
@@ -5280,8 +5287,8 @@
                                                                             <div class="box">
                                                                                 <div class="form-group">
 
-                                                                                          <input type="text" style="visibility:hidden;position:absolute;"  class="form-control input-sm" id="monto_total_peso_f" placeholder="peso..." />
-                                                                                          <input type="text" style="visibility:hidden;position:absolute;"  class="form-control input-sm" id="monto_total_dolar_f" placeholder="dolar..." />
+                                                                                    <input type="text" style="visibility: hidden; position: absolute;" class="form-control input-sm" id="monto_total_peso_f" placeholder="peso..." />
+                                                                                    <input type="text" style="visibility: hidden; position: absolute;" class="form-control input-sm" id="monto_total_dolar_f" placeholder="dolar..." />
 
 
                                                                                     <label class="col-sm-2 control-label">
@@ -5322,7 +5329,8 @@
                                                                                                                     <asp:DropDownList runat="server" ID="CB_DEPOSITOS_BANCO2" ClientIDMode="Static" onchange="CAMBIA_TIPO_DEPOSITO()" CssClass="form-control input-sm chosen"></asp:DropDownList>
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
-                                                                                                                    <select class="form-control input-sm" id="CB_TIPO_MONEDA2" onchange="CAMBIA_PESO_DOLAR()">>
+                                                                                                                    <select class="form-control input-sm" id="CB_TIPO_MONEDA2" onchange="CAMBIA_PESO_DOLAR()">
+                                                                                                                        >
                                                                                                                         <option value="peso" selected>Peso</option>
                                                                                                                         <option value="dolar">Dolar</option>
                                                                                                                     </select>
@@ -5382,7 +5390,7 @@
                                                                                                                     <%--<asp:DropDownList runat="server" ID="cb_productos_kg" onchange="esconde()" ClientIDMode="Static" CssClass="form-control chosen"></asp:DropDownList>--%>
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
-                                                                                                                    <select class="form-control" runat="server" id="cb_tipo_pago_cheque"  onchange="CAMBIA_PESO_DOLAR_CHEQ()">
+                                                                                                                    <select class="form-control" runat="server" id="cb_tipo_pago_cheque" onchange="CAMBIA_PESO_DOLAR_CHEQ()">
                                                                                                                         <option value="peso" selected="selected">Peso</option>
                                                                                                                         <option value="dolar">Dolar</option>
                                                                                                                     </select>

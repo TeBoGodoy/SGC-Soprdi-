@@ -562,6 +562,33 @@ namespace SoprodiApp {
         protected global::System.Web.UI.WebControls.Button btn_pagables;
         
         /// <summary>
+        /// Control P_FECHA_NET.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel P_FECHA_NET;
+        
+        /// <summary>
+        /// Control T_FECHA_NETEO.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox T_FECHA_NETEO;
+        
+        /// <summary>
+        /// Control CalendarExtender23.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender23;
+        
+        /// <summary>
         /// Control BTN_NETEO_2.
         /// </summary>
         /// <remarks>

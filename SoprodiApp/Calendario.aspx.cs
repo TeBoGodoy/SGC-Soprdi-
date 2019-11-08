@@ -359,7 +359,7 @@ namespace SoprodiApp
 
             btn_pagables.Visible = false;
             BTN_NETEO_2.Visible = false;
-
+            P_FECHA_NET.Visible = false;
             //    ScriptManager.RegisterStartupScript(Page, this.GetType(), "tq121eeee", "<script> alert('Sin filtro fecha') </script>", false);
 
 
@@ -5771,6 +5771,7 @@ namespace SoprodiApp
 
             //BTN_NETEO.Visible = false;
             BTN_NETEO_2.Visible = false;
+            P_FECHA_NET.Visible = false;
             string tabla_documentos = "";
             string rut_cliente = "";
             string si_insert = "";
@@ -6553,7 +6554,7 @@ namespace SoprodiApp
 
             //BTN_NETEO.Visible = true;
             BTN_NETEO_2.Visible = true;
-
+            P_FECHA_NET.Visible = true;
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "neteo", "<script language='javascript'>APLICAR_NETEO();</script>", false);
 
             // aca asignar valores para aplicar neteo automatico
