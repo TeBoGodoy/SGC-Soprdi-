@@ -21,7 +21,6 @@ C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Release\CRM
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Release\CRM.Entities.dll
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\bin\Release\CRM.Entities.pdb
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Release\SDI.DataAccess.csprojAssemblyReference.cache
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Release\SDI.DataAccess.csproj.CoreCompileInputs.cache
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Release\SDI.DataAccess.csproj.CopyComplete
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Release\CRM.DataAccess.dll
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.DataAccess\obj\Release\CRM.DataAccess.pdb

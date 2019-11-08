@@ -9,9 +9,8 @@ C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Debug\CRM.Entit
 C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\SDI.Entities.csproj.CoreCompileInputs.cache
 C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\CRM.Entities.dll
 C:\Users\esteb\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\CRM.Entities.pdb
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Debug\CRM.Entities.dll
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Debug\CRM.Entities.pdb
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\SDI.Entities.csprojAssemblyReference.cache
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\SDI.Entities.csproj.CoreCompileInputs.cache
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\CRM.Entities.dll
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\CRM.Entities.pdb
+C:\Users\Esteban\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Debug\CRM.Entities.dll
+C:\Users\Esteban\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Debug\CRM.Entities.pdb
+C:\Users\Esteban\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\SDI.Entities.csprojAssemblyReference.cache
+C:\Users\Esteban\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\CRM.Entities.dll
+C:\Users\Esteban\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Debug\CRM.Entities.pdb

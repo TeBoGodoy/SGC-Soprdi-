@@ -27,7 +27,6 @@ C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.DataAccess.pdb
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\bin\Release\CRM.Entities.pdb
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csprojAssemblyReference.cache
-C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csproj.CoreCompileInputs.cache
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\SDI.BusinessLayer.csproj.CopyComplete
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\CRM.BusinessLayer.dll
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.BusinessLayer\obj\Release\CRM.BusinessLayer.pdb

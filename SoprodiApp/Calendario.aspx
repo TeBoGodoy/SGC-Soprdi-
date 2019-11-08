@@ -296,7 +296,7 @@
                         "lengthChange": true,
                         "searching": false,
                         "destroy": true,
-                        "pageLength": 100,
+                        "pageLength": -1,
                         "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, 'Todos']],
                         "paging": true,
 
@@ -371,7 +371,7 @@
                     super_ff3();
                 } catch (e) {
 
-                    // alert('catch' + e);
+                     //alert('catch' + e);
 
                 }
 
@@ -412,13 +412,16 @@
 
         }
         function carga_tablax_2() {
-            try {
-                g_init_datatable.destroy();
+            //try {
 
-            } catch (e) {
-                alert('catch');
-                console.log(e);
-            }
+            //    creagrilla();
+
+            //    g_init_datatable.destroy();
+
+            //} catch (e) {
+            //    alert('catch');
+            //    console.log(e);
+            //}
 
 
             var gif = document.getElementById("GIF_COMPLETO");
@@ -1791,7 +1794,7 @@
                 var descripcion = $('#T_BANCO_2_LABEL').text() + $('#T_DESCRIPCION_PAGO2').val();
 
                 var fecha = document.getElementById('t_fech_efec').value;
-    
+
                 if (id == "") {
                     alert("error");
                     var gif = document.getElementById("GIF_COMPLETO");
@@ -1814,7 +1817,7 @@
                 if (descripcion.length > 8) {
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
-                    alert("Descripción no debe superar 10 letras como máximo");
+                    alert("Descripción no debe superar 8 letras como máximo. (considerando letras banco)");
                     return false;
                 }
                 if (fecha == "") {
@@ -3679,6 +3682,8 @@
                     } catch (e) { }
                     $('#PANEL_MONTO2').show();
                     $('#PANEL_BANCO2').hide();
+                    $('#P_REGISTRA_PAGO').show();
+
                 }
                 if (tipo == "cheque") {
                     try {
@@ -3686,6 +3691,8 @@
                     } catch (e) { }
                     $('#PANEL_MONTO2').hide();
                     $('#PANEL_BANCO2').show();
+                    $('#P_REGISTRA_PAGO').show();
+
                 }
 
                 if (tipo == "tarjeta") {
@@ -3694,6 +3701,8 @@
                     } catch (e) { }
                     $('#PANEL_MONTO2').show();
                     $('#PANEL_BANCO2').hide();
+                    $('#P_REGISTRA_PAGO').show();
+
 
                     CAMBIA_TARJETA();
                 }
@@ -3703,6 +3712,8 @@
 
                 $('#PANEL_MONTO2').hide();
                 $('#PANEL_BANCO2').hide();
+                $('#P_REGISTRA_PAGO').hide();
+
             }
             try {
                 Borrar_Cheques2();
@@ -3960,7 +3971,7 @@
 
 
         function rescatarfecha() {
-            
+
             var fecha_neteo = $('#T_FECHA_NETEO').val();
 
             $('#t_fech_efec').val(fecha_neteo);
@@ -4041,11 +4052,14 @@
                     $('#PANEL_ESTIMADO_2').hide();
                 }
                 else if (tipo == "2") {
+
                     $('#PANEL_DATOS_CLIENTE2').hide();
                     $('#PANEL_ENVIAR_CORREO2').hide();
                     $('#PANEL_AGENDA2').show();
                     $('#PANEL_MONTO2').hide();
                     $('#PANEL_BANCO2').hide();
+                    $('#P_REGISTRA_PAGO').hide();
+
                     $('#PANEL_SEGUIMIENTO2').show();
                     $('#aceptar2').hide();
                     $('#OBS_LLAMAR2').hide();
@@ -4054,12 +4068,15 @@
                     $('#PANEL_AGENDAR_PAGO2').hide();
                 }
                 else if (tipo == "3") {
+     
                     $('#PANEL_DATOS_CLIENTE2').hide();
                     $('#PANEL_ENVIAR_CORREO2').hide();
                     $('#OBS_LLAMAR2').hide();
                     $('#PANEL_AGENDA2').hide();
                     $('#PANEL_MONTO2').hide();
                     $('#PANEL_BANCO2').hide();
+                    $('#P_REGISTRA_PAGO').hide();
+
                     $('#PANEL_SEGUIMIENTO2').show();
                     $('#aceptar2').hide();
                     $('#PANEL_PAGO2').show();
@@ -4067,6 +4084,7 @@
                     $('#PANEL_ESTIMADO_2').hide();
                 }
                 else if (tipo == "4") {
+
                     $('#PANEL_AGENDAR_PAGO2').show();
                     $('#PANEL_DATOS_CLIENTE2').hide();
                     $('#PANEL_ENVIAR_CORREO2').hide();
@@ -4074,6 +4092,7 @@
                     $('#PANEL_AGENDA2').hide();
                     $('#PANEL_MONTO2').hide();
                     $('#PANEL_BANCO2').hide();
+                    $('#P_REGISTRA_PAGO').hide();
                     $('#PANEL_SEGUIMIENTO2').show();
                     $('#aceptar2').hide();
                     $('#PANEL_PAGO2').hide();
@@ -4087,6 +4106,7 @@
                     $('#PANEL_AGENDA2').hide();
                     $('#PANEL_MONTO2').hide();
                     $('#PANEL_BANCO2').hide();
+                    $('#P_REGISTRA_PAGO').hide();
                     $('#PANEL_SEGUIMIENTO2').show();
                     $('#aceptar2').hide();
                     $('#PANEL_PAGO2').hide();
@@ -4094,6 +4114,7 @@
                 }
 
             } else {
+
                 $('#PANEL_ESTIMADO_2').hide();
                 $('#PANEL_MONTO2').hide();
                 $('#PANEL_BANCO2').hide();
@@ -4104,6 +4125,7 @@
                 $('#PANEL_AGENDA2').hide();
                 $('#PANEL_MONTO2').hide();
                 $('#PANEL_BANCO2').hide();
+                $('#P_REGISTRA_PAGO').hide();
                 $('#PANEL_SEGUIMIENTO2').hide();
                 $('#aceptar2').hide();
                 $('#PANEL_PAGO2').hide();
@@ -4114,7 +4136,11 @@
                 $('#tabla_contacto2').hide();
                 $('#PANEL_DATOS_CLIENTE2').hide();
                 $('#solomon_contacto2').hide();
+
+                //aca
             }
+            $('#CB_TIPO_PAGO2').val("-1");
+            $('#CB_TIPO_PAGO2').change();
         }
         function AbrirURL(a, b) {
             alert("llegue");
@@ -4704,10 +4730,10 @@
                                                             <hr />
                                                             <div class="col-sm-12">
                                                                 <div class="col-sm-2 controls">
-                                                                    <asp:Button ID="btn_listos" runat="server" OnClientClick="CARGANDO();" Style="color: white;" Class="btn btn-primary" OnClick="btn_listos_Click" Text="Ingresados" />
+                                                                    <asp:Button ID="btn_listos" runat="server" OnClientClick="CARGANDO();" Style="color: white;" Class="btn btn-primary" OnClick="btn_listos_Click" Text="Ingresado y Actualizar saldos" />
                                                                 </div>
                                                                 <div class="col-sm-2 controls">
-                                                                    <asp:Button ID="btn_actualizar_saldos" runat="server" OnClientClick="CARGANDO();" Style="color: white;visibility:hidden;" Class="btn btn-success" OnClick="btn_actualizar_saldos_Click" Text="Actualizar Saldos" />
+                                                                    <asp:Button ID="btn_actualizar_saldos" runat="server" OnClientClick="CARGANDO();" Style="color: white; visibility: hidden;" Class="btn btn-success" OnClick="btn_actualizar_saldos_Click" Text="Actualizar Saldos" />
                                                                 </div>
                                                                 <div class="btn-toolbar pull-right">
                                                                     <div class="btn-group">
@@ -5057,7 +5083,7 @@
 
                                                         <div class="col-md-8">
                                                         </div>
-                                  
+
                                                     </div>
                                                     <hr />
                                                     <asp:TextBox runat="server" ID="fact_sele" Enabled="false" ClientIDMode="Static" Style="color: red; width: 100%; font-size: 12px; border: none; background-color: transparent;"></asp:TextBox>
@@ -5104,16 +5130,16 @@
                                                             <%--<asp:Button ID="BTN_NETEO" runat="server" Text="NETEO" Visible="false" OnClientClick="REGISTRAR_PAGO2();" class="btn btn-success" />--%>
                                                             <%--<input type="button" id="BTN_NETEO" style="display:none;" class="btn btn-primary" value="NETEO" onclick="REGISTRAR_PAGO2();" />--%>
 
-                                                                <asp:Panel runat="server" Visible="false" ID="P_FECHA_NET" ClientIDMode="Static">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <asp:TextBox runat="server" ID="T_FECHA_NETEO" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
-                                                                        <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender23" TargetControlID="T_FECHA_NETEO"></ajaxToolkit:CalendarExtender>
+                                                            <asp:Panel runat="server" Visible="false" ID="P_FECHA_NET" ClientIDMode="Static">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <asp:TextBox runat="server" ID="T_FECHA_NETEO" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
+                                                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender23" TargetControlID="T_FECHA_NETEO"></ajaxToolkit:CalendarExtender>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                                    </asp:Panel>
+                                                            </asp:Panel>
                                                             <asp:LinkButton ID="BTN_NETEO_2" Visible="false" runat="server" OnClientClick="CARGANDO_G();rescatarfecha();"
                                                                 Style="color: white;" Class="btn btn-lime"
                                                                 OnClick="btn_pago2_Click" Text="NETEO" />
@@ -5276,7 +5302,7 @@
                                                                 <asp:Panel runat="server" ID="PANEL_PAGO2" ClientIDMode="Static">
                                                                     <hr />
                                                                     <div class="row">
-                                                                        <div class="col-md-12">
+                                                                        <div class="col-md-12"  style="left:1%">
                                                                             <div class="box">
                                                                                 <div class="form-group">
 
@@ -5287,7 +5313,7 @@
                                                                                     <label class="col-sm-2 control-label">
                                                                                         <b>Tipo de Pago :</b>
                                                                                     </label>
-                                                                                    <div class="col-sm-2 controls">
+                                                                                    <div class="col-sm-3 controls">
                                                                                         <select class="form-control input-sm" id="CB_TIPO_PAGO2" onchange="CAMBIA_TIPO_PAGO2()">
                                                                                             <option value="-1" selected>-- Seleccione --</option>
                                                                                             <option value="efectivo">Deposito</option>
@@ -5461,46 +5487,57 @@
                                                                                     </div>
 
                                                                                 </asp:Panel>
-                                                                                <asp:UpdatePanel runat="server" ID="UpdatePanel5" UpdateMode="Conditional">
-                                                                                    <Triggers>
-                                                                                        <asp:AsyncPostBackTrigger ControlID="btn_pago2" />
-                                                                                    </Triggers>
-                                                                                    <ContentTemplate>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-12">
-                                                                                                <div class="box">
-                                                                                                    <div class="form-group">
-                                                                                                                              <div class="col-md-3">
 
-                                                            <label class="col-sm-2 control-label">
-                                                                <b>ENVIAR SOLOMON</b>
-                                                            </label>
+                                                                                <asp:Panel runat="server" ID="P_REGISTRA_PAGO" ClientIDMode="Static">
+                                                                                    <asp:UpdatePanel runat="server" ID="up_rgs_pag" UpdateMode="Conditional">
+                                                                                        <Triggers>
+                                                                                            <asp:AsyncPostBackTrigger ControlID="btn_pago2" />
+                                                                                        </Triggers>
+                                                                                        <ContentTemplate>
+                                                                                            <hr style="
+                                                                                                margin-top: 0px;
+                                                                                                margin-bottom: 20px;
+                                                                                                border: 0;
+                                                                                                border-top: 4px solid #b5b5b5;
+                                                                                            ">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-8">
 
-                                                            <!-- Rounded switch -->
-                                                            <label class="switch">
-                                                                <%--<input type="checkbox"  id="chk_enviar_erp">--%>
-                                                                <asp:CheckBox runat="server" ClientIDMode="Static" ID="chk_enviar_erp" />
-                                                                <span class="slider round" style="margin: 0px 0;"></span>
-                                                            </label>
-                                                        </div>
-                                                                                                        <div class="col-sm-3 controls">
+                                                                                                    <label class="col-sm-2 control-label">
+                                                                                                        <b>ENVIAR SOLOMON</b>
+                                                                                                    </label>
 
-                                                                                                            <input type="button" id="btn_pago_2" style="visibility: hidden; position: absolute;" class="btn btn-primary" value="Registrar Pago" onclick="REGISTRAR_PAGO2();" />
+                                                                                                    <!-- Rounded switch -->
+                                                                                                    <label class="switch">
+                                                                                                        <%--<input type="checkbox"  id="chk_enviar_erp">--%>
+                                                                                                        <asp:CheckBox runat="server" ClientIDMode="Static" ID="chk_enviar_erp" />
+                                                                                                        <span class="slider round" style="margin: 0px 0;"></span>
+                                                                                                    </label>
+                                                                                                </div>
 
-                                                                                                            <asp:LinkButton ID="btn_pago2" runat="server" OnClientClick="CARGANDO_G();"
-                                                                                                                Style="color: white;" Class="btn btn-lime"
-                                                                                                                OnClick="btn_pago2_Click" Text="Registrar Pago" />
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="box">
+                                                                                                        <div class="form-group">
+
+                                                                                                            <div class="col-sm-3 controls">
+
+                                                                                                                <input type="button" id="btn_pago_2" style="visibility: hidden; position: absolute;" class="btn btn-primary" value="Registrar Pago" onclick="REGISTRAR_PAGO2();" />
+
+                                                                                                                <asp:LinkButton ID="btn_pago2" runat="server" OnClientClick="CARGANDO_G();"
+                                                                                                                    Style="color: white;" Class="btn btn-lime"
+                                                                                                                    OnClick="btn_pago2_Click" Text="Registrar Pago" />
+
+                                                                                                            </div>
 
                                                                                                         </div>
-
                                                                                                     </div>
                                                                                                 </div>
+
+
                                                                                             </div>
-
-                                                                                        </div>
-                                                                                    </ContentTemplate>
-                                                                                </asp:UpdatePanel>
-
+                                                                                        </ContentTemplate>
+                                                                                    </asp:UpdatePanel>
+                                                                                </asp:Panel>
 
 
                                                                             </div>
@@ -5901,7 +5938,7 @@
                                                     <asp:Panel runat="server" ID="PANEL_PAGO" ClientIDMode="Static">
                                                         <hr />
                                                         <div class="form-group">
-                                                            <label class="col-sm-2 control-label">
+                                                            <label class="col-sm-3 control-label" style="margin-left: 1%;">
                                                                 <b>Tipo de Pago :</b>
                                                             </label>
                                                             <div class="col-sm-2 controls">
