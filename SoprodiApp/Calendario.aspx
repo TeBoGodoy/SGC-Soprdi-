@@ -1811,13 +1811,18 @@
                     alert("Seleccione tipo de Documento");
                     return false;
                 }
-                if (descripcion.length > 10) {
+                if (descripcion.length > 8) {
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
                     alert("Descripción no debe superar 10 letras como máximo");
                     return false;
                 }
-
+                if (fecha == "") {
+                    var gif = document.getElementById("GIF_COMPLETO");
+                    gif.style.display = "none";
+                    alert("Seleccione fecha");
+                    return false;
+                }
                 if (descripcion.includes('--')) {
                     var gif = document.getElementById("GIF_COMPLETO");
                     gif.style.display = "none";
@@ -3592,7 +3597,7 @@
 
                     var largo_cod_banco = tipo_DEPOSITO2.length;
 
-                    var maximo_permitido = 10 - largo_cod_banco;
+                    var maximo_permitido = 8 - largo_cod_banco;
 
                     $("#T_DESCRIPCION_PAGO2").attr('maxlength', maximo_permitido);
 
@@ -4702,7 +4707,7 @@
                                                                     <asp:Button ID="btn_listos" runat="server" OnClientClick="CARGANDO();" Style="color: white;" Class="btn btn-primary" OnClick="btn_listos_Click" Text="Ingresados" />
                                                                 </div>
                                                                 <div class="col-sm-2 controls">
-                                                                    <asp:Button ID="btn_actualizar_saldos" runat="server" OnClientClick="CARGANDO();" Style="color: white;" Class="btn btn-success" OnClick="btn_actualizar_saldos_Click" Text="Actualizar Saldos" />
+                                                                    <asp:Button ID="btn_actualizar_saldos" runat="server" OnClientClick="CARGANDO();" Style="color: white;visibility:hidden;" Class="btn btn-success" OnClick="btn_actualizar_saldos_Click" Text="Actualizar Saldos" />
                                                                 </div>
                                                                 <div class="btn-toolbar pull-right">
                                                                     <div class="btn-group">
@@ -5052,19 +5057,7 @@
 
                                                         <div class="col-md-8">
                                                         </div>
-                                                        <div class="col-md-3">
-
-                                                            <label class="col-sm-2 control-label">
-                                                                <b>ENVIAR SOLOMON</b>
-                                                            </label>
-
-                                                            <!-- Rounded switch -->
-                                                            <label class="switch">
-                                                                <%--<input type="checkbox"  id="chk_enviar_erp">--%>
-                                                                <asp:CheckBox runat="server" ClientIDMode="Static" ID="chk_enviar_erp" />
-                                                                <span class="slider round" style="margin: 0px 0;"></span>
-                                                            </label>
-                                                        </div>
+                                  
                                                     </div>
                                                     <hr />
                                                     <asp:TextBox runat="server" ID="fact_sele" Enabled="false" ClientIDMode="Static" Style="color: red; width: 100%; font-size: 12px; border: none; background-color: transparent;"></asp:TextBox>
@@ -5477,6 +5470,19 @@
                                                                                             <div class="col-md-12">
                                                                                                 <div class="box">
                                                                                                     <div class="form-group">
+                                                                                                                              <div class="col-md-3">
+
+                                                            <label class="col-sm-2 control-label">
+                                                                <b>ENVIAR SOLOMON</b>
+                                                            </label>
+
+                                                            <!-- Rounded switch -->
+                                                            <label class="switch">
+                                                                <%--<input type="checkbox"  id="chk_enviar_erp">--%>
+                                                                <asp:CheckBox runat="server" ClientIDMode="Static" ID="chk_enviar_erp" />
+                                                                <span class="slider round" style="margin: 0px 0;"></span>
+                                                            </label>
+                                                        </div>
                                                                                                         <div class="col-sm-3 controls">
 
                                                                                                             <input type="button" id="btn_pago_2" style="visibility: hidden; position: absolute;" class="btn btn-primary" value="Registrar Pago" onclick="REGISTRAR_PAGO2();" />

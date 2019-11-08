@@ -5562,9 +5562,12 @@ namespace SoprodiApp
             {
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>Ingresar_Solomon();</script>", false);
                 btn_mov_sol_Click(sender, e);
-                ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>alert('Ingresados')</script>", false);
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>alert('Ingresados y actualizados saldos')</script>", false);
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee2ee", "<script language='javascript'>    $('#ContentPlaceHolder_Contenido_btn_filtra_mov').click(); </script>", false);
 
+
+                //click a boton actualiza saldo
+                btn_actualizar_saldos_Click(sender, e);
 
 
             }
