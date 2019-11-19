@@ -371,7 +371,7 @@
                     super_ff3();
                 } catch (e) {
 
-                     //alert('catch' + e);
+                    //alert('catch' + e);
 
                 }
 
@@ -432,6 +432,21 @@
 
         }
 
+        function combos_refresh_directo() {
+
+
+            try {
+                $("#<%=cb_cliente_3.ClientID%>").chosen();
+                $("#<%=cb_cliente_3.ClientID%>").trigger("chosen:updated");
+
+            } catch (e) {
+
+                console.log(e);
+            }
+
+        }
+
+
         function combos_refresh() {
 
 
@@ -451,6 +466,7 @@
 
                 $("#<%=cb_banco_soprodi.ClientID%>").chosen();
                 $("#<%=cb_banco_soprodi.ClientID%>").trigger("chosen:updated");
+
 
             } catch (e) {
 
@@ -1882,7 +1898,7 @@
             }
             else if (tipo_doc == "cheque") {
                 var cont = 0;
-
+                var descripcion_CHEQUE = $('#T_DESCRIPCION_CHEQUES_3').val();
                 var respuesta = "";
                 if (cheques.length > 0) {
                     for (var i = 0; i < cheques.length; i++) {
@@ -1904,6 +1920,7 @@
                         parameters.cont_cheq = cont_cheques;
                         parameters.monto_cheques = monto_cheques;
                         parameters.enviar_erp = chk_enviar_erp;
+                        parameters.descrip_cheque = descripcion_CHEQUE;
 
                         parameters = JSON.stringify(parameters);
 
@@ -2313,6 +2330,47 @@
             return respuesta;
 
         }
+        function quitar_cheque(numero_cheque, monto_cheque) {
+            sum_cheques_2 = sum_cheques_2 - monto_cheque;
+            cheques = cheques.filter(x => x.num_cheque != [numero_cheque]);
+
+            var tabla_html = "";
+            tabla_html += "<table stlye='width:100%;' class='table fill-head table-bordered'>";
+            tabla_html += "<thead class='test'>"
+            tabla_html += "<tr>";
+            tabla_html += "<th>Quitar</th>";
+            tabla_html += "<th>Banco</th>";
+            tabla_html += "<th>Nº Cheque</th>";
+            tabla_html += "<th>Monto</th>";
+            tabla_html += "<th>Moneda</th>";
+            tabla_html += "<th>Vencimiento</th>";
+            tabla_html += "<th>TCamb</th>";
+            tabla_html += "<th>Obs</th>";
+            tabla_html += "<th>TipoDolar</th>";
+            tabla_html += "<th>*Total</th>";
+
+            tabla_html += "</tr>";
+            tabla_html += "</thead>";
+            for (var i = 0; i < cheques.length; i++) {
+                tabla_html += "<tr>";
+                tabla_html += "<td><a style='background-color: rgb(255, 97, 97);' class=\"btn btn-circle show-tooltip fa fa-trash\"   onclick=\"quitar_cheque(\'" + cheques[i].num_cheque + "\'," + cheques[i].monto + ")\"></a></td>";
+                tabla_html += "<td>" + cheques[i].nombre_banco + "</td>";
+                tabla_html += "<td>" + cheques[i].num_cheque + "</td>";
+                tabla_html += "<td>" + cheques[i].monto + "</td>";
+                tabla_html += "<td>" + cheques[i].moneda + "</td>";
+                tabla_html += "<td>" + cheques[i].vencimiento + "</td>";
+                tabla_html += "<td>" + cheques[i].tcamb + "</td>";
+                tabla_html += "<td>" + cheques[i].tobs + "</td>";
+                tabla_html += "<td>" + cheques[i].ttdolar + "</td>";
+                tabla_html += "<td>" + sum_cheques_2 + "</td>";
+
+                tabla_html += "</tr>";
+            }
+            tabla_html += "</table>";
+
+            $('#tabla_cheques2').html(tabla_html);
+        }
+
 
 
         function Agregar_Cheque2() {
@@ -2393,6 +2451,7 @@
             tabla_html += "<table stlye='width:100%;' class='table fill-head table-bordered'>";
             tabla_html += "<thead class='test'>"
             tabla_html += "<tr>";
+            tabla_html += "<th>Quitar</th>";
             tabla_html += "<th>Banco</th>";
             tabla_html += "<th>Nº Cheque</th>";
             tabla_html += "<th>Monto</th>";
@@ -2407,6 +2466,7 @@
             tabla_html += "</thead>";
             for (var i = 0; i < cheques.length; i++) {
                 tabla_html += "<tr>";
+                tabla_html += "<td><a style='background-color: rgb(255, 97, 97);' class=\"btn btn-circle show-tooltip fa fa-trash\"  onclick=\"quitar_cheque(\'" + cheques[i].num_cheque + "\'," + cheques[i].monto + ")\"></a></td>";
                 tabla_html += "<td>" + cheques[i].nombre_banco + "</td>";
                 tabla_html += "<td>" + cheques[i].num_cheque + "</td>";
                 tabla_html += "<td>" + cheques[i].monto + "</td>";
@@ -3743,6 +3803,8 @@
                     } catch (e) { }
                     $('#PANEL_MONTO3').show();
                     $('#PANEL_BANCO3').hide();
+                    $("#<%=CB_DEPOSITOS_BANCO3.ClientID%>").chosen();
+                    $("#<%=CB_DEPOSITOS_BANCO3.ClientID%>").chosen({ width: "300px" });
                 }
                 if (tipo == "cheque") {
                     try {
@@ -3774,11 +3836,11 @@
             var MONEDA = document.getElementById("ContentPlaceHolder_Contenido_cb_tipo_pago_cheque").value;
             if (MONEDA == "peso") {
                 var total_peso = document.getElementById("monto_total_peso_f").value;
-                $('#T_Cuenta2').val(total_peso);
+                $('#T_Cuenta2').val('');
             }
             else {
                 var total_dolar = document.getElementById("monto_total_dolar_f").value;
-                $('#T_Cuenta2').val(total_dolar);
+                $('#T_Cuenta2').val('');
             }
         }
 
@@ -3786,11 +3848,11 @@
             var MONEDA = document.getElementById("CB_TIPO_MONEDA2").value;
             if (MONEDA == "peso") {
                 var total_peso = document.getElementById("monto_total_peso_f").value;
-                $('#T_MONTO_PAGO2').val(total_peso);
+                $('#T_MONTO_PAGO2').val('');
             }
             else {
                 var total_dolar = document.getElementById("monto_total_dolar_f").value;
-                $('#T_MONTO_PAGO2').val(total_dolar);
+                $('#T_MONTO_PAGO2').val('');
             }
         }
 
@@ -3946,8 +4008,13 @@
             $('#T_MONTO_PAGO2').val('0');
             $('#CB_TIPO_PAGO2').val('efectivo');
 
-
-            var num = $('#fact_sele').val().substring(1, 7);
+            try {
+                var num = $('#fact_sele').val().substring(3, 7);
+            } catch
+            {
+                $('#T_DESCRIPCION_PAGO2').val('NET' + num);
+                $('#T_DESCRIPCION_PAGO2').val($('#T_DESCRIPCION_PAGO2').val().substring(1, 8));
+            }
             $('#T_DESCRIPCION_PAGO2').val('NET' + num);
 
             let date = new Date();
@@ -4068,7 +4135,7 @@
                     $('#PANEL_AGENDAR_PAGO2').hide();
                 }
                 else if (tipo == "3") {
-     
+
                     $('#PANEL_DATOS_CLIENTE2').hide();
                     $('#PANEL_ENVIAR_CORREO2').hide();
                     $('#OBS_LLAMAR2').hide();
@@ -4205,22 +4272,16 @@
             return eval('(' + string + ')');
         }
         function cargando_en_grilla() {
-
-
-
             var elem3 = document.getElementById("cargando_en_filtrar");
             elem3.style.display = "block";
 
             var gif = document.getElementById("GIF_COMPLETO");
             gif.style.display = "block";
 
-
             $('#sw_mu').val("1");
             //$("#ContentPlaceHolder_cobranza2").hide();
             //$("#ContentPlaceHolder_montos_totales").hide();
             $("#fact_sele").val("");
-
-
 
             //var elem32 = document.getElementById("ContentPlaceHolder_Contenido_montos_totales");
             //elem32.style.display = "none;";
@@ -4241,6 +4302,11 @@
         }
 
         function pago_directo_() {
+
+
+            $("#<%=cb_cliente_3.ClientID%>").chosen();
+            $("#<%=cb_cliente_3.ClientID%>").trigger("chosen:updated");
+            $("#<%=cb_cliente_3.ClientID%>").chosen({ width: "300px" });
 
             $('#modaL_DIRECTO33').click();
             $('#PANEL_MONTO3').hide();
@@ -4523,7 +4589,7 @@
                                             </label>
                                             <div class="col-sm-3 controls">
                                                 <asp:TextBox runat="server" ID="T_FECHA_FILTRO1" ClientIDMode="Static" CssClass="form-control input-sm"></asp:TextBox>
-                                                <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="T_FECHA_FILTRO1"></ajaxToolkit:CalendarExtender>
+                                                <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender1" TargetControlID="T_FECHA_FILTRO1"></ajaxToolkit:CalendarExtender>
                                             </div>
 
                                             <label class="col-sm-1 control-label">
@@ -4531,7 +4597,7 @@
                                             </label>
                                             <div class="col-sm-3 controls">
                                                 <asp:TextBox runat="server" ID="T_FECHA_FILTRO2" ClientIDMode="Static" CssClass="form-control input-sm"></asp:TextBox>
-                                                <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="T_FECHA_FILTRO2"></ajaxToolkit:CalendarExtender>
+                                                <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender2" TargetControlID="T_FECHA_FILTRO2"></ajaxToolkit:CalendarExtender>
                                             </div>
 
                                             <label class="col-sm-1 control-label">
@@ -4539,7 +4605,7 @@
                                             </label>
                                             <div class="col-sm-3 controls">
                                                 <asp:TextBox runat="server" ID="T_FECHA" ClientIDMode="Static" CssClass="form-control input-sm" onchange="javascript: irfecha( this );"></asp:TextBox>
-                                                <ajaxToolkit:CalendarExtender runat="server" ID="cc" TargetControlID="T_FECHA"></ajaxToolkit:CalendarExtender>
+                                                <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="cc" TargetControlID="T_FECHA"></ajaxToolkit:CalendarExtender>
                                             </div>
                                         </div>
                                     </div>
@@ -4643,7 +4709,7 @@
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                                                         <asp:TextBox ID="t_desde_mov" AutoCompleteType="Disabled" autocomplete="off" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender15" runat="server" TargetControlID="t_desde_mov" Format="dd/MM/yyyy" />
+                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender15" runat="server" TargetControlID="t_desde_mov" Format="dd/MM/yyyy" />
 
                                                     </div>
                                                 </div>
@@ -4653,7 +4719,7 @@
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                                                         <asp:TextBox ID="t_hasta_mov" AutoCompleteType="Disabled" autocomplete="off" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender16" runat="server" TargetControlID="t_hasta_mov" Format="dd/MM/yyyy" />
+                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender16" runat="server" TargetControlID="t_hasta_mov" Format="dd/MM/yyyy" />
 
                                                     </div>
                                                 </div>
@@ -4760,7 +4826,7 @@
                                                             <div class="input-group">
                                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                                 <asp:TextBox ID="t_desde_cheq" AutoCompleteType="Disabled" autocomplete="off" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                                <ajaxToolkit:CalendarExtender ID="CalendarExtender21" runat="server" TargetControlID="t_desde_cheq" Format="dd/MM/yyyy" />
+                                                                <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender21" runat="server" TargetControlID="t_desde_cheq" Format="dd/MM/yyyy" />
                                                             </div>
                                                         </div>
                                                         <label class="col-sm-1 col-lg-1 control-label"><b>Hasta</b></label>
@@ -4768,7 +4834,7 @@
                                                             <div class="input-group">
                                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                                 <asp:TextBox ID="t_hasta_cheq" AutoCompleteType="Disabled" autocomplete="off" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                                <ajaxToolkit:CalendarExtender ID="CalendarExtender22" runat="server" TargetControlID="t_hasta_cheq" Format="dd/MM/yyyy" />
+                                                                <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender22" runat="server" TargetControlID="t_hasta_cheq" Format="dd/MM/yyyy" />
                                                             </div>
                                                         </div>
                                                         <br />
@@ -4859,7 +4925,7 @@
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         <asp:TextBox ID="txt_desde2" AutoCompleteType="Disabled" autocomplete="off" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender9" runat="server" TargetControlID="txt_desde2" Format="dd/MM/yyyy" />
+                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender9" runat="server" TargetControlID="txt_desde2" Format="dd/MM/yyyy" />
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 col-lg-1 control-label"><b>Hasta</b></label>
@@ -4867,7 +4933,7 @@
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         <asp:TextBox ID="txt_hasta2" AutoCompleteType="Disabled" autocomplete="off" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender10" runat="server" TargetControlID="txt_hasta2" Format="dd/MM/yyyy" />
+                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender10" runat="server" TargetControlID="txt_hasta2" Format="dd/MM/yyyy" />
                                                     </div>
                                                 </div>
 
@@ -5083,6 +5149,18 @@
 
                                                         <div class="col-md-8">
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <label class="col-sm-2 control-label">
+                                                                <b>ENVIAR SOLOMON</b>
+                                                            </label>
+
+                                                            <!-- Rounded switch -->
+                                                            <label class="switch">
+                                                                <%--<input type="checkbox"  id="chk_enviar_erp">--%>
+                                                                <asp:CheckBox runat="server" ClientIDMode="Static" ID="chk_enviar_erp" />
+                                                                <span class="slider round" style="margin: 0px 0;"></span>
+                                                            </label>
+                                                        </div>
 
                                                     </div>
                                                     <hr />
@@ -5135,7 +5213,7 @@
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <asp:TextBox runat="server" ID="T_FECHA_NETEO" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
-                                                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender23" TargetControlID="T_FECHA_NETEO"></ajaxToolkit:CalendarExtender>
+                                                                            <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender23" TargetControlID="T_FECHA_NETEO"></ajaxToolkit:CalendarExtender>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -5283,7 +5361,7 @@
                                                                                     <div class="col-sm-2 controls">
                                                                                         <asp:TextBox runat="server" ID="T_FECHA_AGENDA2" ClientIDMode="Static" CssClass="form-control input-sm"></asp:TextBox>
                                                                                         <%--<span class="help-inline">Fecha</span>--%>
-                                                                                        <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender11" TargetControlID="T_FECHA_AGENDA2"></ajaxToolkit:CalendarExtender>
+                                                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender11" TargetControlID="T_FECHA_AGENDA2"></ajaxToolkit:CalendarExtender>
                                                                                     </div>
                                                                                     <div class="col-sm-4 controls">
                                                                                         <input type="text" class="form-control input-sm" id="OBS_AGENDA2" placeholder="Observación..." />
@@ -5302,7 +5380,7 @@
                                                                 <asp:Panel runat="server" ID="PANEL_PAGO2" ClientIDMode="Static">
                                                                     <hr />
                                                                     <div class="row">
-                                                                        <div class="col-md-12"  style="left:1%">
+                                                                        <div class="col-md-12" style="left: 1%">
                                                                             <div class="box">
                                                                                 <div class="form-group">
 
@@ -5367,13 +5445,12 @@
                                                                                                             <div class="col-md-5" style="left: 5%;">
 
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="text" class="form-control input-sm" id="T_MONTO_PAGO2" placeholder="Monto..." />
-                                                                                                                    <span class="help-inline">Monto</span>
+                                                                                                                    <input type="number" class="form-control input-sm" step="any" pattern="[0-9]+([\.,][0-9]+)?" id="T_MONTO_PAGO2" placeholder="Monto..." />                                                                                                                    <span class="help-inline">Monto</span>
                                                                                                                 </div>
 
                                                                                                                 <div class="form-group">
                                                                                                                     <asp:TextBox runat="server" ID="t_fech_efec" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
-                                                                                                                    <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender14" TargetControlID="t_fech_efec"></ajaxToolkit:CalendarExtender>
+                                                                                                                    <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender14" TargetControlID="t_fech_efec"></ajaxToolkit:CalendarExtender>
                                                                                                                 </div>
                                                                                                             </div>
 
@@ -5418,7 +5495,7 @@
                                                                                                                     <input type="text" maxlength="8" class="form-control" id="T_NUM_CHEQUE2" placeholder="Nº Cheque..." />
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="text" class="form-control" id="T_Cuenta2" placeholder="Monto..." />
+                                                                                                                    <input type="number" class="form-control" step="any" pattern="[0-9]+([\.,][0-9]+)?"  id="T_Cuenta2" placeholder="Monto..." />
                                                                                                                     <span class="help-inline">Monto</span>
                                                                                                                 </div>
                                                                                                             </div>
@@ -5427,7 +5504,7 @@
                                                                                                             <div class="col-md-5">
                                                                                                                 <div class="form-group">
                                                                                                                     <asp:TextBox runat="server" ID="T_VENCIMIENTO_CHEQUE2" ClientIDMode="Static" CssClass="form-control" placeholder="Fecha Vencimiento"></asp:TextBox>
-                                                                                                                    <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender12" TargetControlID="T_VENCIMIENTO_CHEQUE2"></ajaxToolkit:CalendarExtender>
+                                                                                                                    <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender12" TargetControlID="T_VENCIMIENTO_CHEQUE2"></ajaxToolkit:CalendarExtender>
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <input type="text" class="form-control" maxlength="30" id="T_OBS_CHEQUES" placeholder="Obs..." />
@@ -5444,6 +5521,21 @@
                                                                                                     </div>
                                                                                                 </div>
 
+
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <div class="box">
+                                                                                                            <div class="form-group">
+                                                                                                                <div class="col-sm-2 controls">
+                                                                                                                    <input type="text" maxlength="8" class="form-control" id="T_DESCRIPCION_CHEQUES_3" placeholder="Descrip.paraFactura ..." />
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+
+
                                                                                                 <div class="row">
                                                                                                     <div class="col-md-12">
                                                                                                         <div class="box">
@@ -5453,7 +5545,7 @@
                                                                                                                 </div>
 
                                                                                                                 <div class="col-sm-2 controls">
-                                                                                                                    <input type="button" class="btn btn-danger fa-input" value="&#xf00d; Borrar" onclick="Borrar_Cheques2()" />
+                                                                                                                    <input type="button" class="btn btn-danger fa-input" value="&#xf00d; Borrar Todo" onclick="Borrar_Cheques2()" />
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
@@ -5494,27 +5586,8 @@
                                                                                             <asp:AsyncPostBackTrigger ControlID="btn_pago2" />
                                                                                         </Triggers>
                                                                                         <ContentTemplate>
-                                                                                            <hr style="
-                                                                                                margin-top: 0px;
-                                                                                                margin-bottom: 20px;
-                                                                                                border: 0;
-                                                                                                border-top: 4px solid #b5b5b5;
-                                                                                            ">
+                                                                                            <hr style="margin-top: 0px; margin-bottom: 20px; border: 0; border-top: 4px solid #b5b5b5;">
                                                                                             <div class="row">
-                                                                                                <div class="col-md-8">
-
-                                                                                                    <label class="col-sm-2 control-label">
-                                                                                                        <b>ENVIAR SOLOMON</b>
-                                                                                                    </label>
-
-                                                                                                    <!-- Rounded switch -->
-                                                                                                    <label class="switch">
-                                                                                                        <%--<input type="checkbox"  id="chk_enviar_erp">--%>
-                                                                                                        <asp:CheckBox runat="server" ClientIDMode="Static" ID="chk_enviar_erp" />
-                                                                                                        <span class="slider round" style="margin: 0px 0;"></span>
-                                                                                                    </label>
-                                                                                                </div>
-
                                                                                                 <div class="col-md-12">
                                                                                                     <div class="box">
                                                                                                         <div class="form-group">
@@ -5578,7 +5651,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-2 controls">
                                                                                     <asp:TextBox runat="server" ID="t_estim" ClientIDMode="Static" placeholder="Fecha" CssClass="form-control input-sm"></asp:TextBox>
-                                                                                    <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender13" TargetControlID="t_estim"></ajaxToolkit:CalendarExtender>
+                                                                                    <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender13" TargetControlID="t_estim"></ajaxToolkit:CalendarExtender>
                                                                                 </div>
                                                                                 <div class="col-sm-4 controls">
                                                                                     <input type="text" class="form-control" id="t_monto_estim" placeholder="Monto..." />
@@ -5623,7 +5696,7 @@
                                                                 <div class="form-group">
                                                                     <div class="col-sm-2 controls">
                                                                         <asp:TextBox runat="server" ID="t_cobro" ClientIDMode="Static" placeholder="Fecha" CssClass="form-control input-sm"></asp:TextBox>
-                                                                        <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender6" TargetControlID="t_cobro"></ajaxToolkit:CalendarExtender>
+                                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender6" TargetControlID="t_cobro"></ajaxToolkit:CalendarExtender>
                                                                     </div>
                                                                     <div class="col-sm-4 controls">
                                                                         <%--<asp:TextBox runat="server" ID="t_ob_cobro" ClientIDMode="Static" CssClass="form-control input-sm"></asp:TextBox>--%>
@@ -5922,7 +5995,7 @@
                                                             <div class="col-sm-2 controls">
                                                                 <asp:TextBox runat="server" ID="T_FECHA_AGENDA" ClientIDMode="Static" CssClass="form-control input-sm"></asp:TextBox>
                                                                 <%--<span class="help-inline">Fecha</span>--%>
-                                                                <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender3" TargetControlID="T_FECHA_AGENDA"></ajaxToolkit:CalendarExtender>
+                                                                <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender3" TargetControlID="T_FECHA_AGENDA"></ajaxToolkit:CalendarExtender>
                                                             </div>
                                                             <div class="col-sm-4 controls">
                                                                 <input type="text" class="form-control input-sm" id="OBS_AGENDA" placeholder="Observación..." />
@@ -5988,7 +6061,7 @@
                                                                 </div>
                                                                 <div class="col-sm-3 controls">
                                                                     <asp:TextBox runat="server" ID="T_VENCIMIENTO_CHEQUE" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha Vencimiento"></asp:TextBox>
-                                                                    <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender4" TargetControlID="T_VENCIMIENTO_CHEQUE"></ajaxToolkit:CalendarExtender>
+                                                                    <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender4" TargetControlID="T_VENCIMIENTO_CHEQUE"></ajaxToolkit:CalendarExtender>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -6044,7 +6117,7 @@
                                                     <div class="form-group">
                                                         <div class="col-sm-2 controls">
                                                             <asp:TextBox runat="server" ID="FECHA_AGENDAR_PAGO" ClientIDMode="Static" CssClass="form-control input-sm"></asp:TextBox>
-                                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender5" TargetControlID="FECHA_AGENDAR_PAGO"></ajaxToolkit:CalendarExtender>
+                                                            <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender5" TargetControlID="FECHA_AGENDAR_PAGO"></ajaxToolkit:CalendarExtender>
                                                         </div>
 
                                                         <div class="col-sm-4 controls">
@@ -6196,7 +6269,7 @@
                                                                         </div>
                                                                         <div class="col-sm-2 controls">
                                                                             <asp:TextBox runat="server" ID="t_fecha_efec3" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
-                                                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender17" TargetControlID="t_fecha_efec3"></ajaxToolkit:CalendarExtender>
+                                                                            <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender17" TargetControlID="t_fecha_efec3"></ajaxToolkit:CalendarExtender>
                                                                         </div>
 
                                                                     </div>
@@ -6231,7 +6304,7 @@
                                                                         </div>
                                                                         <div class="col-sm-2 controls">
                                                                             <asp:TextBox runat="server" ID="T_VENCIMIENTO_CHEQUE3" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha Vencimiento"></asp:TextBox>
-                                                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender18" TargetControlID="T_VENCIMIENTO_CHEQUE3"></ajaxToolkit:CalendarExtender>
+                                                                            <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender18" TargetControlID="T_VENCIMIENTO_CHEQUE3"></ajaxToolkit:CalendarExtender>
                                                                         </div>
 
                                                                     </div>
@@ -6428,7 +6501,7 @@
                                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                                                                         <asp:TextBox ID="txt_desde" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender7" runat="server" TargetControlID="txt_desde" Format="dd/MM/yyyy" />
+                                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender7" runat="server" TargetControlID="txt_desde" Format="dd/MM/yyyy" />
 
                                                                     </div>
                                                                 </div>
@@ -6438,7 +6511,7 @@
                                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                                                                         <asp:TextBox ID="txt_hasta" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
-                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender8" runat="server" TargetControlID="txt_hasta" Format="dd/MM/yyyy" />
+                                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender8" runat="server" TargetControlID="txt_hasta" Format="dd/MM/yyyy" />
 
                                                                     </div>
                                                                 </div>
@@ -6560,7 +6633,7 @@
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                                                         <asp:TextBox ID="t_envasado" CssClass="form-control" runat="server" Width="100%" Enabled="false"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender19" runat="server" TargetControlID="t_envasado" Format="dd/MM/yyyy" />
+                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender19" runat="server" TargetControlID="t_envasado" Format="dd/MM/yyyy" />
 
                                                     </div>
                                                 </div>
@@ -6575,7 +6648,7 @@
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                                                         <asp:TextBox ID="t_vencimiento" CssClass="form-control" runat="server" Width="100%" Enabled="false"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender20" runat="server" TargetControlID="t_vencimiento" Format="dd/MM/yyyy" />
+                                                        <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" ID="CalendarExtender20" runat="server" TargetControlID="t_vencimiento" Format="dd/MM/yyyy" />
 
                                                     </div>
                                                 </div>
@@ -6763,9 +6836,13 @@
     </div>
 
     <script>
+        jQuery(function ($) {
+            $('#T_MONTO_PAGO2').autoNumeric('init');
+        });
+    </script>
 
-
+    <script>
 
 </script>
-
+    <script src="js/NUMERO_SEPARADOR.JS"></script>
 </asp:Content>

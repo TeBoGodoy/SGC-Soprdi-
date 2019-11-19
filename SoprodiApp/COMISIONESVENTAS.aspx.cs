@@ -5591,7 +5591,7 @@ namespace SoprodiApp
 
             t.porcentaje_Azo_1 = 0.10;
             t.porcentaje_Azo_2 = 0.4;
-            t.porcentaje_Pcat = 0.03;
+            t.porcentaje_Pcat = 0.10;
 
 
             string ok = "";

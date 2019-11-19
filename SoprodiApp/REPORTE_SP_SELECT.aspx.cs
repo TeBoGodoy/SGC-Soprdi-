@@ -57,9 +57,10 @@ namespace SoprodiApp
             {
 
                 string sw_proviene = Request.QueryString["F"];
-
+              
                 if (sw_proviene != null)
                 {
+                    string grupo_ = Request.QueryString["G"];
 
                     Session["SW_PERMI"] = "1";
 
@@ -69,12 +70,10 @@ namespace SoprodiApp
                     Session["codvendedor"] = "";
                     Session["WHERE"] = " where 1=1 ";
 
-
-
                     ///PRODUCTOS DEVUELVE DT ... 
                     //string codigos_documentos = ReporteRNegocio.trae_codigos_sincronizados_por_producto(cod_prod);
 
-                    Session["WHERE"] += " and Convert(datetime,b.fechadespacho,103) = Convert(datetime,'" + datos + "',103) and ISNUMERIC( isnull(d.coddocumento,'no')  ) <> 1 ";
+                    Session["WHERE"] += " and Convert(datetime,b.fechadespacho,103) = Convert(datetime,'" + datos + "',103) and ISNUMERIC( isnull(d.coddocumento,'no')  ) <> 1 and b.DescEmisor in ("+Base.agrega_comillas(grupo_) +")";
                     //Session["estados_param"] = "'10S', '10', '10P'";
 
                     ImageClickEventArgs e2x = new ImageClickEventArgs(1, 2);

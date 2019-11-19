@@ -1354,9 +1354,9 @@ namespace SoprodiApp.negocio
             return ReporteDB._cltes_nuevos_12_mes_factu(periodo_apreguntar, where);
         }
 
-        internal static DataTable no_planificado(string v)
+        internal static DataTable no_planificado(string v, string grupo)
         {
-            return ReporteDB.no_planificado(v);
+            return ReporteDB.no_planificado(v, grupo);
         }
 
         internal static string cod_unineg(string grupo)
@@ -2074,6 +2074,11 @@ namespace SoprodiApp.negocio
         internal static DataTable firmas_listas(string periodo)
         {
             return ReporteDB.firmas_listas(periodo);
+        }
+
+        internal static string tipo_moneda(string v)
+        {
+            return ReporteDB.tipo_moneda(v);
         }
     }
 }

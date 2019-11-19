@@ -519,6 +519,15 @@ namespace SoprodiApp
         protected global::System.Web.UI.WebControls.Button btn_cobranza_2;
 
         /// <summary>
+        /// Control chk_enviar_erp.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chk_enviar_erp;
+
+        /// <summary>
         /// Control fact_sele.
         /// </summary>
         /// <remarks>
@@ -787,15 +796,6 @@ namespace SoprodiApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel up_rgs_pag;
-
-        /// <summary>
-        /// Control chk_enviar_erp.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chk_enviar_erp;
 
         /// <summary>
         /// Control btn_pago2.

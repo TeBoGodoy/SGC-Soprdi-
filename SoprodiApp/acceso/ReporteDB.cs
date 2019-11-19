@@ -315,7 +315,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT * FROM   [RESPALDO_NEW_THX].[dbo].[V_DETALLE_SP]   " + where3.Replace("b.", "");
+                string sql = @"SELECT * FROM   [NEW_THX].[dbo].[V_DETALLE_SP]   " + where3.Replace("b.", "");
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -975,7 +975,7 @@ namespace SoprodiApp.acceso
                               ,[carga_inicial]
                               ,[cod_bodega]
                               ,[grupo]
-                          FROM[RESPALDO_NEW_THX].[dbo].[Transportista]" + where;
+                          FROM[NEW_THX].[dbo].[Transportista]" + where;
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -1033,7 +1033,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select [nombre_chofer] from[RESPALDO_NEW_THX].[dbo].[chofer] " + cod_chofer + "";
+                string sql = @"select [nombre_chofer] from[NEW_THX].[dbo].[chofer] " + cod_chofer + "";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
@@ -1060,7 +1060,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select [patente] from[RESPALDO_NEW_THX].[dbo].[camion]  " + cod_camion + "";
+                string sql = @"select [patente] from[NEW_THX].[dbo].[camion]  " + cod_camion + "";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
@@ -1176,24 +1176,24 @@ namespace SoprodiApp.acceso
                 //string bodegas = "";
                 //string sql = @"select CodProducto, sum(cantidad) from (
                 //                select u.CodProducto, sum(u.cantidad_falta) as cantidad from ( " +
-                //            "   select * from[RESPALDO_NEW_THX].[dbo].[sps_procesadas1] where  1=1 " + productos + " and estado <> '20'   and (select estado from[RESPALDO_NEW_THX].[dbo].[Estado_SP] f where f.sp =[RESPALDO_NEW_THX].[dbo].[sps_procesadas1].CodDocumento) is null " +
+                //            "   select * from[NEW_THX].[dbo].[sps_procesadas1] where  1=1 " + productos + " and estado <> '20'   and (select estado from[NEW_THX].[dbo].[Estado_SP] f where f.sp =[NEW_THX].[dbo].[sps_procesadas1].CodDocumento) is null " +
                 //     "                   ) u group by u.CodProducto union all  " +
                 //      "          select  A.CodProducto, sum(A.cantidad) as cantidad from  " +
                 //      "       (select b.codproducto, b.cantidad from VPEDIDODETALLE_THX b   " +
-                //      "  left join THX_Sp_Aprobadas c on b.CodDocumento = c.coddocumento where c.coddocumento IS NULL and b.CodEstadoDocumento in ('10') and (select estado from[RESPALDO_NEW_THX].[dbo].[Estado_SP] f where f.sp = b.CodDocumento) is null and  ISNUMERIC(b.CodProducto) = 1) A inner join   " +
-                //      "         (select invtid from[RESPALDO_NEW_THX].[dbo].[Stock_diario] " +
+                //      "  left join THX_Sp_Aprobadas c on b.CodDocumento = c.coddocumento where c.coddocumento IS NULL and b.CodEstadoDocumento in ('10') and (select estado from[NEW_THX].[dbo].[Estado_SP] f where f.sp = b.CodDocumento) is null and  ISNUMERIC(b.CodProducto) = 1) A inner join   " +
+                //      "         (select invtid from[NEW_THX].[dbo].[Stock_diario] " +
                 //      "     where 1= 1  " + cod_estado + " group by invtid ) B on A.CodProducto = B.invtid group by A.CodProducto) f group by f.CodProducto";
 
 
                 string sql = @"
                                 select u.CodProducto, sum(u.cantidad_falta) as cantidad from (
-                                 select A.* from[RESPALDO_NEW_THX].[dbo].[sps_procesadas1] A
+                                 select A.* from[NEW_THX].[dbo].[sps_procesadas1] A
 			                     inner join   
-                                   (select invtid from[RESPALDO_NEW_THX].[dbo].[Stock_diario] where 1=1 " + cod_estado + " group by invtid ) B " +
+                                   (select invtid from[NEW_THX].[dbo].[Stock_diario] where 1=1 " + cod_estado + " group by invtid ) B " +
                         "          on A.CodProducto = B.invtid" +
                         "         where  1=1 " + productos + bodegas + " and estado <> '20'   " +
-                         "        and (select estado from[RESPALDO_NEW_THX].[dbo].[Estado_SP] f where f.sp = A.CodDocumento) is null " +
-                         "    AND (select f.fechaemision from[RESPALDO_NEW_THX].[dbo].[VPEDIDOCABECERA_NEW_THX] f where f.CodDocumento = A.CodDocumento) <= " +
+                         "        and (select estado from[NEW_THX].[dbo].[Estado_SP] f where f.sp = A.CodDocumento) is null " +
+                         "    AND (select f.fechaemision from[NEW_THX].[dbo].[VPEDIDOCABECERA_NEW_THX] f where f.CodDocumento = A.CodDocumento) <= " +
                          "        convert(datetime, '" + hasta + "',103)" + bodegas +
                          "        ) u group by u.CodProducto";
 
@@ -1384,6 +1384,33 @@ namespace SoprodiApp.acceso
             return scalar;
         }
 
+        internal static string tipo_moneda(string fact)
+        {
+            string scalar = "";
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            {
+                conn.Open();
+                string sql = @"SELECT  top 1
+                                    CASE 
+                                    WHEN LOWER(tipo_moneda)='usd' 
+                                        then 'dolar' 
+                                    else 'peso' 
+                                    end as tipo_moneda2   FROM V_COBRANZA WHERE  FACTURA = '" + fact + "' AND OPENDOC = 1";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+
+                    try
+                    {
+                        scalar = cmd.ExecuteScalar().ToString();
+                    }
+                    catch (Exception EX)
+                    {
+                        return "";
+                    }
+                }
+            }
+            return scalar;
+        }
 
         internal static DataTable actualizar_saldos(string nombre_sp, List<SPVars> toSP)
         {
@@ -1431,9 +1458,11 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["solomon_test"].ToString()))
             //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
+                string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
+
                 conn.Open();
                 string sql = @"INSERT INTO X2POSSL
-                                select *, null AS timestampfalso from [192.168.10.45].[RESPALDO_NEW_THX].[dbo].[V_ENLACE_COBRANZA_F_3_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                                select *, null AS timestampfalso from [192.168.10.45].["+ bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_3_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSSL
                 //                 select *, null AS timestampfalso  from [V_ENLACE_COBRANZA_F_3_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -1459,9 +1488,10 @@ namespace SoprodiApp.acceso
             //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
+                string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
 
                 string sql = @"INSERT INTO X2POSSL
-                             select *, null AS timestampfalso from [192.168.10.45].[RESPALDO_NEW_THX].[dbo].[V_ENLACE_COBRANZA_F_CHEQUES_2_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                             select *, null AS timestampfalso from [192.168.10.45].[" + bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_CHEQUES_2_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSSL
                 //                select *, null AS timestampfalso from V_ENLACE_COBRANZA_F_CHEQUES_2_X2POSSL where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -1489,8 +1519,10 @@ namespace SoprodiApp.acceso
             //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
+                string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
+
                 string sql = @"INSERT INTO X2POSTROK
-                                 select *, null AS timestampfalso  from [192.168.10.45].[RESPALDO_NEW_THX].[dbo].[V_ENLACE_COBRANZA_F_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                                 select *, null AS timestampfalso  from [192.168.10.45].["+bd_respaldo+"].[dbo].[V_ENLACE_COBRANZA_F_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSTROK
                 //                 select *, null AS timestampfalso  from [V_ENLACE_COBRANZA_F_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -1517,8 +1549,10 @@ namespace SoprodiApp.acceso
             //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
+                string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
+
                 string sql = @"INSERT INTO X2POSTROK
-                                 select *, null AS timestampfalso  from [192.168.10.45].[RESPALDO_NEW_THX].[dbo].[V_ENLACE_COBRANZA_F_CHEQUES_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                                 select *, null AS timestampfalso  from [192.168.10.45].["+ bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_CHEQUES_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSTROK
                 //                 select *, null AS timestampfalso  from [V_ENLACE_COBRANZA_F_CHEQUES_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -2670,14 +2704,27 @@ namespace SoprodiApp.acceso
             return dt;
         }
 
-        internal static DataTable no_planificado(string v)
+        internal static DataTable no_planificado(string v, string grupo)
         {
+
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select sum(y.cant_despachar_kg) as kg, count(distinct(y.rut)), count(distinct(y.coddocumento)) from (
-                                    select * from [V_SP_DIAS_KG] where  fechadespacho = CONVERT(datetime, '" + v + "',103) ) y   where y.CodDocumento not in (select coddocumento from[RESPALDO_NEW_THX].[dbo].[SP_Asignados]  d where y.CodDocumento = d.coddocumento ) group by fechadespacho";
+                string sql = @"select sum(y.cant_despachar_kg) as kg, count(distinct(y.rut)), count(distinct(y.coddocumento)) from 
+                                (
+                                    select *, UPPER(GRUPO.DescEmisor) AS GRUPO from [V_SP_DIAS_KG] 
+                                     outer apply (select top 1 DescEmisor 
+				                                    from VPEDIDOCABECERA_NEW_THX 
+			                                     where VPEDIDOCABECERA_NEW_THX.CodDocumento =[V_SP_DIAS_KG].CodDocumento)
+			                                     as GRUPO
+                                     where  fechadespacho = CONVERT(datetime, '" + v+ "',103)  and GRUPO.DescEmisor in ("+Base.agrega_comillas( grupo )+")"  +
+                               ") y   " +
+                                     " where y.CodDocumento not in " +
+                                     "  (select coddocumento from[NEW_THX].[dbo].[SP_Asignados]  d where y.CodDocumento = d.coddocumento " +
+                                     "  ) " +
+                                     "" +
+                                     "group by fechadespacho";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 try
@@ -3185,7 +3232,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select [nombre_trans] from[RESPALDO_NEW_THX].[dbo].[Transportista] " + v + "";
+                string sql = @"select [nombre_trans] from[NEW_THX].[dbo].[Transportista] " + v + "";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
@@ -3338,7 +3385,7 @@ namespace SoprodiApp.acceso
                 "" +
                 "" +
                 " from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento      left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
-                "  left join [RESPALDO_NEW_THX].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join [RESPALDO_NEW_THX].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " + where3;
+                "  left join [NEW_THX].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join [NEW_THX].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " + where3;
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -3855,7 +3902,7 @@ namespace SoprodiApp.acceso
                 "  , convert(varchar, b.FechaEmision, 103) as FechaEmision , b.CodVendedor, b.NotaLibre, b.CodBodega , b.CodMoneda, b.DescEstadoDocumento, '' as Facturas,  b.GxEstadoSync,  " +
                 "     convert(varchar, b.GxActualizado, 103) as GxActualizado , b.GxEnviadoERP, convert(varchar, b.FechaCreacion, 103) as FechaCreacion ,  " +
                 "     b.ValorTipoCambio,b.LimiteSeguro, b.TipoCredito, b.CreditoDisponible, b.CreditoAutorizado, b.EmailVendedor, b.CodEstadoDocumento as ESTADO, a.CodProducto, a.Cantidad,isnull(c.coddocumento,'no')  as AprobadoFull , isnull(m.estado ,'pendiente') as Estado_Cerrado  from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento   " +
-                "    left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento   left join[RESPALDO_NEW_THX].[dbo].[SP_Asignados] d on a.CodDocumento = d.coddocumento left join [RESPALDO_NEW_THX].[dbo].[Estado_SP] m on a.CodDocumento = m.sp " + where3;
+                "    left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento   left join[NEW_THX].[dbo].[SP_Asignados] d on a.CodDocumento = d.coddocumento left join [NEW_THX].[dbo].[Estado_SP] m on a.CodDocumento = m.sp " + where3;
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -3902,9 +3949,9 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT 
-                                 CONVERT(INT , isnull(cantidad,0) - isnull((select sum(cantidad) from[RESPALDO_NEW_THX].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0)  )  as Pendiente, 
+                                 CONVERT(INT , isnull(cantidad,0) - isnull((select sum(cantidad) from[NEW_THX].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0)  )  as Pendiente, 
 
-                                 CONVERT(INT , isnull((select sum(cantidad) from[RESPALDO_NEW_THX].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0) ) as Cant_despachado
+                                 CONVERT(INT , isnull((select sum(cantidad) from[NEW_THX].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0) ) as Cant_despachado
                                 ,b.* from VPEDIDODETALLE_THX b " + where3;
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -4665,7 +4712,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + desde + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + hasta + "',103) order by ltrim(rtrim(([Vendedor])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -4769,8 +4816,8 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT sum(neto_pesos) as neto_pesos, ltrim(rtrim(nombrecliente)) as nombrecliente, rutcliente 
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " + where5 + " and ltrim(rtrim(rutcliente)) not in  " +
-                            "	(select rutcliente from[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " + where + " group by rutcliente) and producto <> 'FLETE'  and producto <> 'DESCARGA'  and producto <> 'FLETECAJA'  " +
+                                FROM[NEW_THX].[dbo].[thx_v_reporte] " + where5 + " and ltrim(rtrim(rutcliente)) not in  " +
+                            "	(select rutcliente from[NEW_THX].[dbo].[thx_v_reporte] " + where + " group by rutcliente) and producto <> 'FLETE'  and producto <> 'DESCARGA'  and producto <> 'FLETECAJA'  " +
                          "      group by nombrecliente, rutcliente order by nombrecliente ";
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -4956,7 +5003,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente 
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and 
 		                                codvendedor in (" + vendedores + ") order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -4973,7 +5020,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim((producto)))) as cod_producto,ltrim(rtrim((descproducto))) as nom_producto 
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                   where 
 		                                rutcliente in (" + clientes + ") and codvendedor in (" + vendedores + ") order by ltrim(rtrim((descproducto)))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -5188,7 +5235,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT top 1 tipo_doc  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "'";
+                string sql = @"SELECT top 1 tipo_doc  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "' AND OPENDOC = 1";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
 
@@ -5435,7 +5482,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -5452,7 +5499,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                 " + where + " group by rutcliente, nombrecliente   order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -5469,7 +5516,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT neto_pesos, ltrim(rtrim(rutcliente)) as rutcliente, ltrim(rtrim(producto)) as producto
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                 " + where + "";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -5485,7 +5532,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim((producto)))) as cod_producto,ltrim(rtrim((descproducto))) as nom_producto 
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' order by ltrim(rtrim((descproducto)))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -5501,7 +5548,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim((producto)))) as cod_producto,ltrim(rtrim((descproducto))) as nom_producto 
-                                FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte]
+                                FROM[NEW_THX].[dbo].[thx_v_reporte]
                                   where 
 		                                rutcliente in (" + clientes + ") order by ltrim(rtrim((descproducto)))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -5919,7 +5966,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente FROM[NEW_THX].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + desde + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + hasta + "',103) order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -6184,7 +6231,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + p1 + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + p2 + "',103) and user1 = '" + p3 + "' order by ltrim(rtrim(([Vendedor])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -6204,7 +6251,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + p1 + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + p2 + "',103) and codvendedor like '%" + p3 + "%' order by ltrim(rtrim(([Vendedor])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -6302,7 +6349,7 @@ namespace SoprodiApp.acceso
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[RESPALDO_NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
                              where + "    order by ltrim(rtrim(([Vendedor]))) ";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -8700,6 +8747,7 @@ namespace SoprodiApp.acceso
                                   ,[obs]
                                   ,[Comisiones]
                                   ,[neto_peso]
+                                  ,[CODMONEDA]
                             from v_facturas_cobranza where estado_doc <> 0 and saldo <> 0 " + where + " order by rutcliente, [FVenc]   -- " + usuario;
 
 

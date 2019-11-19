@@ -246,7 +246,7 @@
             $("#cargando_firma").show();
             resp = resp.d;
             if (resp != "ERROR") {
-                alert(resp);
+                
                 if (resp >= 4)
                 {             
                      click_enviar();        
@@ -255,8 +255,8 @@
                 alert("Guardado");
                <%-- var perido = document.getElementById("<%=periodo.ClientID %>").value;
                 var use = document.getElementById("<%=user_q.ClientID %>").value;
-                firmas_j(perido, use);
-                cierra_cargando();--%>
+                firmas_j(perido, use);--%>
+                cierra_cargando();
                
             }
             else {

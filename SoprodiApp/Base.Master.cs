@@ -1409,6 +1409,33 @@ namespace SoprodiApp
             return SP_formato;
         }
 
+        internal static string agrega_comillas(string p)
+        {
+            if (p != "")
+            {
+                if (p.Substring(0, 1) != "'")
+                {
+                    string final_comillas = "";
+                    if (p.Contains(","))
+                    {
+                        List<string> LIST = new List<string>();
+                        List<string> LIST2 = new List<string>();
+                        LIST.AddRange(p.Split(','));
+                        foreach (string a in LIST)
+                        {
+                            LIST2.Add("'" + a.Trim() + "'");
+                        }
+                        final_comillas = string.Join(",", LIST2);
+                    }
+                    else { final_comillas = "'" + p.Trim() + "'"; }
+                    return final_comillas;
+                }
+
+                else { return p; }
+            }
+            else { return p; }
+        }
+
         internal static void crear_sp_pdf(string sp, string pdfPath_)
         {
             string num_sp = sp;

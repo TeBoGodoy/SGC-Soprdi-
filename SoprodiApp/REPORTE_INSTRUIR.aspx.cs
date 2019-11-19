@@ -1189,8 +1189,21 @@ namespace SoprodiApp
                 HTML += "<th colspan=1; class='sorter-false' style='background-color: rgb(168, 255, 132) !important; color:black !important;' >NoPlanificado : : </th>";
                 foreach (DataRow r1 in dias.Rows)
                 {
+                    string grupo_usuario = "";
+                    if (Session["SW_PERMI"].ToString() == "1")
+                    {
+                        grupo_usuario = "ABARROTES";
+                    }
+                    else if (Session["SW_PERMI"].ToString() == "2")
+                    {
+                        grupo_usuario = "GRANOS";
+                    }
+                    else
+                    {
+                        grupo_usuario  = " ABARROTES, GRANOS ";
+                    }
 
-                    DataTable datos_no_planifi = ReporteRNegocio.no_planificado(r1[0].ToString());
+                    DataTable datos_no_planifi = ReporteRNegocio.no_planificado(r1[0].ToString(), grupo_usuario);
 
                     string sps = "";
                     string cltes = "";
@@ -1206,7 +1219,7 @@ namespace SoprodiApp
                     HTML += "<th colspan=1; class='sorter-false' style='background-color: rgb(168, 255, 132) !important; color:black !important;' >" + Base.monto_format(sps.ToString()) + " </th>";
                     HTML += "<th colspan=1; class='sorter-false' style='background-color: rgb(168, 255, 132) !important; color:black !important;' >" + Base.monto_format(cltes.ToString()) + "</th>";
                     HTML += "<th colspan=1; class='sorter-false' style='background-color: rgb(168, 255, 132) !important; color:black !important;' >" + Base.monto_format(kilos.ToString()).Replace(",000000", "") + "</th>";
-                    HTML += "<th colspan=1; class='sorter-false' style='background-color: rgb(168, 255, 132) !important; color:black !important;' ><a href='REPORTE_SP_SELECT.aspx?F=" + r1[0].ToString().Trim() + "' target = '_blank' ><i class='fa fa-search' aria-hidden='true'></i></a></th>";
+                    HTML += "<th colspan=1; class='sorter-false' style='background-color: rgb(168, 255, 132) !important; color:black !important;' ><a href='REPORTE_SP_SELECT.aspx?F=" + r1[0].ToString().Trim() + "&G="+grupo_usuario+"' target = '_blank' ><i class='fa fa-search' aria-hidden='true'></i></a></th>";
                 }
                 HTML += "</tr>";
 
