@@ -353,7 +353,7 @@ namespace SoprodiApp
             //elem3.style.display = "block";
             //ScriptManager.RegisterStartupScript(Page, this.GetType(), "tea2sd121mp", "<script language='javascript'>creagrilla_g_init();</script>", false);
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "tweeee", "<script> var elem3 = document.getElementById(\"ocultar_principio\");    elem3.style.display = \"block\";</script>", false);
-            //ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script> new Tablesort(document.getElementById('ContentPlaceHolder_Contenido_G_PRODUCTOS')); </script>", false);
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "relojito_false1", "<script> relojito(false); </script>", false);
             //}
             //else {
 
@@ -5414,8 +5414,8 @@ namespace SoprodiApp
                     }
                     else
                     {
-                        e.Row.BackColor = Color.FromArgb(195, 247, 75);
-                        e.Row.Attributes["class"] = "table-flag-green";
+                        //e.Row.BackColor = Color.FromArgb(195, 247, 75);
+                        e.Row.Attributes["class"] = "table-flag-green doc_ingresado";
                     }
 
                     if (busca_columna_fac)
@@ -5601,14 +5601,10 @@ namespace SoprodiApp
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>alert('Ingresados y actualizados saldos')</script>", false);
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee2ee", "<script language='javascript'>    $('#ContentPlaceHolder_Contenido_btn_filtra_mov').click(); </script>", false);
 
-
                 //click a boton actualiza saldo
                 btn_actualizar_saldos_Click(sender, e);
-
-
+                relojito_false();
             }
-
-
         }
 
         protected void btn_filtra_grilla_Click(object sender, EventArgs e)
@@ -5710,6 +5706,7 @@ namespace SoprodiApp
                     ScriptManager.RegisterStartupScript(Page, this.GetType(), "sqwe", "<script language='javascript'>cambia_sw2();</script>", false);
                 }
 
+                relojito_false();
             }
         }
 
@@ -5801,6 +5798,7 @@ namespace SoprodiApp
             MOV_SOL.Visible = true;
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "tqweeqwqqee", "<script>cierra_gif();</script>", false);
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "www1q121", "<script>sss();</script>", false);
+            relojito_false();
             //gif_del_info.Attributes["style"] = "display:none";
             //btn_mov_sol.Attributes["style"] = "display:none";
             //oculta_cuando_mov.Attributes["style"] = "display:block";
@@ -6112,7 +6110,14 @@ namespace SoprodiApp
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "dolar", "<script language='javascript'> $('#monto_total_dolar_f').val('" + sum_dolar + "'); </script>", false);
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "creagrilla", "<script language='javascript'>creagrilla();</script>", false);
+     
+            relojito_false();
         }
+        public void relojito_false()
+        {
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "relojito_false2", "<script language='javascript'>relojito(false);</script>", false);
+        }
+
 
         protected void b_Click(object sender, ImageClickEventArgs e)
         {

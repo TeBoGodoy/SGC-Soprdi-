@@ -28,7 +28,7 @@ namespace SoprodiApp.acceso
         public static ReporteEntidad GetByPK()
         {
             ReporteEntidad webagente_det_correos_enviados = null;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT id_archivo, id_correo from webagente_det_correos_enviados where id_archivo = @id_archivo And id_correo = @id_correo ";
@@ -47,7 +47,7 @@ namespace SoprodiApp.acceso
         public static List<ReporteEntidad> GetAll_List()
         {
             List<ReporteEntidad> list = new List<ReporteEntidad>();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT id_archivo, id_correo from webagente_det_correos_enviados";
@@ -65,7 +65,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(char(10), fechadespacho,126) " +
@@ -94,7 +94,7 @@ namespace SoprodiApp.acceso
         internal static DataTable usuarios_firman(string periodo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -113,7 +113,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_grupo_firmas()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select grupo from ComisionUsuarioFirma group by grupo";
@@ -128,14 +128,14 @@ namespace SoprodiApp.acceso
         internal static DataTable firmas_listas(string periodo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select b.grupo,
 		                            (select top 1 d.nombre_usuario from UsuarioWeb d where d.cod_usuario = c.cod_usuario) as nombre	               
 	                            from ComisionUsuarioFirma b     
                                      left outer join V_comisionfirmas c on b.grupo = c.grupo 
-                                       and c.codperiodo  = '"+periodo+"' and b.grupo <> 'FINANZAS' group by b.grupo,  c.firma, c.cod_usuario";
+                                       and c.codperiodo  = '" + periodo + "' and b.grupo <> 'FINANZAS' group by b.grupo,  c.firma, c.cod_usuario";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -146,7 +146,7 @@ namespace SoprodiApp.acceso
         internal static DataTable traefirmas_periodo(string periodo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from comisionfirmas where codperiodo = '" + periodo + "' ";
@@ -161,7 +161,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, nombrecliente) " +
@@ -190,7 +190,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_transpor(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -215,7 +215,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_tipo_mov_stock(string v, string clase)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(trantype) from stock_diario ";
@@ -229,7 +229,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_bodegas_vm()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(codbodega), codbodega from [SoprodiVenta].[dbo].[vpedidocabecera] ";
@@ -243,7 +243,7 @@ namespace SoprodiApp.acceso
         internal static string trae_codigos_sincronizados_por_producto(string cod_prod)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT STUFF
@@ -270,7 +270,7 @@ namespace SoprodiApp.acceso
         public static DataTable GetAll()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT id_archivo, id_correo  from webagente_det_correos_enviados";
@@ -284,7 +284,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ventas_stock(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from V_REPORTE_THX where 1=1 " + v;
@@ -298,7 +298,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_comisiones(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from V_Comisiones where 1=1 " + where;
@@ -312,10 +312,10 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_listar_detalle_sp(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT * FROM   [NEW_THX].[dbo].[V_DETALLE_SP]   " + where3.Replace("b.", "");
+                string sql = @"SELECT * FROM   ["+bd_respaldo+"].[dbo].[V_DETALLE_SP]   " + where3.Replace("b.", "");
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -327,7 +327,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_transportistas(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from transportista where 1=1 " + where;
@@ -341,7 +341,7 @@ namespace SoprodiApp.acceso
         internal static DataTable carga_categoria(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from categoria where 1=1 " + where;
@@ -356,7 +356,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(codproducto), codproducto + CAST('-' AS varchar(MAX)) + descproducto as 'descr' from [SoprodiVenta].[dbo].[VPEDIDODETALLE] b where 1=1 " + clase + v;
@@ -369,7 +369,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_futuro_stock(string cod_prod, string v, string cant)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into StockFuturo (cod_producto, fecha, cantidad) " +
@@ -395,7 +395,7 @@ namespace SoprodiApp.acceso
         internal static string eliminar_firma(string usuario_, string periodo, string firma, string grupo)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[comisionFirmas]  where cod_usuario = '" + usuario_.Trim() + "' and codperiodo = '" + periodo + "' and grupo = '" + grupo + "';" +
@@ -429,7 +429,7 @@ namespace SoprodiApp.acceso
         internal static object trae_cliente_vendedor_SINVENTA(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select NAME, CRLMT, ADDR1, BILLCITY, SLSPERID, RUTCLIENTE, BILLPHONE, MIN(VENDEDOR) AS VENDEDOR, TIENE_AGENDA, ULTIMO_CONTACTO, COMUNA_STUFF
@@ -444,7 +444,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ultimas_compra2(string id_prod, string compras)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from stock_compra_gen u where u.invtid = '" + id_prod + "' ";
@@ -458,7 +458,7 @@ namespace SoprodiApp.acceso
         internal static DataTable stock_compra_cero(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  Select *, (select name as Proveedor from [192.168.10.8].[SoprodiUSDapp].[dbo].vendor where vendid = b.vendid) as oc from stock_compra_gen b
@@ -473,7 +473,7 @@ namespace SoprodiApp.acceso
 
         public static string Insert(ReporteEntidad webagente_det_correos_enviados)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into webagente_det_correos_enviados(id_archivo, id_correo) " +
@@ -498,7 +498,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ajustes(string where, string fecha_thx)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select sum(qty), invtid from stock_diario where trantype = 'AJ' " + where + fecha_thx.Replace("fechafactura", "trandate") + " group by invtid ";
@@ -512,7 +512,7 @@ namespace SoprodiApp.acceso
         internal static DataTable excel_valor(string cod, string fecha, string columna)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  Select  top 20 " + columna + ", fecha from stock_excel_2 where cod_producto = '" + cod + "' and fecha <> convert(date, '" + fecha + "',103)   order by fecha desc";
@@ -527,7 +527,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ultimas_compra3(string intvID, string compras)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from stock_compra_gen where " + intvID;
@@ -540,7 +540,7 @@ namespace SoprodiApp.acceso
 
         public static string Update(ReporteEntidad webagente_det_correos_enviados)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update webagente_det_correos_enviados " +
@@ -570,7 +570,7 @@ namespace SoprodiApp.acceso
         internal static string trae_reglas(string codvendedor)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -597,7 +597,7 @@ namespace SoprodiApp.acceso
         internal static int prom_3_meses_atras(string meses_atras_3, string rutcliente, string codvend)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select sum(facturac) from V_thx_v_reporte_resum where rutcliente = '" + rutcliente + "' and codvendedor = '" + codvend + "'   " +
@@ -613,7 +613,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select b.*, '404 - no calcula comisión' as regla_2 from [v_comision_1_sin_comision] b " +
@@ -631,7 +631,7 @@ namespace SoprodiApp.acceso
         internal static DataTable bodega_transportista(string where1)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT cod_bodega FROM Transportista " + where1 + " group by cod_bodega";
@@ -645,7 +645,7 @@ namespace SoprodiApp.acceso
         internal static DataTable historial_stock_diario(string where, string compras)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT  * from stock_diario where 1=1 and " + where;
@@ -658,7 +658,7 @@ namespace SoprodiApp.acceso
 
         public static string Delete(ReporteEntidad webagente_det_correos_enviados)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from webagente_det_correos_enviados " +
@@ -683,7 +683,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_reglas_2(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from [dbo].[V_COMISION_REGLAS] " + where;
@@ -702,7 +702,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select rutcliente as RutCliente, nombrecliente as NombCliente, factura as 'Nº Factura', nombrevendedor as NombVendedor,descr as 'Descripción', 
@@ -723,7 +723,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_transpor_solo_plani(string where2)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select nombre_transporte_todo, asignado_por from  v_SP_Asignados " +
@@ -748,7 +748,7 @@ namespace SoprodiApp.acceso
 
 
 
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select  t.invtid as Cod, t.descr as Producto,(select top 1 stkunit from Stock_diario where Stock_diario.invtid =  t.invtid ) as Unidad, t.siteid as Bodega, t.trandate as Fecha,  t.qty as Cantidad, t.batnbr as Lote, t.refnbr as Ref," +
@@ -782,7 +782,7 @@ namespace SoprodiApp.acceso
         internal static DataTable cierre_camion(int existe_id_cierre)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select * from factura_sp_det where id = " + existe_id_cierre;
@@ -800,7 +800,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_docu_calend_CERRADOS(string where, string usuario)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -848,7 +848,7 @@ namespace SoprodiApp.acceso
         internal static DataTable productos_para_permanencia(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select RTRIM(LTRIM(INVTID)) + ' - ' + descr AS Producto,'' as Permanencia from Stock_diario " + where + " group by invtid, descr";
@@ -862,7 +862,7 @@ namespace SoprodiApp.acceso
         internal static DataTable PERMANENCIA_NEGA(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select invtid, descr, trandate, Qty,'no' AS contado, '' as restando, '' as ultimo    from STOCK_DIARIO " + v + " AND Qty < 0 ORDER BY TRANDATE";
@@ -876,7 +876,7 @@ namespace SoprodiApp.acceso
         internal static DataTable PERMANENCIA2(string v, string desde, string where_arrastre, string clase)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select invtid, descr, trandate, sum(qty) as qty, FechaTermino, saldo, '' as 'Permanencia(Días)', StockALaFecha, stockbodega, porct from ( SElect invtid, descr, trandate, Qty, '' AS FechaTermino, '' as saldo, '' as 'Permanencia(Días)',  " +
@@ -909,7 +909,7 @@ namespace SoprodiApp.acceso
         internal static DataTable PERMANENCIA(string v, string desde, string where_arrastre, string clase)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select invtid, descr, trandate, sum(qty) as qty, FechaTermino, saldo, '' as 'Permanencia(Días)', StockALaFecha from ( " +
@@ -927,7 +927,7 @@ namespace SoprodiApp.acceso
         internal static DataTable productos_entradas(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select QTY as q, PRODUCTO as p, TRANDATE as t , siteid as s, invtid as i, QTY as queda, *, '' as Porcentaje_Despachado from [V_Vencimiento_final]  where 1=1 " + where + " ORDER BY PRODUCTO, TRANDATE, siteid ";
@@ -941,7 +941,7 @@ namespace SoprodiApp.acceso
         internal static double trae_equivale_kg(string invtid)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select isnull(equivale_kilos,0.00) from unidad_stock where cod_prod = '" + invtid + "' ";
@@ -964,7 +964,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_transpor_2(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT [cod_trans]
@@ -975,7 +975,7 @@ namespace SoprodiApp.acceso
                               ,[carga_inicial]
                               ,[cod_bodega]
                               ,[grupo]
-                          FROM[NEW_THX].[dbo].[Transportista]" + where;
+                          FROM["+bd_respaldo+"].[dbo].[Transportista]" + where;
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -987,7 +987,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select neto_pesos 
@@ -1015,7 +1015,7 @@ namespace SoprodiApp.acceso
         internal static DataTable lista_vencimientos(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 10 * from v_vencimientos ";
@@ -1030,10 +1030,10 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select [nombre_chofer] from[NEW_THX].[dbo].[chofer] " + cod_chofer + "";
+                string sql = @"select [nombre_chofer] from["+bd_respaldo+"].[dbo].[chofer] " + cod_chofer + "";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
@@ -1057,10 +1057,10 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select [patente] from[NEW_THX].[dbo].[camion]  " + cod_camion + "";
+                string sql = @"select [patente] from["+bd_respaldo+"].[dbo].[camion]  " + cod_camion + "";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
@@ -1083,7 +1083,7 @@ namespace SoprodiApp.acceso
         internal static DataTable salidas_producto(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select QTY, InvtID, TRANDATE , siteid, '' as restada from  V_INTRAN_STOCK_SAL   where 1=1 " + where + " and qty < 0 ORDER BY TRANDATE, siteid"
@@ -1098,7 +1098,7 @@ namespace SoprodiApp.acceso
         internal static DataTable compras_gen(string compra)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select InvtID,  case 
@@ -1122,7 +1122,7 @@ namespace SoprodiApp.acceso
         internal static DataTable PLANI_CAMIONES(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select nombre_trans, cod_trans from Transportista " + v;
@@ -1137,7 +1137,7 @@ namespace SoprodiApp.acceso
         {
             string correo = "";
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select cc from Lista_Correos where id = " + id_correo;
@@ -1155,7 +1155,7 @@ namespace SoprodiApp.acceso
         internal static DataTable periodos_productos(string periodo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from V_TOTAL_PRODUCTO_PERIODO " + periodo;
@@ -1169,31 +1169,31 @@ namespace SoprodiApp.acceso
         internal static DataTable sincronizadas_detalle(string cod_estado, string productos, string hasta, string bodegas)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
 
                 //string bodegas = "";
                 //string sql = @"select CodProducto, sum(cantidad) from (
                 //                select u.CodProducto, sum(u.cantidad_falta) as cantidad from ( " +
-                //            "   select * from[NEW_THX].[dbo].[sps_procesadas1] where  1=1 " + productos + " and estado <> '20'   and (select estado from[NEW_THX].[dbo].[Estado_SP] f where f.sp =[NEW_THX].[dbo].[sps_procesadas1].CodDocumento) is null " +
+                //            "   select * from["+bd_respaldo+"].[dbo].[sps_procesadas1] where  1=1 " + productos + " and estado <> '20'   and (select estado from["+bd_respaldo+"].[dbo].[Estado_SP] f where f.sp =["+bd_respaldo+"].[dbo].[sps_procesadas1].CodDocumento) is null " +
                 //     "                   ) u group by u.CodProducto union all  " +
                 //      "          select  A.CodProducto, sum(A.cantidad) as cantidad from  " +
                 //      "       (select b.codproducto, b.cantidad from VPEDIDODETALLE_THX b   " +
-                //      "  left join THX_Sp_Aprobadas c on b.CodDocumento = c.coddocumento where c.coddocumento IS NULL and b.CodEstadoDocumento in ('10') and (select estado from[NEW_THX].[dbo].[Estado_SP] f where f.sp = b.CodDocumento) is null and  ISNUMERIC(b.CodProducto) = 1) A inner join   " +
-                //      "         (select invtid from[NEW_THX].[dbo].[Stock_diario] " +
+                //      "  left join THX_Sp_Aprobadas c on b.CodDocumento = c.coddocumento where c.coddocumento IS NULL and b.CodEstadoDocumento in ('10') and (select estado from["+bd_respaldo+"].[dbo].[Estado_SP] f where f.sp = b.CodDocumento) is null and  ISNUMERIC(b.CodProducto) = 1) A inner join   " +
+                //      "         (select invtid from["+bd_respaldo+"].[dbo].[Stock_diario] " +
                 //      "     where 1= 1  " + cod_estado + " group by invtid ) B on A.CodProducto = B.invtid group by A.CodProducto) f group by f.CodProducto";
 
 
                 string sql = @"
                                 select u.CodProducto, sum(u.cantidad_falta) as cantidad from (
-                                 select A.* from[NEW_THX].[dbo].[sps_procesadas1] A
-			                     inner join   
-                                   (select invtid from[NEW_THX].[dbo].[Stock_diario] where 1=1 " + cod_estado + " group by invtid ) B " +
+                                 select A.* from["+bd_respaldo+"].[dbo].[sps_procesadas1] A " +
+                       "          inner join   " +
+                        "           (select invtid from[" +bd_respaldo+"].[dbo].[Stock_diario] where 1=1 " + cod_estado + " group by invtid ) B " +
                         "          on A.CodProducto = B.invtid" +
                         "         where  1=1 " + productos + bodegas + " and estado <> '20'   " +
-                         "        and (select estado from[NEW_THX].[dbo].[Estado_SP] f where f.sp = A.CodDocumento) is null " +
-                         "    AND (select f.fechaemision from[NEW_THX].[dbo].[VPEDIDOCABECERA_NEW_THX] f where f.CodDocumento = A.CodDocumento) <= " +
+                         "        and (select estado from["+bd_respaldo+"].[dbo].[Estado_SP] f where f.sp = A.CodDocumento) is null " +
+                         "    AND (select f.fechaemision from["+bd_respaldo+"].[dbo].[VPEDIDOCABECERA_NEW_THX] f where f.CodDocumento = A.CodDocumento) <= " +
                          "        convert(datetime, '" + hasta + "',103)" + bodegas +
                          "        ) u group by u.CodProducto";
 
@@ -1208,7 +1208,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_listar_detalle_sp_2(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 //              string sql = "select  CodDocumento, NombreCliente, NombreVendedor, MontoNeto, DescBodega, convert(varchar, FechaDespacho,103) as FechaDespacho, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), FechaDespacho) as DifDias " + 
@@ -1227,7 +1227,7 @@ namespace SoprodiApp.acceso
         internal static double _cltes_nuevos_12_mes_factu(string periodo, string where)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -1248,7 +1248,7 @@ namespace SoprodiApp.acceso
         internal static double tiene_regla_abarrote(object p)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(*) from[dbo].[V_COMISION_VENDEDORES] where codvendedor = '" + p + "' and id_comision = 16";
@@ -1262,7 +1262,7 @@ namespace SoprodiApp.acceso
         internal static double _cltes_nuevos_12_mes(string periodo, string where)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -1284,7 +1284,7 @@ namespace SoprodiApp.acceso
 
         internal static string update_vencimiento(string id, string texto_, string sw_)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 //@"update SP_Asignados set fecha_despacho = Convert(datetime, @fecha_despacho,103), cod_trans = @cod_tr where id = @id";
@@ -1312,7 +1312,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_correos_hist(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from v_correos_a_contactos " + where + " order by fecha asc";
@@ -1325,7 +1325,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_vencimiento(string invtid, string siteid, string batnbr, string refnbr, string trandate, string trantype, string texto_, string sw_)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into [dbo].[Vencimientos] (invtid, siteid, batnbr, refnbr, trandate, trantype , " + sw_ + ") " +
@@ -1358,7 +1358,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select id from [dbo].[Vencimientos] where invtid = @invtid and  siteid = @siteid and  " +
@@ -1387,7 +1387,7 @@ namespace SoprodiApp.acceso
         internal static string tipo_moneda(string fact)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT  top 1
@@ -1415,7 +1415,7 @@ namespace SoprodiApp.acceso
         internal static DataTable actualizar_saldos(string nombre_sp, List<SPVars> toSP)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 SqlCommand sqlComm = new SqlCommand(nombre_sp, conn);
                 if (toSP != null)
@@ -1440,7 +1440,7 @@ namespace SoprodiApp.acceso
         internal static DataTable lista_enc_sp_asignada_in(string ids, string ids_asignados)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select a.*, b.observacion FROM [VPEDIDOCABECERA_NEW_THX] a left outer join v_sp_asignados b on a.CodDocumento = b.codDocumento and b.ID in (" + ids_asignados + ")" +
@@ -1456,13 +1456,13 @@ namespace SoprodiApp.acceso
         {
 
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["solomon_test"].ToString()))
-            //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            //string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
 
                 conn.Open();
                 string sql = @"INSERT INTO X2POSSL
-                                select *, null AS timestampfalso from [192.168.10.45].["+ bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_3_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                                select *, null AS timestampfalso from [192.168.10.45].[" + bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_3_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSSL
                 //                 select *, null AS timestampfalso  from [V_ENLACE_COBRANZA_F_3_X2POSSL] where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -1485,7 +1485,7 @@ namespace SoprodiApp.acceso
         internal static string insert_X2POSSL_CHEQUE(string facturas_comas)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["solomon_test"].ToString()))
-            //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            //string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
@@ -1516,13 +1516,13 @@ namespace SoprodiApp.acceso
         internal static string insert_X2POSTROK(string facturas_comas)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["solomon_test"].ToString()))
-            //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            //string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
 
                 string sql = @"INSERT INTO X2POSTROK
-                                 select *, null AS timestampfalso  from [192.168.10.45].["+bd_respaldo+"].[dbo].[V_ENLACE_COBRANZA_F_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                                 select *, null AS timestampfalso  from [192.168.10.45].[" + bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSTROK
                 //                 select *, null AS timestampfalso  from [V_ENLACE_COBRANZA_F_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -1546,13 +1546,13 @@ namespace SoprodiApp.acceso
         internal static string insert_X2POSTROK_CHEQUE(string facturas_comas)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["solomon_test"].ToString()))
-            //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            //string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"];
 
                 string sql = @"INSERT INTO X2POSTROK
-                                 select *, null AS timestampfalso  from [192.168.10.45].["+ bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_CHEQUES_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
+                                 select *, null AS timestampfalso  from [192.168.10.45].[" + bd_respaldo + "].[dbo].[V_ENLACE_COBRANZA_F_CHEQUES_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split_THX](@FACTURAS, ',')   )";
 
                 //string sql = @"INSERT INTO X2POSTROK
                 //                 select *, null AS timestampfalso  from [V_ENLACE_COBRANZA_F_CHEQUES_2_1_X2POSTROK] where [Invcnbr] in (  select val from [dbo].[f_split](@FACTURAS, ',')   )";
@@ -1578,7 +1578,7 @@ namespace SoprodiApp.acceso
 
         internal static string precalcular_regla_11_amaro(string periodo)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete FROM comision_thx  where periodo = '" + periodo + "' and regla = 'regla11';" +
@@ -1615,7 +1615,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar(max), correos) " +
@@ -1642,7 +1642,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, CodBodega) " +
@@ -1668,7 +1668,7 @@ namespace SoprodiApp.acceso
         internal static DataTable lista_det_sp_asignada_in(string ids)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select a.* FROM V_DET_Sp_Asignados a where  a.ID_ASIGNADO in (" + ids + ") order by  convert(numeric(18,0), a.orden_cargar) asc, a.coddocumento asc";
@@ -1681,7 +1681,7 @@ namespace SoprodiApp.acceso
 
         internal static string recalcular_regla_21_toro(string periodo)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete FROM comision_thx  where periodo = '" + periodo + "' and regla = 'regla21';" +
@@ -1718,7 +1718,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_docu_calend_cheques(string where, string user)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT *, 
@@ -1764,7 +1764,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_det_cierre_camion(int existe_id_cierre, string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into [dbo].[FACTURA_SP_det]
@@ -1808,7 +1808,7 @@ namespace SoprodiApp.acceso
 
 
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select id from FACTURA_SP_enc where cod_trans = @cod_trans and cod_camion = @cod_camion and cod_chofer = @cod_chofer and dia_planif = @dia_planif and sps = @sps";
@@ -1894,7 +1894,7 @@ namespace SoprodiApp.acceso
 
 
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select id from FACTURA_SP_enc where cod_trans = @cod_trans and cod_camion = @cod_camion and cod_chofer = @cod_chofer and dia_planif = @dia_planif and sps = @sps";
@@ -1932,7 +1932,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_sp_planificada(string id)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -1951,7 +1951,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_sp_re_planificada(string id)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -1976,7 +1976,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_estados_asignados(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -1997,7 +1997,7 @@ namespace SoprodiApp.acceso
         internal static DataTable categoria_cobranza_comis()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2019,7 +2019,7 @@ namespace SoprodiApp.acceso
         internal static DataTable comision_cobranza(string periodo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2051,7 +2051,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_chofer(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2073,7 +2073,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_camion(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2095,7 +2095,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_camion_dia(string where1)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2116,7 +2116,7 @@ namespace SoprodiApp.acceso
         internal static DataTable productos_stock_sp(string where, string fecharcp2, string fechaSaldo, string desde, string hasta, string futuro, string clase)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2145,7 +2145,7 @@ namespace SoprodiApp.acceso
         internal static DataTable comision_cobranza_2(string periodo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2178,7 +2178,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 glclassid from stock_diario where invtid = '" + producto + "'";
@@ -2202,7 +2202,7 @@ namespace SoprodiApp.acceso
         internal static DataTable datos_ids(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2222,7 +2222,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_saldos_sp(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 //q.trandate
                 conn.Open();
@@ -2243,7 +2243,7 @@ namespace SoprodiApp.acceso
         internal static string guardar_valor_equivale_sp(string v, object tex1, string text2, string unidades)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from unidad_stock_sp where cod_prod = '" + v + "' ; " +
@@ -2268,7 +2268,7 @@ namespace SoprodiApp.acceso
         internal static DataTable crear_estado_3()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select 'planificado' as estado union select 'pendiente' as estado ";
@@ -2286,7 +2286,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_lotes_(string invtid, string siteid, string batnbr, string refnbr, string trandate, string trantype)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from [dbo].[Lotes_vencimiento] where  invtid = '" + invtid + "' and siteid = '" + siteid + "' and batnbr='" + batnbr + "' and refnbr = '" + refnbr + "' and convert(varchar, trandate,103)= convert(varchar,'" + trandate + "',103) and trantype = '" + trantype + "'";
@@ -2306,7 +2306,7 @@ namespace SoprodiApp.acceso
         internal static string update_importacion_valida(string factura, int v)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"UPDATE [dbo].[ComisionImportaciones]  SET [es_valida] = @valida where factura = @factura";
@@ -2332,7 +2332,7 @@ namespace SoprodiApp.acceso
 
         internal static string guarda_cliente_vi(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[ComisionRegla2]  where factura = '" + factura.Trim() + "';" +
@@ -2358,7 +2358,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_datos_importacion_comision(string factura)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from [dbo].[ComisionImportaciones] where  factura = '" + factura.Trim() + "'";
@@ -2376,7 +2376,7 @@ namespace SoprodiApp.acceso
 
         internal static string quitar_importacion(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[comisionimportaciones]  where factura = '" + factura.Trim() + "';";
@@ -2401,7 +2401,7 @@ namespace SoprodiApp.acceso
 
         internal static string guarda_importacion(string factura, string contrato, string toneladas, string negocio, double porcentaje)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[comisionimportaciones]  where factura = '" + factura.Trim() + "';" +
@@ -2427,7 +2427,7 @@ namespace SoprodiApp.acceso
 
         internal static string quita_ewos(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[ComisionRegla6]  where factura = '" + factura.Trim() + "';";
@@ -2452,7 +2452,7 @@ namespace SoprodiApp.acceso
 
         internal static string guarda_ewos(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[ComisionRegla6]  where factura = '" + factura.Trim() + "';" +
@@ -2478,7 +2478,7 @@ namespace SoprodiApp.acceso
         internal static string es_ewos(string factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select count (*) from [dbo].[ComisionRegla6] where factura = '" + factura.Trim() + "' ";
@@ -2493,7 +2493,7 @@ namespace SoprodiApp.acceso
         internal static string es_venta_vi(string factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select count (*) from [dbo].[ComisionRegla2] where factura = '" + factura.Trim() + "' ";
@@ -2507,7 +2507,7 @@ namespace SoprodiApp.acceso
 
         internal static string quita_cliente_vi(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[ComisionRegla2]  where factura = '" + factura.Trim() + "';";
@@ -2533,7 +2533,7 @@ namespace SoprodiApp.acceso
         internal static string update_lote(string invtid, string siteid, string batnbr, string refnbr, string trandate, string trantype, string lote, string envasado, string vencimiento)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update Lotes_vencimiento set envasado = @envasado , vencimiento = @vencimiento where invtid = @invtid and " +
@@ -2568,7 +2568,7 @@ namespace SoprodiApp.acceso
         internal static DataTable fechas_y_dias_vencimiento(string invtid, string siteid, string batnbr, string refnbr, string trandate, string trantype)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select vencimiento, envasado, dif_envasado_vencimiento, dif_envasado_hoy, vida_util, porc_vida_util, certificado from [dbo].[V_Vencimiento_final] where  invtid = '" + invtid + "' and siteid = '" + siteid + "' and batnbr='" + batnbr + "' and refnbr = '" + refnbr + "' and convert(varchar, trandate,103)= convert(varchar,'" + trandate + "',103) and trantype = '" + trantype + "'";
@@ -2585,7 +2585,7 @@ namespace SoprodiApp.acceso
 
         internal static string delete_lote(string invtid, string siteid, string batnbr, string refnbr, string trandate, string trantype, string lote)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[Lotes_vencimiento]  where invtid = '" + invtid + "' and siteid = '" + siteid + "' and batnbr='" + batnbr + "' and refnbr = '" + refnbr + "' and convert(varchar, trandate,103)= convert(varchar,'" + trandate + "',103) and trantype = '" + trantype + "' and lote = '" + lote + "'";
@@ -2608,7 +2608,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_lote(string invtid, string siteid, string batnbr, string refnbr, string trandate, string trantype, string lote, string envasado, string vencimiento)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into [dbo].[Lotes_vencimiento] (invtid, siteid, batnbr, refnbr, trandate, trantype , lote, envasado, vencimiento) " +
@@ -2643,7 +2643,7 @@ namespace SoprodiApp.acceso
         public static List<ReporteEntidad> GetBy()
         {
             List<ReporteEntidad> list = new List<ReporteEntidad>();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT id_archivo, id_correo from webagente_det_correos_enviados  where id_archivo = @id_archivo And id_correo = @id_correo ";
@@ -2660,7 +2660,7 @@ namespace SoprodiApp.acceso
         }
         public static string validar(ref ReporteEntidad u)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT id_archivo, id_correo from webagente_det_correos_enviados where id_archivo = @id_archivo And id_correo = @id_correo ";
@@ -2687,7 +2687,7 @@ namespace SoprodiApp.acceso
         internal static DataTable detalle_matriz_click(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select Vendedor, SUM(NETO_PESOS) as Venta, númfactura as 'NºFactura', convert(varchar, fechafactura, 103) as FechaFactura
@@ -2708,7 +2708,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select sum(y.cant_despachar_kg) as kg, count(distinct(y.rut)), count(distinct(y.coddocumento)) from 
@@ -2718,10 +2718,10 @@ namespace SoprodiApp.acceso
 				                                    from VPEDIDOCABECERA_NEW_THX 
 			                                     where VPEDIDOCABECERA_NEW_THX.CodDocumento =[V_SP_DIAS_KG].CodDocumento)
 			                                     as GRUPO
-                                     where  fechadespacho = CONVERT(datetime, '" + v+ "',103)  and GRUPO.DescEmisor in ("+Base.agrega_comillas( grupo )+")"  +
+                                     where  fechadespacho = CONVERT(datetime, '" + v + "',103)  and GRUPO.DescEmisor in (" + Base.agrega_comillas(grupo) + ")" +
                                ") y   " +
                                      " where y.CodDocumento not in " +
-                                     "  (select coddocumento from[NEW_THX].[dbo].[SP_Asignados]  d where y.CodDocumento = d.coddocumento " +
+                                     "  (select coddocumento from["+bd_respaldo+"].[dbo].[SP_Asignados]  d where y.CodDocumento = d.coddocumento " +
                                      "  ) " +
                                      "" +
                                      "group by fechadespacho";
@@ -2739,7 +2739,7 @@ namespace SoprodiApp.acceso
         internal static DataTable crear_estado_2()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select 'pendiente' as estado union select 'cerrado' as estado ";
@@ -2758,7 +2758,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select Vendedor, SUM(NETO_PESOS) as Venta, númfactura as 'NºFactura', convert(varchar, fechafactura, 103) as FechaFactura, DescProducto
@@ -2779,7 +2779,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select distinct(t.producto) as 'Cod Prod', t.descproducto as 'Prod',  (select Convert(varchar,max(f.fecha),103) from stock_excel f where f.cod_producto = rtrim(ltrim(t.producto)) " + desde_2 + ") as fecha_excel, " +
@@ -2891,7 +2891,7 @@ namespace SoprodiApp.acceso
         internal static double existe_sp(string sp)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select count (*) from sps_procesadas1 where coddocumento = '" + sp + "' ";
@@ -2942,7 +2942,7 @@ namespace SoprodiApp.acceso
         internal static DataTable log_re_planificar(string id)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	 select *, CONVERT(varchar, fecha_despacho, 103) as fecha_despacho2
@@ -2963,7 +2963,7 @@ namespace SoprodiApp.acceso
         internal static string update_asignada_replanificar(string id, string v, string fecha, string carga, string transpor, string camion, string chofer, string obs, string vuelta)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update SP_Asignados set fecha_despacho = @fecha_despacho, 
@@ -3001,7 +3001,7 @@ namespace SoprodiApp.acceso
 
         internal static string selec_insert_log(string v)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into SP_Asignados_log  " +
@@ -3030,7 +3030,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT ltrim(rtrim(([rutcliente]))) as rut,ltrim(rtrim(([nombrecliente]))) as nombre
@@ -3046,7 +3046,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_lista_grupo(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct (DescEmisor)  from VPEDIDOCABECERA where DescEmisor <> 'Granos'";
@@ -3060,7 +3060,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_listaVendedor(string v, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct (codvendedor), NombreVendedor  from VPEDIDOCABECERA where 1=1 " + v.Replace("b.", "") + where;
@@ -3076,7 +3076,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select correos from correo_bodega where cod_bodega = '" + bodega + "' and grupo in  (" + grupo + ")";
@@ -3099,7 +3099,7 @@ namespace SoprodiApp.acceso
 
         internal static string delete_estado_sp(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from estado_sp " +
@@ -3123,7 +3123,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_estado_sp(string factura, string estado)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into estado_sp (sp, estado) " +
@@ -3150,7 +3150,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_camiones_asignados(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 100 *, CONVERT(varchar, fecha_despacho, 103) as fecha_despacho2, 
@@ -3167,7 +3167,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "selecT  stock_diario.[invtid] " +
@@ -3202,7 +3202,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select sum(cant_despachado_kg) from [dbo].[V_SP_ASIG_KG] where id_asignado = " + select_scope + "";
@@ -3229,10 +3229,10 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select [nombre_trans] from[NEW_THX].[dbo].[Transportista] " + v + "";
+                string sql = @"select [nombre_trans] from["+bd_respaldo+"].[dbo].[Transportista] " + v + "";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
@@ -3252,7 +3252,7 @@ namespace SoprodiApp.acceso
         internal static DataTable DESPA_listar_camion(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select cod_camion, patente from camion where 1=1 and " + v;
@@ -3269,7 +3269,7 @@ namespace SoprodiApp.acceso
         internal static DataTable corre_bodega(string dia, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct( a.codbodega), a.descbodega,
@@ -3286,7 +3286,7 @@ namespace SoprodiApp.acceso
         internal static DataTable detalle_planificado_dia(string dia, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select a.*,
@@ -3310,7 +3310,7 @@ namespace SoprodiApp.acceso
         internal static DataTable detalle_planificado_dia_camiones(string dia, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -3335,7 +3335,7 @@ namespace SoprodiApp.acceso
         internal static DataTable DESPA_listar_chofer(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select cod_chofer, nombre_chofer from chofer where 1=1 and " + v;
@@ -3350,7 +3350,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_LISTAR_SP_2(object v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 //              string sql = "select  CodDocumento, NombreCliente, NombreVendedor, MontoNeto, DescBodega, convert(varchar, FechaDespacho,103) as FechaDespacho, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), FechaDespacho) as DifDias " + 
@@ -3369,7 +3369,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_listar_sp_select(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 //              string sql = "select  CodDocumento, NombreCliente, NombreVendedor, MontoNeto, DescBodega, convert(varchar, FechaDespacho,103) as FechaDespacho, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), FechaDespacho) as DifDias " + 
@@ -3385,7 +3385,7 @@ namespace SoprodiApp.acceso
                 "" +
                 "" +
                 " from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento      left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
-                "  left join [NEW_THX].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join [NEW_THX].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " + where3;
+                "  left join ["+bd_respaldo+"].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join ["+bd_respaldo+"].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " + where3;
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -3397,7 +3397,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ultimo_excel_dt(string fecha)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select * from stock_excel_2 where fecha =(select max(fecha) from Stock_Excel_2 where fecha <= CONVERT(datetime, '" + fecha + "', 103) )";
@@ -3413,7 +3413,7 @@ namespace SoprodiApp.acceso
         internal static DataTable arrastre_noventa(string condicion, string selectedValue, string text, string dias)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select isnull( convert(varchar, min(trandate),103 ) , '') ," +
@@ -3437,7 +3437,7 @@ namespace SoprodiApp.acceso
         internal static string desplanificar_sp(string codDocumento, int v)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from [dbo].[SP_Asignados] where id = " + codDocumento + ";delete from [dbo].[Det_SP_Asignados] where id_asignado = " + codDocumento + ";";
@@ -3464,7 +3464,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"select  convert(varchar, fechaemision,103) from [dbo].[VPEDIDOCABECERA] where coddocumento = '" + sp + "'";
@@ -3490,7 +3490,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_estados(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = "select codestadodocumento, descestadodocumento from MaeEstadoDocumento " + v + " union all select '10S' as codestadodocumento, 'Aprobado S/ Factura' as aprobado   union all select '10P' as codestadodocumento, 'Aprobado Parcial' as aprobado  order by DescEstadoDocumento ";
@@ -3504,7 +3504,7 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_clientes(string v, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = "select distinct(RUT) as rut, NombreCliente as nombre from VPEDIDOCABECERA  " + v.Replace("b.", "") + where;
@@ -3519,7 +3519,7 @@ namespace SoprodiApp.acceso
         {
             DataTable dt = new DataTable();
             double valor = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select (isnull((select case when stock_diario.stkunit = 'KGR'   then isnull( sum(stock_diario.[Qty]) ,0)	else sum(stock_diario.[Qty]) * isnull(Unidad_stock.equivale_kilos,00) end from stock_diario  left join unidad_stock on Unidad_stock.cod_prod = stock_diario.invtid where convert(datetime , stock_diario.trandate , 103) = " +
@@ -3544,7 +3544,7 @@ namespace SoprodiApp.acceso
         internal static string update_asignada(string id_asinada)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update SP_Asignados set estado = @estado where id like @id_asig";
@@ -3572,7 +3572,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, EmailVendedor) " +
@@ -3602,7 +3602,7 @@ namespace SoprodiApp.acceso
         {
             //; select scope_identity();
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"INSERT INTO [dbo].[Det_SP_Asignados]
@@ -3667,7 +3667,7 @@ namespace SoprodiApp.acceso
 
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"INSERT INTO [dbo].[SP_Asignados]
@@ -3746,7 +3746,7 @@ namespace SoprodiApp.acceso
         internal static DataTable SP_Marcelo(string v1, string v2, string v3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "EXEC THX_VALIDA_SP '" + v1 + "', '" + v2 + "', " + Convert.ToDouble(v3).ToString().Replace(",", ".");
@@ -3760,7 +3760,7 @@ namespace SoprodiApp.acceso
         internal static DataTable lista_det_sp_asignada(string id)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select a.* FROM V_DET_Sp_Asignados a where  a.id_asignado = '" + id + "'";
@@ -3774,7 +3774,7 @@ namespace SoprodiApp.acceso
         internal static string VM_updateSP(string cod_documento, int v)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 //string sql = @"UPDATE TrnDocumentoCabecera SET CodEstadoDocumento = @estado  WHERE CODDOCUMENTO = @cod_doc";
@@ -3802,7 +3802,7 @@ namespace SoprodiApp.acceso
         {
             DataTable dt = new DataTable();
             double valor = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select * from compra_sys where ponbr = '" + factura + "'";
@@ -3818,7 +3818,7 @@ namespace SoprodiApp.acceso
         {
             DataTable dt = new DataTable();
             double valor = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "select case when stock_diario.stkunit = 'KGR'   then  isnull(sum( stock_diario.[Qty]),0)	else sum(stock_diario.[Qty]) * isnull(Unidad_stock.equivale_kilos,00) end from stock_diario  left join unidad_stock on Unidad_stock.cod_prod = stock_diario.invtid  where convert(datetime , stock_diario.trandate , 103) = " +
@@ -3841,7 +3841,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_ALL_productos_stock_todos(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(invtid),  descr from Stock_diario b " + v;
@@ -3855,7 +3855,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_ALL_productos_stock_granos(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(invtid),  descr from Stock_diario b where b.glclassid not in ('ABAR', 'MANI') " + v;
@@ -3869,7 +3869,7 @@ namespace SoprodiApp.acceso
         internal static DataTable excel_gama(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = " select 'OBSERVACION' as COD, '' as 'TipoCant', u.detalle as 'Descrip.', 0 as 'Costo',0 as 'CostoUnid.', " +
@@ -3895,14 +3895,14 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_listar_sp(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = "select b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, convert(varchar, b.FechaDespacho,103) as FechaDespacho, isnull(convert(varchar, d.fecha_despacho, 103),'----') as FechaPlanificado, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
                 "  , convert(varchar, b.FechaEmision, 103) as FechaEmision , b.CodVendedor, b.NotaLibre, b.CodBodega , b.CodMoneda, b.DescEstadoDocumento, '' as Facturas,  b.GxEstadoSync,  " +
                 "     convert(varchar, b.GxActualizado, 103) as GxActualizado , b.GxEnviadoERP, convert(varchar, b.FechaCreacion, 103) as FechaCreacion ,  " +
                 "     b.ValorTipoCambio,b.LimiteSeguro, b.TipoCredito, b.CreditoDisponible, b.CreditoAutorizado, b.EmailVendedor, b.CodEstadoDocumento as ESTADO, a.CodProducto, a.Cantidad,isnull(c.coddocumento,'no')  as AprobadoFull , isnull(m.estado ,'pendiente') as Estado_Cerrado  from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento   " +
-                "    left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento   left join[NEW_THX].[dbo].[SP_Asignados] d on a.CodDocumento = d.coddocumento left join [NEW_THX].[dbo].[Estado_SP] m on a.CodDocumento = m.sp " + where3;
+                "    left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento   left join["+bd_respaldo+"].[dbo].[SP_Asignados] d on a.CodDocumento = d.coddocumento left join ["+bd_respaldo+"].[dbo].[Estado_SP] m on a.CodDocumento = m.sp " + where3;
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -3915,7 +3915,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "selecT  stock_diario.[invtid] " +
@@ -3945,14 +3945,14 @@ namespace SoprodiApp.acceso
         internal static DataTable VM_listar_detalle(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT 
-                                 CONVERT(INT , isnull(cantidad,0) - isnull((select sum(cantidad) from[NEW_THX].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0)  )  as Pendiente, 
-
-                                 CONVERT(INT , isnull((select sum(cantidad) from[NEW_THX].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0) ) as Cant_despachado
-                                ,b.* from VPEDIDODETALLE_THX b " + where3;
+                                 CONVERT(INT , isnull(cantidad,0) - isnull((select sum(cantidad) from["+bd_respaldo+"].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto " +
+                                 "  and b.CodDocumento = sp),0)  )  as Pendiente, " +
+                               "  CONVERT(INT , isnull((select sum(cantidad) from["+bd_respaldo+"].[dbo].[V_SP_FACTURA_THX] where b.CodProducto = producto and b.CodDocumento = sp),0) ) as Cant_despachado " +
+                               " ,b.* from VPEDIDODETALLE_THX b " + where3;
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -3963,7 +3963,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_clientes_cobranza_abiertos(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT ltrim(rtrim(([rutcliente]))) as rut,ltrim(rtrim(([nombrecliente]))) as nombre
@@ -3979,7 +3979,7 @@ namespace SoprodiApp.acceso
         internal static DataTable lista_compras(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from v_compras_sys_3 u " + where3;
@@ -3998,7 +3998,7 @@ namespace SoprodiApp.acceso
         internal static DataTable lista_costosimpot(string where3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from v_costos_import u " + where3;
@@ -4017,7 +4017,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ultima_compra2(string where, string prod, string fechfac, string hasta, string desde)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select suma, valorunid, moneda, costimport, invtid, qty from (" +
@@ -4044,7 +4044,7 @@ namespace SoprodiApp.acceso
         internal static string insert_compra_sys(string invtid, string ponbr, string value)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into compra_sys values ('" + invtid + "', '" + ponbr + "', '" + value + "') ";
@@ -4068,7 +4068,7 @@ namespace SoprodiApp.acceso
         internal static DataTable peso_dolar_semana(string v, string an)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"      select hh.peso , uu.dolar from (
@@ -4090,7 +4090,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_4_semanas()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * FROM V_5_SEMANAS order by año ASC, semana ASC";
@@ -4104,7 +4104,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ventas_ayer_anteayer(string where2, string desde, string hasta)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	
@@ -4122,7 +4122,7 @@ namespace SoprodiApp.acceso
         internal static string eliminar_accion_prio(string id, string id_cobranza)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cobranza_Seguimiento_prioridad where ltrim(rtrim(id_cobranza)) = '" + id_cobranza.Trim() + "'; " +
@@ -4146,7 +4146,7 @@ namespace SoprodiApp.acceso
         internal static string trae_stuff_facturas(string factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT        STUFF
@@ -4172,7 +4172,7 @@ namespace SoprodiApp.acceso
         internal static double Facturación__ayer(string where, string dia)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -4190,7 +4190,7 @@ namespace SoprodiApp.acceso
         internal static double cant_clientes__ayer(string where, string dia)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(distinct(rutcliente)) from  (select rutcliente  from thx_v_reporte " + where + "  and convert(datetime, fechafactura,103) = convert(datetime, '" + dia + "', 103) group by rutcliente, periodo ) assa";
@@ -4205,7 +4205,7 @@ namespace SoprodiApp.acceso
         internal static DataTable traer_usd_cobro(string mes, string año)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * FROM cobro_usd where mes = " + mes + " and año = " + año;
@@ -4219,7 +4219,7 @@ namespace SoprodiApp.acceso
         internal static string cuenta_banco(string factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 bankacct from ardoc where refnbr = '" + factura + "'";
@@ -4242,7 +4242,7 @@ namespace SoprodiApp.acceso
         internal static string guardar_valor_equivale(string v, object tex1, string text2)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from unidad_stock where cod_prod = '" + v + "' ; " +
@@ -4267,7 +4267,7 @@ namespace SoprodiApp.acceso
         internal static DataTable valor_prod_equivale(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select top 1 f.stkunit, (select equivale_kilos from unidad_stock where  rtrim(ltrim(f.invtid)) = rtrim(ltrim(cod_prod)) ) as valor from Stock_diario f where f.invtid = '" + v.Trim() + "'";
@@ -4280,7 +4280,7 @@ namespace SoprodiApp.acceso
         internal static DataTable valor_prod_equivale_sp(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select top 1    f.stkunit, 
@@ -4299,7 +4299,7 @@ namespace SoprodiApp.acceso
         internal static string trae_stuff_facturas_de_cheque(string factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT        STUFF
@@ -4325,7 +4325,7 @@ namespace SoprodiApp.acceso
         internal static string guardar_usd_cobro(string mes, string año, string tasa, string valor_cobro)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from cobro_usd where mes =" + mes + " and año = " + año + " ; " +
@@ -4350,7 +4350,7 @@ namespace SoprodiApp.acceso
         internal static DataTable fechas_incorrectas(string mes, string año, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -4368,7 +4368,7 @@ namespace SoprodiApp.acceso
         internal static string eliminar_por_like_obs(string cheques_obs)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cobranza_Seguimiento where observacion like '%" + cheques_obs + "%'";
@@ -4391,7 +4391,7 @@ namespace SoprodiApp.acceso
         internal static string stuff_ids_pagos22222(string facturas_pagos)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -4417,7 +4417,7 @@ namespace SoprodiApp.acceso
         internal static string stuff_ids_cheques(string num_factura_origen)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT        STUFF ((SELECT        CAST(',' AS varchar(MAX)) + CONVERT(varchar, X.id) FROM     Cobranza_Seguimiento X 
@@ -4441,7 +4441,7 @@ namespace SoprodiApp.acceso
         internal static string stuff_ids_pagos(string num_factura_origen)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT        STUFF
@@ -4466,7 +4466,7 @@ namespace SoprodiApp.acceso
         internal static string trae_ids_segui(string v, string fecha, string obs)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT        STUFF
@@ -4491,7 +4491,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_registro(string id)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	select 
@@ -4518,7 +4518,7 @@ namespace SoprodiApp.acceso
         internal static string trae_num_factura_origen(string factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select num_factura_origen from Cobranza_Seguimiento where estado = 'ABONO' and num_factura = '" + factura + "'";
@@ -4541,7 +4541,7 @@ namespace SoprodiApp.acceso
         internal static string trae_obs_cobranza(string factura, string observacion)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select observacion from Cobranza_Seguimiento where estado = 'ABONO' and num_factura = '" + factura + "' and observacion = '" + observacion + "'";
@@ -4563,7 +4563,7 @@ namespace SoprodiApp.acceso
 
         internal static string eliminar_pago_fac(string factura, string fecha, string obser)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from COBRANZA_PAGOS " +
@@ -4587,7 +4587,7 @@ namespace SoprodiApp.acceso
 
         internal static string eliminar_segui_id(string id)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from cobranza_seguimiento " +
@@ -4612,7 +4612,7 @@ namespace SoprodiApp.acceso
         internal static double Facturación_Mes_dolar(string periodo, string where)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select isnull(sum(qwq),0) from  (select sum(neto_dolar)  as qwq  from thx_v_reporte " + where + " and Periodo in (" + periodo + ") group by rutcliente, periodo ) assa";
@@ -4625,7 +4625,7 @@ namespace SoprodiApp.acceso
 
         public static string encontrar(ref ReporteEntidad u)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT id_archivo, id_correo from webagente_det_correos_enviados where id_archivo = @id_archivo And id_correo = @id_correo";
@@ -4654,7 +4654,7 @@ namespace SoprodiApp.acceso
 
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "selecT RTRIM(LTRIM(INVTID)) + ' - ' + descr AS Producto, SUM(QTY) as Stock, stkunit as Unidad,  " +
@@ -4672,7 +4672,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_ALL_productos_thx(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(producto), descproducto from V_REPORTE_THX " + where;
@@ -4686,7 +4686,7 @@ namespace SoprodiApp.acceso
         internal static string accion_prioridad(string v)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(*) from Cobranza_Seguimiento_prioridad where id = " + v;
@@ -4709,10 +4709,10 @@ namespace SoprodiApp.acceso
         public static DataTable Get_vendedor(string desde, string hasta)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + desde + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + hasta + "',103) order by ltrim(rtrim(([Vendedor])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -4728,7 +4728,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_datos_excel(REPORTE_EXCEL_COSTOS.excel_f ex)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -4812,12 +4812,12 @@ namespace SoprodiApp.acceso
         internal static DataTable clientes_periodo_anterior(string where5, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT sum(neto_pesos) as neto_pesos, ltrim(rtrim(nombrecliente)) as nombrecliente, rutcliente 
-                                FROM[NEW_THX].[dbo].[thx_v_reporte] " + where5 + " and ltrim(rtrim(rutcliente)) not in  " +
-                            "	(select rutcliente from[NEW_THX].[dbo].[thx_v_reporte] " + where + " group by rutcliente) and producto <> 'FLETE'  and producto <> 'DESCARGA'  and producto <> 'FLETECAJA'  " +
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " + where5 + " and ltrim(rtrim(rutcliente)) not in  " +
+                            "	(select rutcliente from["+bd_respaldo+"].[dbo].[thx_v_reporte] " + where + " group by rutcliente) and producto <> 'FLETE'  and producto <> 'DESCARGA'  and producto <> 'FLETECAJA'  " +
                          "      group by nombrecliente, rutcliente order by nombrecliente ";
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -4830,7 +4830,7 @@ namespace SoprodiApp.acceso
         internal static DataTable productos_stock_ventas(string where_stock)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select descproducto,producto  from THX_v_reporte " + where_stock + " and user1 <> 'Granos' and producto <> 'FLETE'  and producto <> 'DESCARGA'  and producto <> 'FLETECAJA'    group by descproducto, producto order by sum(neto_pesos) desc";
@@ -4846,7 +4846,7 @@ namespace SoprodiApp.acceso
         internal static DataTable productos_stock2(string where, string where_stock)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select descr, invtid,  " +
@@ -4868,7 +4868,7 @@ namespace SoprodiApp.acceso
         internal static DataTable facturas_gestionadas(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select * from v_flujo_cobranza where convert(datetime,[f.pago],103) = convert(datetime, '" + v + "', 103) order by nombcliente";
@@ -4884,7 +4884,7 @@ namespace SoprodiApp.acceso
         internal static DataTable stock_facturado(string desde_1, string desde_2, string where, string fecha_compra)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select t.númfactura as 'Nº Factura', CONVERT(varchar, t.fechafactura ,103) as Fecha, t.nombrecliente as 'Nomb Cliente', t.vendedor as 'Vendedor', t.producto as 'Cod Prod', t.descproducto as 'Prod', t.cantidad as 'Cantidad', rtrim(ltrim(t.um)) as 'Unidad', dbo.F_Separador_miles(t.neto_pesos) as 'SubTotal(Pesos)', (select top 1 ñ.tipo_cambio from [192.168.10.8].[SoprodiUSDapp].[dbo].v_reporte ñ where ñ.númfactura = t.númfactura) as 'TipoCambio', t.neto_dolar as 'SubTotal(Dolar)','' as ValorUni , t.bodega as 'Bodega'
@@ -4939,7 +4939,7 @@ namespace SoprodiApp.acceso
         internal static string prom_productos_por_factura(string periodo_apreguntar, string where)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ROUND(AVG(CAST(promedio_productos AS FLOAT)), 2) as prom from 
@@ -4964,7 +4964,7 @@ namespace SoprodiApp.acceso
         internal static DataTable facturas_solomon(string v)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	select nombrecliente as NombCliente, vendedor as Vend, descr  as descri, factura as 'Nº Factura' , convert(varchar, fecha_trans,103) as 'F.Trans'
@@ -4999,13 +4999,13 @@ namespace SoprodiApp.acceso
         public static DataTable Get_clientes(string vendedores)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente 
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                  where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and 
-		                                codvendedor in (" + vendedores + ") order by ltrim(rtrim(([nombrecliente])))";
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
+                               "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and  " +
+		                       "         codvendedor in (" + vendedores + ") order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5016,13 +5016,12 @@ namespace SoprodiApp.acceso
         public static DataTable Get_productos(string clientes, string vendedores)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim((producto)))) as cod_producto,ltrim(rtrim((descproducto))) as nom_producto 
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                  where 
-		                                rutcliente in (" + clientes + ") and codvendedor in (" + vendedores + ") order by ltrim(rtrim((descproducto)))";
+                                FROM["+bd_respaldo+ "].[dbo].[thx_v_reporte] where" +
+                                "     rutcliente in (" + clientes + ") and codvendedor in (" + vendedores + ") order by ltrim(rtrim((descproducto)))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5033,7 +5032,7 @@ namespace SoprodiApp.acceso
         public static String periodos()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, Periodo) " +
@@ -5050,7 +5049,7 @@ namespace SoprodiApp.acceso
         public static DataTable Get_Resumen(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" SELECT Vendedor, ltrim(rtrim(nombrecliente)) as nombrecliente , DescProducto,cast(Periodo as bigint)  as Periodo, isnull(  cast(sum(Neto_Pesos) as bigint) ,0) as total2" +
@@ -5071,7 +5070,7 @@ namespace SoprodiApp.acceso
         public static DataTable PIVOT_EXCEL(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select c_f, bod_usd, cm_stgo, cm_qta, arica, cod_producto from stock_excel " + where;
@@ -5176,7 +5175,7 @@ namespace SoprodiApp.acceso
 
         internal static string ins_en_seg(List<SPVars> toSP = null)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string query = "";
@@ -5232,7 +5231,7 @@ namespace SoprodiApp.acceso
         internal static string tipo_doc(string fact)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT top 1 tipo_doc  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "' AND OPENDOC = 1";
@@ -5305,7 +5304,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT saldo_dolar AS saldolar  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "'";
@@ -5328,7 +5327,7 @@ namespace SoprodiApp.acceso
         internal static object saldo_dolar_multiguia(string num_factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT origdocamt as saldolar  FROM cobranza_full WHERE  parent = '" + num_factura + "'";
@@ -5350,7 +5349,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_tipo_pago(string factura, string estado)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into cobranza_tipopago (factura, tipo_pago) " +
@@ -5376,7 +5375,7 @@ namespace SoprodiApp.acceso
 
         internal static string delete_tipo_pago(string factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from cobranza_tipopago " +
@@ -5402,7 +5401,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT saldo  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "'";
@@ -5429,7 +5428,7 @@ namespace SoprodiApp.acceso
 
         internal static string delete_agendado(string num_factura)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from cobranza_pagos " +
@@ -5478,12 +5477,12 @@ namespace SoprodiApp.acceso
         public static DataTable Get_ALL_clientes()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                  where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' order by ltrim(rtrim(([nombrecliente])))";
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
+                                "  where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5495,12 +5494,12 @@ namespace SoprodiApp.acceso
         public static DataTable Get_ALL_clientes2(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                " + where + " group by rutcliente, nombrecliente   order by ltrim(rtrim(([nombrecliente])))";
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " 
+                                 + where + " group by rutcliente, nombrecliente   order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5512,12 +5511,12 @@ namespace SoprodiApp.acceso
         public static DataTable ventas_matriz(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT neto_pesos, ltrim(rtrim(rutcliente)) as rutcliente, ltrim(rtrim(producto)) as producto
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                " + where + "";
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " + where + "";
+
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5528,12 +5527,12 @@ namespace SoprodiApp.acceso
         public static DataTable Get_ALL_productos()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim((producto)))) as cod_producto,ltrim(rtrim((descproducto))) as nom_producto 
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                  where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' order by ltrim(rtrim((descproducto)))";
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
+                                "  where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' order by ltrim(rtrim((descproducto)))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5544,13 +5543,12 @@ namespace SoprodiApp.acceso
         public static DataTable Get_productos_cliente(string clientes)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT distinct(ltrim(rtrim((producto)))) as cod_producto,ltrim(rtrim((descproducto))) as nom_producto 
-                                FROM[NEW_THX].[dbo].[thx_v_reporte]
-                                  where 
-		                                rutcliente in (" + clientes + ") order by ltrim(rtrim((descproducto)))";
+                                FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
+                              "    where  rutcliente in (" + clientes + ") order by ltrim(rtrim((descproducto)))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -5562,7 +5560,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_periodos(string periodos)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT '' as titulo_aux, Periodo
@@ -5579,7 +5577,7 @@ namespace SoprodiApp.acceso
         public static string listar_periodos_(string where)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT STUFF((SELECT  CAST(',' AS varchar(MAX)) + CONVERT(varchar, Periodo) 
@@ -5595,7 +5593,7 @@ namespace SoprodiApp.acceso
         public static DataTable Get_Resumen_PROD(string periodos, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"             
@@ -5619,7 +5617,7 @@ namespace SoprodiApp.acceso
 
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select rutcliente as RutCliente, nombrecliente as NombCliente, factura as 'Nº Factura', nombrevendedor as NombVendedor, tipo_doc as TipoDocum,descr as 'Descripción', num_ref as NumRef,
@@ -5646,7 +5644,7 @@ namespace SoprodiApp.acceso
         public static double Facturación_Mes(string periodo, string where)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select isnull(sum(qwq),0) from  (select sum(neto_pesos)  as qwq  from thx_v_reporte " + where + " and Periodo in (" + periodo + ") group by rutcliente, periodo ) assa";
@@ -5660,7 +5658,7 @@ namespace SoprodiApp.acceso
         public static string listar_clientes_(string vendedores)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(SELECT STUFF((SELECT  CAST(',' AS varchar(MAX)) + CONVERT(varchar, ltrim(rtrim((RUTCLIENTE)))) 
@@ -5677,7 +5675,7 @@ namespace SoprodiApp.acceso
         public static int _cltes_con_vta(string periodo, string where)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(*) as clientes_con_venta from (select count(*) AS RowNumber from thx_v_reporte " + where + " and Periodo in (" + periodo + ") group by rutcliente, periodo ) a";
@@ -5692,7 +5690,7 @@ namespace SoprodiApp.acceso
         public static int _cltes_con_vta2(string where)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(rutcliente) as clientes_con_venta from thx_v_reporte " + where;
@@ -5706,7 +5704,7 @@ namespace SoprodiApp.acceso
         public static List<long> Datos_para_percentil(string periodo, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select isnull(sum(neto_pesos),0) as suma
@@ -5723,7 +5721,7 @@ namespace SoprodiApp.acceso
         internal static string estimado_peso_cobranz_solom(string desde)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ISNULL((select SUM(saldo) as qwer from v_cobranza a
@@ -5783,7 +5781,7 @@ namespace SoprodiApp.acceso
         internal static string estimado_dolar_cobranz_solom(string desde)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ISNULL((select cast(SUM(saldo_dolar) as numeric(36,2)) from v_cobranza a
@@ -5809,7 +5807,7 @@ namespace SoprodiApp.acceso
         public static int cltes_sobre_este_percentil(string p, string where, Double percentil)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	 select count(*) as clientes_con_venta_percent from (select sum(neto_pesos) as suma from thx_v_reporte " + where + " and Periodo in (" + p + ") group by rutcliente, periodo  ) a where suma > " + percentil;
@@ -5823,7 +5821,7 @@ namespace SoprodiApp.acceso
         public static Double sum_sobre_este_percentil(string periodo, string where, Double percentil)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	  select isnull(sum(suma),0) as clientes_con_venta  from (select sum(neto_pesos) as suma from thx_v_reporte " + where + " and Periodo in (" + periodo + ")  group by rutcliente, periodo  ) a where suma > " + percentil;
@@ -5837,7 +5835,7 @@ namespace SoprodiApp.acceso
         public static Double COMPARATIVO_CLTE_VENTAS(string periodo_apreguntar, string periodo_anterior, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -5859,7 +5857,7 @@ namespace SoprodiApp.acceso
         public static double sum_a_recuperar(string periodo_apreguntar, string periodo_anterior, string where)
         {
             double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select isnull(sum (qq),0) as sum_recuperar from (
@@ -5880,7 +5878,7 @@ namespace SoprodiApp.acceso
         public static int cont_si_repite(string periodo_apreguntar, string periodo_anterior, string where)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select COUNT(a.rutcliente) from   (select rutcliente, isnull(sum(neto_pesos),0) as Venta from THX_v_reporte  " +
@@ -5900,7 +5898,7 @@ namespace SoprodiApp.acceso
         public static Double sum_no_repite(string periodo_apreguntar, string periodo_anterior, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -5921,7 +5919,7 @@ namespace SoprodiApp.acceso
         public static Double sum_si_repite(string periodo_apreguntar, string periodo_anterior, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select isnull( sum (qwe),0) as sum_si_repite from ( " +
@@ -5942,7 +5940,7 @@ namespace SoprodiApp.acceso
         public static Double sum_si_repite_actual(string periodo_apreguntar, string periodo_anterior, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select isnull(sum(a1),0) as sum_a_si_repite_mes_anterior from ( " +
@@ -5963,10 +5961,10 @@ namespace SoprodiApp.acceso
         public static DataTable listar_clientes(string desde, string hasta)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente FROM[NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([rutcliente])))) as rut_cliente,ltrim(rtrim(([nombrecliente]))) as nom_cliente FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + desde + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + hasta + "',103) order by ltrim(rtrim(([nombrecliente])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -5983,7 +5981,7 @@ namespace SoprodiApp.acceso
         public static Double cont_sin_x_2(string periodo_apreguntar, string periodo_anterior, string periodo_2_meses, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select COUNT(a.rutcliente) from " +
@@ -6003,7 +6001,7 @@ namespace SoprodiApp.acceso
         public static Double sum_sin_x_2(string periodo_apreguntar, string periodo_anterior, string periodo_2_meses, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select  isnull(sum(a.venta),0) from " +
@@ -6023,7 +6021,7 @@ namespace SoprodiApp.acceso
         public static Double cont_nuevo_cliente(string periodo_apreguntar, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select COUNT(a.rutcliente) from    " +
@@ -6041,7 +6039,7 @@ namespace SoprodiApp.acceso
         public static Double sum_nuevo_cliente(string periodo_apreguntar, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select  isnull(sum(a.venta),0) from    " +
@@ -6060,7 +6058,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_clientes_nuevos(string periodo_mayor, string periodo_menor, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select a.Venta, a.rutcliente, a.NombreCliente from   (select rutcliente, isnull(sum(neto_pesos),0) as Venta,  
@@ -6088,7 +6086,7 @@ namespace SoprodiApp.acceso
         public static string listar_periodo_nuevo(string hasta)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select max(periodo) as periodo from ( select periodo from thx_v_reporte " + hasta + " group by periodo) as qwe";
@@ -6104,7 +6102,7 @@ namespace SoprodiApp.acceso
         public static string listar_periodo_nuevo_2(string hasta)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select min(periodo) as periodo from ( select periodo from thx_v_reporte " + hasta + " group by periodo) as qwe";
@@ -6119,7 +6117,7 @@ namespace SoprodiApp.acceso
         public static string total_nuevos(string periodo_para_nuevos, string periodo_menor, string where)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select sum(a.Venta) from   (select rutcliente, isnull(sum(neto_pesos),0) as Venta, 
@@ -6141,7 +6139,7 @@ namespace SoprodiApp.acceso
         public static string cont_nuevos(string periodo_para_nuevos, string periodo_menor, string where)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select count(*) from   (select rutcliente, isnull(sum(neto_pesos),0) as Venta, 
@@ -6164,7 +6162,7 @@ namespace SoprodiApp.acceso
         public static Double cont_sobre_este_percentil(string periodo, string where, Double percentil)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select count(*) as clientes_con_venta from (select sum(neto_pesos) as suma from thx_v_reporte " + where + " and Periodo in (" + periodo + ") group by rutcliente, periodo) a where suma > " + percentil;
@@ -6183,7 +6181,7 @@ namespace SoprodiApp.acceso
         public static double cont_nuevo_venta(string periodo_apreguntar, string periodo_anterior, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 //string sql = @"select isnull(count (qq),0) from ( " +
@@ -6208,7 +6206,7 @@ namespace SoprodiApp.acceso
         public static double sum_nueva_venta(string periodo_apreguntar, string periodo_anterior, string where)
         {
             Double scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select isnull(sum(a.venta),0) from 	(select rutcliente, isnull(sum(neto_pesos),0) as Venta from THX_v_reporte " + where + " and Periodo = " + periodo_apreguntar + " group by rutcliente , ltrim(rtrim(nombrecliente)), vendedor  ) a "
@@ -6228,10 +6226,10 @@ namespace SoprodiApp.acceso
         public static DataTable listar_vendedor_cm(string p1, string p2, string p3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + p1 + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + p2 + "',103) and user1 = '" + p3 + "' order by ltrim(rtrim(([Vendedor])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -6248,10 +6246,10 @@ namespace SoprodiApp.acceso
         public static DataTable listar_vendedor_sala(string p1, string p2, string p3)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
                              "   where codvendedor <> '' and codvendedor <> '*' and  producto >= '1000' and producto <= '9999' and FechaFactura >= CONVERT(datetime,'" + p1 + "', 103) " +
                             " and FechaFactura <= CONVERT(datetime,'" + p2 + "',103) and codvendedor like '%" + p3 + "%' order by ltrim(rtrim(([Vendedor])))";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
@@ -6268,7 +6266,7 @@ namespace SoprodiApp.acceso
         public static DataTable cargar_usuarios()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT *, (SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, grupo_usuario) " +
@@ -6290,7 +6288,7 @@ namespace SoprodiApp.acceso
         {
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select ltrim(rtrim(user1)) as user1 from [192.168.10.8].[SoprodiUSDapp].[dbo].[Salesperson] where user1 <> '' group by user1 ";
@@ -6308,7 +6306,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_grupos(string desde, string hasta, string grupos)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select ltrim(rtrim(user1)) as user1 from thx_v_reporte where user1 <> '' and user1 in (" + grupos + ") " +
@@ -6327,7 +6325,7 @@ namespace SoprodiApp.acceso
         public static string grupos_usuario(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 //                string sql = @" (SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, grupo_usuario) 
@@ -6346,10 +6344,10 @@ namespace SoprodiApp.acceso
         public static DataTable listar_ALL_vendedores(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM[NEW_THX].[dbo].[thx_v_reporte] " +
+                string sql = @"SELECT distinct(ltrim(rtrim(([CodVendedor])))) as cod_vend,ltrim(rtrim(([Vendedor]))) as nom_vend FROM["+bd_respaldo+"].[dbo].[thx_v_reporte] " +
                              where + "    order by ltrim(rtrim(([Vendedor]))) ";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -6365,7 +6363,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_prod_client(string vendedor, string cliente, string periodos, string user1)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" SELECT cast(Periodo as bigint) as Periodo, descproducto, isnull(  cast(sum(Neto_Pesos) as bigint) ,0)   as total2" +
@@ -6385,7 +6383,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_ventas_SALA(string periodos, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -6418,7 +6416,7 @@ namespace SoprodiApp.acceso
         public static string es_su_pass(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" Select clave from usuarioweb where cod_usuario = '" + p + "'";
@@ -6433,7 +6431,7 @@ namespace SoprodiApp.acceso
         public static string esvendedor(string usuario)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" Select tipo_usuario from usuarioweb where cod_usuario = '" + usuario + "'";
@@ -6448,7 +6446,7 @@ namespace SoprodiApp.acceso
         public static string grupos_usuario_v_report(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" Select top 1 user1 from thx_v_reporte where codvendedor like '%" + p + "%'";
@@ -6467,7 +6465,7 @@ namespace SoprodiApp.acceso
         public static int es_su_tipo(string USER)
         {
             int scalar = 0;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" Select tipo_usuario from usuarioweb where cod_usuario = '" + USER + "'";
@@ -6480,7 +6478,7 @@ namespace SoprodiApp.acceso
 
         public static string GUARDA_BOTON(int boton, string usuario, string fecha)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into usuarios_tracking (id_boton, usuario, fecha) " +
@@ -6506,7 +6504,7 @@ namespace SoprodiApp.acceso
 
         public static string delete_precalcular2(string cod_usuario, string periodo)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from precalcularreporte2 " +
@@ -6531,7 +6529,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_usuarios()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT * from usuarioweb ";
@@ -6548,7 +6546,7 @@ namespace SoprodiApp.acceso
 
         public static string delete_precalcular(string cod_usuario, string periodo)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from precalcularreporte " +
@@ -6572,7 +6570,7 @@ namespace SoprodiApp.acceso
 
         public static string insert_precalcular_x_factor(string cod_usuario, string nombre_factor, string factor1, string factor2, string periodo1, string periodo2, string total_g)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into precalcularreporte (cod_usuario, nombre_campo, factor1, factor2, nombre1, nombre2, total_g) " +
@@ -6601,7 +6599,7 @@ namespace SoprodiApp.acceso
 
         public static string insert_precalcular_x_cliente(string cod_usuario, string vendedor, string cliente, string factor1, string factor2, string periodo1, string periodo2)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into precalcularreporte2 (cod_usuario, vendedor,cliente,factor1, factor2, nombre1, nombre2) " +
@@ -6632,7 +6630,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_diario1(string USER)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT nombre_campo, factor1, factor2, factor3, factor4 from precalcularreporte where cod_usuario = '" + USER + "'";
@@ -6650,7 +6648,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_diario2(string USER)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT codvendedor,rutcliente,vendedor, cliente as 'nombrecliente', factor1,factor2,factor3,factor4 from v_precalcularreporte2 where cod_usuario = '" + USER + "'";
@@ -6668,7 +6666,7 @@ namespace SoprodiApp.acceso
         public static DataTable es_nuevo(string periodo_para_nuevos, string cliente, string vendedor)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select isnull(sum(neto_pesos),0) as Venta, vendedor as 'Vendedor', ltrim(rtrim(nombrecliente)) as 'Nombre Cliente' from thx_v_reporte where nombrecliente like '%" + cliente + "%' and vendedor like '%" + vendedor + "%'" +
@@ -6691,7 +6689,7 @@ namespace SoprodiApp.acceso
         public static string Facturación_Mes_precalculado1(string USER)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT isnull(sum( cast(replace(factor1,'.','') as float) ),0) from precalcularreporte2 " +
@@ -6716,7 +6714,7 @@ namespace SoprodiApp.acceso
         public static string Facturación_Mes_precalculado2(string USER)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT isnull(sum( cast(replace(factor2,'.','') as float) ),0) from precalcularreporte2 " +
@@ -6741,7 +6739,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_vendedor(string p1, string p2, string grupos_del_usuario)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select vendedor as nom_vend, cod_vendedor as cod_vend from thx_v_reporte where user1 in (" + grupos_del_usuario + ") and " +
@@ -6761,7 +6759,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_cliente(string p1, string p2, string grupos_del_usuario)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select nombrecliente as nom_cli, rutcliente as rut_cli from thx_v_reporte where user1 in (" + grupos_del_usuario + ") and " +
@@ -6782,7 +6780,7 @@ namespace SoprodiApp.acceso
         public static string Facturación_Mes_precalculado3(string USER)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT isnull(sum( cast(replace(factor3,'.','') as float) ),0) from precalcularreporte2 " +
@@ -6807,7 +6805,7 @@ namespace SoprodiApp.acceso
         public static string Facturación_Mes_precalculado4(string USER)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT isnull(sum( cast(replace(factor4,'.','') as float) ),0) from precalcularreporte2 " +
@@ -6832,7 +6830,7 @@ namespace SoprodiApp.acceso
         public static string pregunta_periodo_prod(string USER, string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT nombre" + p + " from precalcularreporte2 where  cod_usuario = @cod_usuario and nombre" + p + " <> '' group by nombre" + p + "";
@@ -6856,7 +6854,7 @@ namespace SoprodiApp.acceso
         public static DataTable LISTAR_VENDEDORES_POR_BODEGA(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select vendedor from thx_v_reporte " + where + " group by vendedor";
@@ -6876,7 +6874,7 @@ namespace SoprodiApp.acceso
         public static string venta_fecha_vendedor(string DESDE, string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT isnull(sum(neto_pesos),0) from thx_v_reporte where vendedor = @vendedor and FechaFactura = CONVERT(datetime, @desde, 103) group by vendedor";
@@ -6900,7 +6898,7 @@ namespace SoprodiApp.acceso
         public static string cont_fact_fecha_vendedor(string DESDE, string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT count(númfactura) from thx_v_reporte where vendedor = @vendedor and FechaFactura = CONVERT(datetime, @desde, 103) group by vendedor";
@@ -6924,7 +6922,7 @@ namespace SoprodiApp.acceso
         public static DataTable table_totales(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -6946,7 +6944,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_bodega(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ltrim(rtrim(([bodega]))) as nom_bodega from thx_v_reporte group by bodega  order by bodega";
@@ -6966,7 +6964,7 @@ namespace SoprodiApp.acceso
         public static DataTable cargar_detalle_lv(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ltrim(rtrim((nombrecliente))) as NombreCliente, SUM(NETO_PESOS) as Venta, númfactura as 'NºFactura'
@@ -6986,7 +6984,7 @@ namespace SoprodiApp.acceso
         public static DataTable table_totales_c(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select periodo, sum(neto_pesos), ltrim(rtrim(([Vendedor]))) as vendedor from thx_v_reporte    " + where + " group by  periodo , Vendedor";
@@ -7005,7 +7003,7 @@ namespace SoprodiApp.acceso
         public static DataTable table_totasles_c(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select periodo, sum(neto_pesos), ltrim(rtrim(([Vendedor])))  as vendedor, rutcliente, nombrecliente from thx_v_reporte    " + where + "  group by  periodo , Vendedor, rutcliente, nombrecliente";
@@ -7024,7 +7022,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_unidad_negocio()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from UnidadNegocio ";
@@ -7043,7 +7041,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_grupo_unidad(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from UnidadNegocio_det_grup  " + where;
@@ -7062,7 +7060,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_app_unidad(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select cod_app, nom_app + CONVERT(varchar, '  -  ') + (select nombre_unineg from UnidadNegocio b where a.cod_unineg = b.cod_unineg) as nom_app   from UnidadNegocio_Det_App a " + where;
@@ -7084,7 +7082,7 @@ namespace SoprodiApp.acceso
 
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" (SELECT        STUFF
@@ -7131,7 +7129,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_grupo_vend(string grupo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -7151,7 +7149,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_pantallas_vend(string grupo)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -7173,7 +7171,7 @@ namespace SoprodiApp.acceso
         public static string trae_u_negocio(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT u_negocio from UsuarioWeb where cod_usuario = @usuario";
@@ -7196,7 +7194,7 @@ namespace SoprodiApp.acceso
         public static string trae_app(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT app from UsuarioWeb where cod_usuario = @usuario";
@@ -7219,7 +7217,7 @@ namespace SoprodiApp.acceso
         public static string obtienenom_unidad(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT nombre_unineg from unidadnegocio where cod_unineg = @cod_unineg";
@@ -7242,7 +7240,7 @@ namespace SoprodiApp.acceso
         public static string obtiene_todos_u_negocio()
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, cod_unineg) 
@@ -7268,7 +7266,7 @@ namespace SoprodiApp.acceso
         public static string obtiene_todos_app()
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, cod_app) 
@@ -7293,7 +7291,7 @@ namespace SoprodiApp.acceso
         public static string obtiene_todos_grupos()
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, cod_grupo) 
@@ -7319,7 +7317,7 @@ namespace SoprodiApp.acceso
         public static DataTable carga_unidad_otro(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from UnidadNegocio where cod_unineg in (" + p + ")";
@@ -7338,7 +7336,7 @@ namespace SoprodiApp.acceso
         public static string negocio_usuario(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT u_negocio from usuarioweb where cod_usuario = '" + p + "'";
@@ -7361,7 +7359,7 @@ namespace SoprodiApp.acceso
         public static DataTable productos_dias(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select descproducto, SUM(neto_pesos) as suma,periodo,  convert(varchar, fechafactura, 103) as fechafactura from THX_v_reporte " + where + "  group  by descproducto, fechafactura, periodo   order by descproducto";
@@ -7380,7 +7378,7 @@ namespace SoprodiApp.acceso
         public static DataTable productos_periodos(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select descproducto, SUM(neto_pesos) as suma, periodo, convert(varchar, fechafactura, 103) as fechafactura from THX_v_reporte " + where + "  group  by descproducto, periodo, fechafactura order by descproducto";
@@ -7399,7 +7397,7 @@ namespace SoprodiApp.acceso
         public static string negocio_usuario_por_grupos(string grupo)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT STUFF ((SELECT  CAST(', ' AS varchar(MAX)) + CONVERT(varchar, cod_unineg) 
@@ -7426,7 +7424,7 @@ namespace SoprodiApp.acceso
         internal static DataTable cargar_detalle_lv_producto(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ltrim(rtrim((nombrecliente))) as NombreCliente, SUM(NETO_PESOS) as Venta, númfactura as 'NºFactura', Vendedor, convert(varchar, fechafactura, 103) as FechaFactura
@@ -7446,7 +7444,7 @@ namespace SoprodiApp.acceso
         internal static DataTable detalle_cliente(string grupo, string user1)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select Vendedor, DescProducto, sum(neto_pesos) as Venta, NúmFactura as 'NºFactura', convert(varchar, fechafactura, 103) as Fecha from thx_v_reporte where rutcliente = '" + grupo + "' " + user1 + "  group by vendedor, descproducto, númfactura, convert(varchar, fechafactura, 103) ";
@@ -7465,7 +7463,7 @@ namespace SoprodiApp.acceso
         internal static string nombre_vendedor(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 vendedor from THX_v_reporte where codvendedor = '" + p + "'";
@@ -7487,7 +7485,7 @@ namespace SoprodiApp.acceso
         internal static string nombre_cliente(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 nombrecliente from THX_v_reporte where rutcliente like '%" + p + "%'";
@@ -7510,7 +7508,7 @@ namespace SoprodiApp.acceso
         internal static string cod_vendedor(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 codvendedor from THX_v_reporte where vendedor = '" + p + "'";
@@ -7533,7 +7531,7 @@ namespace SoprodiApp.acceso
         internal static string cod_producto(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 producto from THX_v_reporte where descproducto = '" + p + "'";
@@ -7556,7 +7554,7 @@ namespace SoprodiApp.acceso
         internal static string nombre_producto(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 descproducto from THX_v_reporte where producto = '" + p + "'";
@@ -7579,7 +7577,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_encabezado(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 *, CONVERT(varchar, fechafactura, 103) as fechafactura1 from THX_v_reporte where númfactura = '" + p + "'";
@@ -7598,7 +7596,7 @@ namespace SoprodiApp.acceso
         internal static DataTable detalle_Factura(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select Producto as 'Cod.Producto', DescProducto, Bodega, neto_pesos as Total from THX_v_reporte where númfactura = '" + p + "'";
@@ -7617,7 +7615,7 @@ namespace SoprodiApp.acceso
         internal static DataTable list_ficha_cliente(string where, string periodo_desde, string periodo_hasta)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select a.rutcliente as RutCliente, a.nombrecliente as NombCliente, a.vendedor as Vendedor, a.ultimafechafactura as FechaÚltimaFactura, (select sum(neto_pesos) from V_REPORTE_THX  where vendedor = a.vendedor and ltrim(rtrim(a.rutcliente)) = ltrim(rtrim(V_REPORTE_THX.rutcliente)) and fechafactura = CONVERT(datetime,  a.ultimafechafactura, 103)) as Monto, " +
@@ -7641,7 +7639,7 @@ namespace SoprodiApp.acceso
         internal static DataTable datos_cliente(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select *,  (select correo from cliente2 where cliente.rutcliente = cliente2.rutcliente) as correo, isnull((select top 1 l_credito from v_cobranza a  where dbo.Quitar_Cero_izquierda('0', a.rutcliente) = dbo.Quitar_Cero_izquierda('0', cliente.rutcliente)),0) as LC, (select  disponible from v_cliente_d where rutcliente = cliente.rutcliente) as disponible  from cliente where dbo.Quitar_Cero_izquierda('0', rutcliente) = '" + p + "'";
@@ -7660,7 +7658,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_cta_cte_cliente(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select Vendedor, DescProducto, sum(neto_pesos) as Venta, NúmFactura as 'NºFactura', convert(varchar, fechafactura, 103) as Fecha 
@@ -7681,7 +7679,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_resumen_productos_ficha(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" SELECT  DescProducto,Periodo, sum(neto_pesos) as total2" +
@@ -7698,7 +7696,7 @@ namespace SoprodiApp.acceso
         internal static string update_cliente(string rutcliente, string direccion, string ciudad1, string pais, string fono, string vendedor)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update Cliente set direccion = @direccion , ciudad = @ciudad, pais = @pais, fono = @fono, codvendedor = @codvendedor where rutcliente like @rutcliente";
@@ -7728,7 +7726,7 @@ namespace SoprodiApp.acceso
         internal static string update_cliente2(string p1, string p2)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update Cliente2 set  correo= @correo where rutcliente like @rutcliente";
@@ -7754,7 +7752,7 @@ namespace SoprodiApp.acceso
         internal static string busca_rut_cliente(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 rutcliente from cliente2 where replace(  replace( rtrim(rutcliente), '.', '' ) , '-', '' )  = '" + p + "'";
@@ -7777,7 +7775,7 @@ namespace SoprodiApp.acceso
         internal static string insert_cliente_nuevo(string rut, string nomb, string dir, string ciu, string pa, string fono, string vende)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into cliente (rutcliente, nombrecliente, direccion, ciudad, pais, fono, codvendedor, estado) values  (@rutcliente, @nombre, @direccion,  @ciudad,  @pais,  @fono,  @vendedor, 0)";
@@ -7810,7 +7808,7 @@ namespace SoprodiApp.acceso
         internal static DataTable clientes_nuevos_ficha(string vend)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "";
@@ -7837,7 +7835,7 @@ namespace SoprodiApp.acceso
         internal static DataTable tipo_negocio()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from tipos_giro where id <> 11";
@@ -7855,7 +7853,7 @@ namespace SoprodiApp.acceso
         internal static string insert_cliente2(int sw, DateTime fecha_creacio, string rutcliente, string giro, string tipo_giro, string cliente_desde, string credito_act, string tipo_cred_act, string monto_cred_act, string credi_soli, string tipo_credi_soli, string monto_credi_soli, string nombrecliente, string direccion, string ciudad, string pais, string fono, string codvendedor)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into cliente2 values  "
@@ -7905,7 +7903,7 @@ namespace SoprodiApp.acceso
         internal static string insert_contactos_cliente(int sw, string rutclie, string nom1, string nom2, string correo1, string correo2, string cargo1, string cargo2, string fono1, string fono2)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "";
@@ -7948,7 +7946,7 @@ namespace SoprodiApp.acceso
         internal static string insert_ref_banco_cliente(int sw, string rutclie, string ban1, string ban2, string cta1, string cta2)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "";
@@ -7987,7 +7985,7 @@ namespace SoprodiApp.acceso
         internal static string insert_sociedad_cliente(string rutclie, string rutsocie, string nomb, string direcc, string ciudad, string pais, string fono, string correo)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into cli_sociedad values  (@rutcliente, @rutsocie, @nomb, @direcc, @ciudad, @pais, @fono, @correo);";
@@ -8019,7 +8017,7 @@ namespace SoprodiApp.acceso
         internal static string insert_socios_cliente(int sw, string rutcli, string rut1, string rut2, string nom1, string nom2, string corre1, string corre2, string porc1, string porc2)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "";
@@ -8063,7 +8061,7 @@ namespace SoprodiApp.acceso
         internal static string trae_tipo_negocio_nombre(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 nombre_tipo from Tipos_giro where id = " + p;
@@ -8086,7 +8084,7 @@ namespace SoprodiApp.acceso
         internal static DataTable corr_nuevos_clie()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 * from lista_correos where id = 1";
@@ -8104,7 +8102,7 @@ namespace SoprodiApp.acceso
         internal static DataTable datos_cliente_ALL(int sw, string rutcliente)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "";
@@ -8130,7 +8128,7 @@ namespace SoprodiApp.acceso
         internal static string count_socios(string clie_rut)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(*) from Cli_Socio where rutcliente = '" + clie_rut + "'";
@@ -8153,7 +8151,7 @@ namespace SoprodiApp.acceso
         internal static DataTable socio_extra(string clie_rut)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from Cli_Socio where rutcliente = '" + clie_rut + "' and id = (select MAX(id) from Cli_Socio where rutcliente = '" + clie_rut + "' )";
@@ -8171,7 +8169,7 @@ namespace SoprodiApp.acceso
         internal static string count_bancas(string clie_rut)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(*) from Cli_Ref_Banco where rutcliente = '" + clie_rut + "'";
@@ -8194,7 +8192,7 @@ namespace SoprodiApp.acceso
         internal static DataTable banco_extra(string clie_rut)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from Cli_Ref_Banco where rutcliente = '" + clie_rut + "' and id = (select MAX(id) from Cli_Ref_Banco where rutcliente = '" + clie_rut + "' )";
@@ -8212,7 +8210,7 @@ namespace SoprodiApp.acceso
         internal static string count_contactos(string clie_rut)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select count(*) from Cli_Contactos where rutcliente = '" + clie_rut + "'";
@@ -8235,7 +8233,7 @@ namespace SoprodiApp.acceso
         internal static DataTable contacto_extra(string clie_rut)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from Cli_Contactos where rutcliente = '" + clie_rut + "' and id = (select MAX(id) from Cli_Contactos where rutcliente = '" + clie_rut + "' )";
@@ -8253,7 +8251,7 @@ namespace SoprodiApp.acceso
         internal static string delete_cliente2(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from cliente2 where rutcliente = '" + p + "' and estado = 1";
@@ -8276,7 +8274,7 @@ namespace SoprodiApp.acceso
         internal static string delete_contactos(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cli_Contactos where rutcliente = '" + p + "'";
@@ -8299,7 +8297,7 @@ namespace SoprodiApp.acceso
         internal static string delete_cuentas_bank(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cli_Ref_Banco where rutcliente = '" + p + "'";
@@ -8322,7 +8320,7 @@ namespace SoprodiApp.acceso
         internal static string delete_socios(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cli_Socio where rutcliente = '" + p + "'";
@@ -8345,7 +8343,7 @@ namespace SoprodiApp.acceso
         internal static string delete_sociedad(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cli_Sociedad where rutcliente = '" + p + "'";
@@ -8368,7 +8366,7 @@ namespace SoprodiApp.acceso
         internal static object detalle_monto_click(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select DescProducto, SUM(NETO_PESOS) as Venta, númfactura as 'NºFactura', convert(varchar, fechafactura, 103) as FechaFactura
@@ -8388,7 +8386,7 @@ namespace SoprodiApp.acceso
         internal static string linea_credito(string clie_rut)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select  isnull(      " +
@@ -8422,7 +8420,7 @@ namespace SoprodiApp.acceso
 
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 rutcliente from cliente  where nombrecliente like '%" + p + "%'";
@@ -8445,7 +8443,7 @@ namespace SoprodiApp.acceso
         internal static string trae_año_factura(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 datepart(year,fechafactura) from V_REPORTE_THX where númfactura =  '" + p + "'";
@@ -8468,7 +8466,7 @@ namespace SoprodiApp.acceso
         internal static string cod_unineg(string grupo)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from UnidadNegocio_Det_Grup where cod_grupo like '%" + grupo + "%'";
@@ -8491,7 +8489,7 @@ namespace SoprodiApp.acceso
         internal static DataTable corr_usuario(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select nombre_usuario, correo from usuarioweb where cod_usuario = '" + p + "'";
@@ -8510,7 +8508,7 @@ namespace SoprodiApp.acceso
         internal static object privot_semanas(string hoy, string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select a._0, a.semana, a.debe_monto, a.año  from " +
@@ -8535,7 +8533,7 @@ namespace SoprodiApp.acceso
         internal static string semana_0(string hoy, string where)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select isnull(sum(a.mont),0) from  " +
@@ -8564,7 +8562,7 @@ namespace SoprodiApp.acceso
             string hoy = t.ToShortDateString();
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select sum(saldo) from v_cobranza_docs where fecha_venc < convert(datetime, getdate(), 103)  " + where;
@@ -8592,7 +8590,7 @@ namespace SoprodiApp.acceso
             string hoy = t.ToShortDateString();
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select sum(mont) from (select sum( saldo) as mont from v_cobranza where fecha_venc >= convert(datetime, '" + hoy + "', 103) " + where + "  and estado_doc <> 0 and tipo_doc <> 'CM' group by  factura) as qw";
@@ -8616,7 +8614,7 @@ namespace SoprodiApp.acceso
         internal static DataTable docu_abier(string clie_rut, string vend)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select rutcliente as RutCliente, nombrecliente as NombCliente, factura as 'Nº Factura', nombrevendedor as NombVendedor, tipo_doc as TipoDocum,descr as 'Descripción', num_ref as NumRef,
@@ -8652,7 +8650,7 @@ namespace SoprodiApp.acceso
             string hoy = t.ToShortDateString();
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"(select ROUND(AVG(CAST(disponible AS FLOAT)), 0) from v_cliente_d where rutcliente like '%" + p + "%') ";
@@ -8675,7 +8673,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_acciones()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select * from acciones where id_accion <> 5 and id_accion <> 7";
@@ -8693,7 +8691,7 @@ namespace SoprodiApp.acceso
 
         internal static object quitar_pa_f(string id)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cobranza_Seguimiento where num_factura = '" + id + "' and tipo_doc = 'PA-F' ;" +
@@ -8717,7 +8715,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_docu_calend(string where, string usuario)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
 
@@ -8766,7 +8764,7 @@ namespace SoprodiApp.acceso
         internal static string insert_fecha_cobra(string num_factura, string fecha_cobro, string obs_cobro)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into cobranza_cobros values (@num_factura, convert(datetime, @fecha_cobro, 103), @obs_cobro)";
@@ -8795,7 +8793,7 @@ namespace SoprodiApp.acceso
         internal static string delete_fecha_cobro(string num_factura)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from cobranza_pagos where convert(varchar, id_cobranza,103) = '" + num_factura + "' and tipo_doc = 'temporal'";
@@ -8820,7 +8818,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string query = "";
@@ -8867,7 +8865,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_acciones_(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select *, '' as Elim from [V_COBRANZA_MOVIMIENTOS] where 1=1 " + where;
@@ -8885,7 +8883,7 @@ namespace SoprodiApp.acceso
         internal static string update_estado_ingresado(string num_factura, string estado, string id)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"UPDATE Cobranza_Seguimiento SET estado_ingresado = 1 where num_factura = @num_factura and estado = @estado and id = @id";
@@ -8912,7 +8910,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_rangos()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"     select SUM(saldo) as monto, rg from (
@@ -8961,7 +8959,7 @@ namespace SoprodiApp.acceso
             string hoy = t.ToShortDateString();
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"  select SUM(saldo) as monto, rg from (
@@ -8995,7 +8993,7 @@ namespace SoprodiApp.acceso
             string hoy = t.ToShortDateString();
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"   				
@@ -9030,7 +9028,7 @@ namespace SoprodiApp.acceso
         internal static string cambia_estado_doc(string num_factura, string id)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into estado_documento values (@id, @num_factura, '0') ";
@@ -9056,7 +9054,7 @@ namespace SoprodiApp.acceso
         internal static string update_estado_doc(string num_factura, string id, int estado)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = "";
@@ -9091,7 +9089,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @" select ISNULL ( (select  case when estado = '0' then 'CERRADO' when estado = '1' then 'ABIERTO' END AS estado  from estado_documento where id = @id and num_factura = @num_factura), @estado) AS estado        ";
@@ -9117,7 +9115,7 @@ namespace SoprodiApp.acceso
         public static DataTable listar_NOTA_DE_CREDITO(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"   select CustID as 'Rut Cliente', CName  as 'Nombre Cliente', RefNbr  as 'Factura', (select top 1 vendedor from thx_v_reporte where a.Parent = thx_v_reporte.númfactura) as 'Nombre Vendedor' ,
@@ -9134,7 +9132,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_cliente_vendedor(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT a.* FROM V_GESTION_VENTAS_FIN a " + where;
@@ -9149,7 +9147,7 @@ namespace SoprodiApp.acceso
         internal static string insert_log_enviar_ficha(string user, string mail_usuario, string fecha_now, string destinos, string rutcliente)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into Log_Correos_Ficha values (@user, @mail_usuario,  @destinos, @fecha_now, @rutcliente, 0)";
@@ -9179,7 +9177,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_log_fich_()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT b.cod_usuario as CodUsuario, b.mail_usuario as Correo, b.Destinos, b.fecha_y_hora_mail as FechaEnvio, (select top 1 grupos from UsuarioWeb a where a.cod_usuario = b.cod_usuario), (select nombrecliente from Cliente where Cliente.rutcliente = b.rutcliente) as ClienteConsultado, (select nombrevendedor from V_CLIENTE_VEND C where b.rutcliente = C.rutcliente) as NombreVendedor  FROM Log_Correos_Ficha b";
@@ -9195,7 +9193,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_clase_clientes()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"SELECT * FROM v_cliente_clase";
@@ -9209,7 +9207,7 @@ namespace SoprodiApp.acceso
         internal static DataTable busca_factura(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select NúmFactura,RutCliente, NombreCliente ,CodVendedor, Vendedor, FechaFactura, sum(neto_pesos) as Monto from THX_v_reporte " + where +
@@ -9225,7 +9223,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ISNULL((select SUM(monto) as qwer from Cobranza_pagos where (select estado_doc from cobranza where num_factura = convert(varchar, id_cobranza) and tipo_doc = 'IN') <> 0 and moneda = 'peso' and tipo_doc='temporal' and CONVERT(varchar, fecha, 103) = @desde), '0') as qw ";
@@ -9252,7 +9250,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ISNULL((select SUM(monto) as qwer from Cobranza_pagos where (select estado_doc from cobranza where num_factura = convert(varchar, id_cobranza) and tipo_doc = 'IN') <> 0 and moneda = 'dolar' and tipo_doc='temporal' and CONVERT(varchar, fecha, 103) = @desde), '0') as qw ";
@@ -9278,7 +9276,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ISNULL((select SUM(saldo) from V_COBRANZA where tipo_doc = 'DM' and estado_doc <> 0 and ISNUMERIC( factura ) <> 1 and CONVERT(varchar, fecha_venc, 103) = @desde and tipo_moneda = 'PESO'), '0') as qw ";
@@ -9305,7 +9303,7 @@ namespace SoprodiApp.acceso
         {
 
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select ISNULL((select SUM(saldo_dolar) from V_COBRANZA where tipo_doc = 'DM' and estado_doc <> 0 and ISNUMERIC( factura ) <> 1 and CONVERT(varchar, fecha_venc, 103) = @desde and tipo_moneda = 'USD'), '0') as qw ";
@@ -9332,7 +9330,7 @@ namespace SoprodiApp.acceso
 
         internal static string delete_seguimiento_pa_f(string id)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cobranza_Seguimiento where num_factura = '" + id + "' and tipo_doc = 'PA-F' ;";
@@ -9356,7 +9354,7 @@ namespace SoprodiApp.acceso
         internal static string trae_letra_credito(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 tipo_credi from cliente where rutcliente=@rutcliente ";
@@ -9382,7 +9380,7 @@ namespace SoprodiApp.acceso
         internal static string trae_corr_vend_por_cliente(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select correo from UsuarioWeb where cod_usuario = (select top 1 codvendedor from Cliente where rutcliente = @rutcliente) ";
@@ -9408,7 +9406,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_ALL_bodegas_stock()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(siteid) from Stock_diario b";
@@ -9427,7 +9425,7 @@ namespace SoprodiApp.acceso
 
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(invtid),  descr from Stock_diario b  " + clase + where;
@@ -9441,7 +9439,7 @@ namespace SoprodiApp.acceso
         internal static DataTable listar_ALL_productos_stock_guion(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(invtid), invtid + CAST('-' AS varchar(MAX)) + descr as 'descr' from Stock_diario b where b.glclassid in ('ABAR', 'MANI') " + where;
@@ -9461,7 +9459,7 @@ namespace SoprodiApp.acceso
 
 
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select distinct(invtid), invtid + CAST('- ' AS varchar(MAX)) + descr as 'descr' from Stock_diario b where " + clase + where;
@@ -9476,7 +9474,7 @@ namespace SoprodiApp.acceso
         {
             DataTable dt = new DataTable();
             string where_extra = " where 1 = 1 and t.producto = b.invtid and t.bodega = b.siteid " + fechaexcel.Replace("fecha", "t.fechafactura").Replace("<=", ">=") + " " + fechaexcelfin.Replace("fecha", "t.fechafactura");
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -9550,7 +9548,7 @@ namespace SoprodiApp.acceso
         internal static string busca_rut_cliente2(string p)
         {
             string scalar = "";
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"select top 1 rutcliente from cliente where replace(  replace( rtrim(rutcliente), '.', '' ) , '-', '' ) = '" + p.Trim() + "'";
@@ -9573,7 +9571,7 @@ namespace SoprodiApp.acceso
         internal static object productos_compras(string where)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"
@@ -9589,7 +9587,7 @@ namespace SoprodiApp.acceso
         internal static DataTable ultima_compra(string id_prod, string fecha)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"Select *, (select name as Proveedor from [192.168.10.8].[SoprodiUSDapp].[dbo].vendor where vendid = ProvOC) as oc, 
@@ -9606,7 +9604,7 @@ namespace SoprodiApp.acceso
         internal static DataTable trae_contactos_cobranza(string p)
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"	select idcont as Id, nomcont as Nombre, correocont as Correo, numcont as 'Nº', descrip as Descrip from Cobranza_Contacto where rutcliente = '" + p + "' ";
@@ -9621,7 +9619,7 @@ namespace SoprodiApp.acceso
 
         internal static string insert_contacto_cobranza(string p, MANT_CLIENTES.contacto cont)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"insert into Cobranza_Contacto " +
@@ -9649,7 +9647,7 @@ namespace SoprodiApp.acceso
 
         internal static string delete_contacto1(string rutcontact, string p)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"delete from Cobranza_Contacto " +
@@ -9673,7 +9671,7 @@ namespace SoprodiApp.acceso
 
         internal static string update_contacto_cobranza(string rutCliente, MANT_CLIENTES.contacto cont)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
                 string sql = @"update Cobranza_Contacto " +

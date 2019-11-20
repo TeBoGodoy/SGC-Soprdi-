@@ -16,6 +16,11 @@
             font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
+        .doc_ingresado 
+        {
+            background-color: #00ab0545 !important;
+        }
+
         input[type=checkbox] {
             /* Double-sized Checkboxes */
             -ms-transform: scale(2); /* IE */
@@ -34,7 +39,7 @@
         }
 
         .gif {
-            background: url('/img/carg.gif');
+            /*background: url('/img/carg.gif');*/
             background-size: cover;
             position: fixed;
             margin: auto;
@@ -407,9 +412,9 @@
             var elem3 = document.getElementById("carga_tablax");
             elem3.style.display = "block";
 
-            var gif = document.getElementById("GIF_COMPLETO");
-            gif.style.display = "block";
-
+            //var gif = document.getElementById("GIF_COMPLETO");
+            //gif.style.display = "block";
+            relojito(true);
         }
         function carga_tablax_2() {
             //try {
@@ -424,8 +429,9 @@
             //}
 
 
-            var gif = document.getElementById("GIF_COMPLETO");
-            gif.style.display = "block";
+            //var gif = document.getElementById("GIF_COMPLETO");
+            //gif.style.display = "block";
+            relojito(true);
 
             document.getElementById("BTN_NETEO").style.display = "none";
 
@@ -1421,7 +1427,7 @@
 
         function REGISTRAR_AGENDAR_PAGO2() {
 
-
+            relojito(true);
             var FECHA_AGENDAR_PAGO = $('#t_estim').val();
             var OBS_AGENDAR_PAGO = "";
             var MONTO_AGENDAR_PAGO = $('#t_monto_estim').val();
@@ -1460,12 +1466,12 @@
                     GuardaAccion2();
 
                     Pagado2();
-
-
+                    relojito(false);
                 } else {
                     alert(resp);
+                    relojito(false);
                 }
-
+               
             });
         }
 
@@ -1490,6 +1496,7 @@
             }).done(function (resp) {
                 resp = resp.d;
                 $('#vencidos').html(resp);
+                relojito(false);
             });
         }
 
@@ -1600,6 +1607,7 @@
 
         function REGISTRAR_PAGO3() {
 
+            relojito(true);
             //$('#fact_sele').val();
             var tipo_doc = document.getElementById("CB_TIPO_PAGO3").value;
 
@@ -1665,6 +1673,7 @@
                         } else {
                             alert("Error al cargar evento");
                         }
+                        relojito(false);
                     }
                 }).done(function (resp) {
                     sleep(1000);
@@ -1683,7 +1692,7 @@
                         } catch (e) { }
                     }
                         //$(<%=btn_filtra_grilla.ClientID%>).click();
-
+                    relojito(false);
                     //alert(resp);
                     //CARGANDO();
 
@@ -1737,6 +1746,7 @@
                         }).done(function (resp) {
                             resp = resp.d;
                             respuesta = respuesta + resp;
+                            relojito(false);
                         });
                     }
                     if (respuesta == "Pago Realizado !") {
@@ -1768,15 +1778,16 @@
         }
 
         function CARGANDO_G() {
-            var gif = document.getElementById("GIF_COMPLETO");
-            gif.style.display = "block";
+            //var gif = document.getElementById("GIF_COMPLETO");
+            //gif.style.display = "block";
+            relojito(true);
         }
 
         function REGISTRAR_PAGO2() {
 
-            var gif = document.getElementById("GIF_COMPLETO");
-            gif.style.display = "block";
-
+            //var gif = document.getElementById("GIF_COMPLETO");
+            //gif.style.display = "block";
+            relojito(true);
             //$('#fact_sele').val();
             var tipo_doc = document.getElementById("CB_TIPO_PAGO2").value;
 
@@ -1813,38 +1824,44 @@
 
                 if (id == "") {
                     alert("error");
-                    var gif = document.getElementById("GIF_COMPLETO");
-                    gif.style.display = "none";
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
                     return false;
                 }
 
                 if (moneda == "") {
-                    var gif = document.getElementById("GIF_COMPLETO");
-                    gif.style.display = "none";
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
                     alert("Seleccione tipo Moneda");
                     return false;
                 }
                 if (tipo_doc == "") {
-                    var gif = document.getElementById("GIF_COMPLETO");
-                    gif.style.display = "none";
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
                     alert("Seleccione tipo de Documento");
                     return false;
                 }
                 if (descripcion.length > 8) {
-                    var gif = document.getElementById("GIF_COMPLETO");
-                    gif.style.display = "none";
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
                     alert("Descripción no debe superar 8 letras como máximo. (considerando letras banco)");
                     return false;
                 }
                 if (fecha == "") {
-                    var gif = document.getElementById("GIF_COMPLETO");
-                    gif.style.display = "none";
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
                     alert("Seleccione fecha");
                     return false;
                 }
                 if (descripcion.includes('--')) {
-                    var gif = document.getElementById("GIF_COMPLETO");
-                    gif.style.display = "none";
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
                     alert("Descripción no puede tener doble guion (--)");
                     return false;
                 }
@@ -4272,11 +4289,13 @@
             return eval('(' + string + ')');
         }
         function cargando_en_grilla() {
-            var elem3 = document.getElementById("cargando_en_filtrar");
-            elem3.style.display = "block";
+            //var elem3 = document.getElementById("cargando_en_filtrar");
+            //elem3.style.display = "block";
 
-            var gif = document.getElementById("GIF_COMPLETO");
-            gif.style.display = "block";
+            //var gif = document.getElementById("GIF_COMPLETO");
+            //gif.style.display = "block";
+
+            relojito(true);
 
             $('#sw_mu').val("1");
             //$("#ContentPlaceHolder_cobranza2").hide();
@@ -4724,7 +4743,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="pull-right" id="Div1" style="position: relative;">
-                                                    <asp:Button ID="btn_filtra_mov" CssClass="btn btn-lime" OnClientClick="lod()" Text="Filtrar" runat="server" OnClick="btn_filtra_mov_Click" />
+                                                    <asp:Button ID="btn_filtra_mov" CssClass="btn btn-lime" OnClientClick="relojito(true);lod();" Text="Filtrar" runat="server" OnClick="btn_filtra_mov_Click" />
                                                     <%--<i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom" id="cargando_en_filtrar" style="display: none; font-size: 3em;"></i>--%>
                                                     <input id="btn_grafico_cobr" type="button" class="btn btn-success" value="Gráfico" onclick="grafico()" style="display: block; margin-top: 20%;" />
                                                 </div>
@@ -4796,7 +4815,7 @@
                                                             <hr />
                                                             <div class="col-sm-12">
                                                                 <div class="col-sm-2 controls">
-                                                                    <asp:Button ID="btn_listos" runat="server" OnClientClick="CARGANDO();" Style="color: white;" Class="btn btn-primary" OnClick="btn_listos_Click" Text="Ingresado y Actualizar saldos" />
+                                                                    <asp:Button ID="btn_listos" runat="server" OnClientClick="relojito(true);CARGANDO();" Style="color: white;" Class="btn btn-primary" OnClick="btn_listos_Click" Text="Ingresado y Actualizar saldos" />
                                                                 </div>
                                                                 <div class="col-sm-2 controls">
                                                                     <asp:Button ID="btn_actualizar_saldos" runat="server" OnClientClick="CARGANDO();" Style="color: white; visibility: hidden;" Class="btn btn-success" OnClick="btn_actualizar_saldos_Click" Text="Actualizar Saldos" />
@@ -5218,7 +5237,7 @@
                                                                     </div>
                                                                 </div>
                                                             </asp:Panel>
-                                                            <asp:LinkButton ID="BTN_NETEO_2" Visible="false" runat="server" OnClientClick="CARGANDO_G();rescatarfecha();"
+                                                            <asp:LinkButton ID="BTN_NETEO_2" Visible="false" runat="server" OnClientClick="relojito(true);CARGANDO_G();rescatarfecha();"
                                                                 Style="color: white;" Class="btn btn-lime"
                                                                 OnClick="btn_pago2_Click" Text="NETEO" />
 
@@ -5596,7 +5615,7 @@
 
                                                                                                                 <input type="button" id="btn_pago_2" style="visibility: hidden; position: absolute;" class="btn btn-primary" value="Registrar Pago" onclick="REGISTRAR_PAGO2();" />
 
-                                                                                                                <asp:LinkButton ID="btn_pago2" runat="server" OnClientClick="CARGANDO_G();"
+                                                                                                                <asp:LinkButton ID="btn_pago2" runat="server" OnClientClick="relojito(true);CARGANDO_G();"
                                                                                                                     Style="color: white;" Class="btn btn-lime"
                                                                                                                     OnClick="btn_pago2_Click" Text="Registrar Pago" />
 
