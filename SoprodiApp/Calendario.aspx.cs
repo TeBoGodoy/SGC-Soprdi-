@@ -894,22 +894,21 @@ namespace SoprodiApp
             if (obs.Contains("-"))
             {
                 string num_factura_origen = ReporteRNegocio.trae_num_factura_origen(factura);
-                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_origen.Replace("-", ",").Replace("'", ""), fecha, obs);
+                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_origen.Replace("--", ",").Replace("'", ""), fecha, obs);
                 return elimina;
             }
             if (obs.Contains("Cheque"))
             {
-                string num_factura_cheque = ReporteRNegocio.trae_stuff_facturas_de_cheque(factura);
-                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_cheque.Replace("-", ",").Replace("'", ""), fecha, obs);
+                string num_factura_cheque = ReporteRNegocio.trae_stuff_facturas_de_cheque(factura, fecha);
+                string elimina = ReporteRNegocio.eliminar_pago_fac(num_factura_cheque.Replace("--", ",").Replace("'", ""), fecha, obs);
                 return elimina;
             }
 
             else
             {
-
                 string stuff_facturas = ReporteRNegocio.trae_stuff_facturas(factura);
 
-                string elimina = ReporteRNegocio.eliminar_pago_fac(stuff_facturas.Replace("-", ",").Replace("'", ""), fecha, obs);
+                string elimina = ReporteRNegocio.eliminar_pago_fac(stuff_facturas.Replace("--", ",").Replace("'", ""), fecha, obs);
                 return elimina;
             }
             return "";
@@ -973,7 +972,7 @@ namespace SoprodiApp
                 fecha = r["fecha"].ToString();
             }
 
-            if (estado == "ABONO" && !obs.Contains("Cheque") || estado == "NOTA_CREDITO")
+            if (estado == "ABONO" && !obs.Contains("Cheque") || estado == "NOTA_CREDITO" || estado == "SALDO_FAVOR")
             {
                 string facturas_pagos = ReporteRNegocio.stuff_facturas_pagos(obs.Trim());
 
@@ -3051,7 +3050,6 @@ namespace SoprodiApp
                                 {
                                     facturas_aplicadas_in = str["facturas_aplicadas"].ToString().Trim();
                                 }
-
                                 if (moneda == "peso")
                                 {
                                     monto_fac = str["saldo_final_peso"].ToString().Replace(".", ",");

@@ -743,9 +743,9 @@ namespace SoprodiApp.negocio
             return ReporteDB.table_totasles_c(where);
         }
 
-        internal static string trae_stuff_facturas_de_cheque(string factura)
+        internal static string trae_stuff_facturas_de_cheque(string factura, string fecha)
         {
-            return ReporteDB.trae_stuff_facturas_de_cheque(factura);
+            return ReporteDB.trae_stuff_facturas_de_cheque(factura, fecha);
         }
 
         internal static DataTable valor_prod_equivale_sp(string sw)

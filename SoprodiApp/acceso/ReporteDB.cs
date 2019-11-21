@@ -4296,7 +4296,7 @@ namespace SoprodiApp.acceso
             return dt;
         }
 
-        internal static string trae_stuff_facturas_de_cheque(string factura)
+        internal static string trae_stuff_facturas_de_cheque(string factura, string fecha)
         {
             string scalar = "";
             string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
@@ -4304,7 +4304,7 @@ namespace SoprodiApp.acceso
                 conn.Open();
                 string sql = @"(SELECT        STUFF
  ((SELECT        CAST(',' AS varchar(MAX)) + CONVERT(varchar, X.num_factura_origen) FROM     Cobranza_Seguimiento X 
- WHERE  X.num_factura = (select num_factura from cobranza_seguimiento where ISNUMERIC(num_factura) = 0 and num_factura_origen = '" + factura + "')     ORDER BY X.num_factura FOR XML PATH('')), 1, 1, ''))";
+ WHERE  X.num_factura = (select top 1 num_factura from cobranza_seguimiento where ISNUMERIC(num_factura) = 0 and num_factura_origen  like '%" + factura + "%'  and fecha_venc = CONVERT(datetime, '" + fecha+"',103))     ORDER BY X.num_factura FOR XML PATH('')), 1, 1, ''))";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
