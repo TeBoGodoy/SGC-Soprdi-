@@ -434,7 +434,7 @@
             relojito(true);
 
             document.getElementById("BTN_NETEO").style.display = "none";
-
+            document.getElementById('CB_TIPO_MONEDA2').value = "-1";
 
         }
 
@@ -1393,6 +1393,8 @@
             var MONTO_AGENDAR_PAGO = $('#MONTO_AGENDAR_PAGO').val();
             var id = $('#T_ID_EVENTO').val();
             var moneda = document.getElementById("<%=cb_tipo_pago_2.ClientID%>").value;
+            if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
+
             var tipo_doc = "temporal";
 
             var parameters = new Object();
@@ -1444,6 +1446,8 @@
             var MONTO_AGENDAR_PAGO = $('#t_monto_estim').val();
             var id = $('#fact_sele').val();
             var moneda = document.getElementById("cb_tipo_pago_estim").value;
+            if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
+
             var tipo_doc = "temporal";
 
             var parameters = new Object();
@@ -1657,6 +1661,7 @@
                 //if (id == "") { alert("error"); return false; }
 
                 if (moneda == "") { alert("Seleccione tipo Moneda"); return false; }
+                if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
                 if (tipo_doc == "") { alert("Seleccione tipo de Documento"); return false; }
 
                 var parameters = new Object();
@@ -1850,6 +1855,14 @@
                     alert("Seleccione tipo Moneda");
                     return false;
                 }
+                if (moneda == "-1") {
+                    //var gif = document.getElementById("GIF_COMPLETO");
+                    //gif.style.display = "none";
+                    relojito(false);
+                    alert("Seleccione tipo Moneda");
+                    return false;
+                }
+
                 if (tipo_doc == "") {
                     //var gif = document.getElementById("GIF_COMPLETO");
                     //gif.style.display = "none";
@@ -1922,6 +1935,10 @@
                         } catch (e) { }
                         try {
                             document.getElementById('CB_BANCOS2').value = "-1";
+                        } catch (e) { }
+
+                        try {
+                            document.getElementById('CB_TIPO_MONEDA2').value = "-1";
                         } catch (e) { }
                     }
 
@@ -2068,6 +2085,7 @@
                 if (id == "") { alert("error"); return false; }
                 if (monto == "") { alert("Ingrese un monto"); return false; }
                 if (moneda == "") { alert("Seleccione tipo Moneda"); return false; }
+                if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
                 if (tipo_doc == "") { alert("Seleccione tipo de Documento"); return false; }
 
                 var parameters = new Object();
@@ -2292,7 +2310,7 @@
             if (monto == "") { alert("Ingrese un monto"); return false; }
 
             if (moneda == "") { alert("Seleccione tipo Moneda"); return false; }
-
+            if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
             if (tipo_doc == "") { alert("Seleccione tipo de Documento"); return false; }
 
             if (banco == "-1") { alert("Seleccione un Banco"); return false; }
@@ -2462,7 +2480,7 @@
             if (id == "") { alert("error"); return false; }
 
             if (moneda == "") { alert("Seleccione tipo Moneda"); return false; }
-
+            if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
             if (tipo_doc == "") { alert("Seleccione tipo de Documento"); return false; }
 
             if (banco == "-1") { alert("Seleccione un Banco"); return false; }
@@ -2545,9 +2563,7 @@
 
             //aca LIMPIAR CAMPOS CHEQUE
 
-            try {
-                document.getElementById("CB_BANCOS2").value = "-1";
-            } catch (e) { }
+          
             try {
                 document.getElementById('T_NUM_CHEQUE2').value = "";
             } catch (e) { }
@@ -2558,9 +2574,9 @@
                 document.getElementById('T_Cuenta2').value = "";
             } catch (e) { }
 
-            try {
-
-            } catch (e) { }
+            //try {
+            //    $('#ContentPlaceHolder_Contenido_cb_tipo_pago_cheque').val("-1");
+            //} catch (e) { }
             try {
                 document.getElementById('T_OBS_CHEQUES').value = "";
             } catch (e) { }
@@ -2595,6 +2611,7 @@
             //if (id == "") { alert("error"); return false; }
 
             if (moneda == "") { alert("Seleccione tipo Moneda"); return false; }
+            if (moneda == "-1") { alert("Seleccione tipo Moneda"); return false; }
 
             if (tipo_doc == "") { alert("Seleccione tipo de Documento"); return false; }
 
@@ -2648,9 +2665,6 @@
             //aca LIMPIAR CAMPOS CHEQUE
 
             try {
-                document.getElementById("cb_bancos3").value = "-1";
-            } catch (e) { alert("ac"); }
-            try {
                 document.getElementById('T_NUM_CHEQUE3').value = "";
             } catch (e) { }
             try {
@@ -2659,7 +2673,9 @@
             try {
                 document.getElementById('T_Cuenta3').value = "";
             } catch (e) { }
-
+          <%--  try {    
+               $("#<%=cb_moneda_3.ClientID%>").val("-1");
+            } catch (e) { }--%>
         }
 
         function Borrar_Cheques2() {
@@ -3726,12 +3742,35 @@
                     $('#T_BANCO_2_LABEL_LETRAS').text('(' + tipo_DEPOSITO2.length + ')');
 
                     var largo_cod_banco = tipo_DEPOSITO2.length;
+                    var id2 = id2.replace('--', '-');
+                    var cantidades_facturas = id2.length;
+                    if (cantidades_facturas <= 9)
+                    {
+                        if (largo_cod_banco == 3)
+                        {
+                            var id_aux = id2.slice(-4);
+                            document.getElementById("T_DESCRIPCION_PAGO2").value = id_aux;
+                        }
+                        else if (largo_cod_banco == 4)
+                        {
+                            var id_aux = id2.slice(-3);
+                            document.getElementById("T_DESCRIPCION_PAGO2").value = id_aux;
+                        }
+                        else
+                        {
+                            document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
+                        }
+                    }
+                    else
+                    {
+                        document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
+                    }
 
                     var maximo_permitido = 7 - largo_cod_banco;
 
                     $("#T_DESCRIPCION_PAGO2").attr('maxlength', maximo_permitido);
 
-                    document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
+                    //document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
 
                 }
                 else {
@@ -3904,11 +3943,31 @@
             var MONEDA = document.getElementById("ContentPlaceHolder_Contenido_cb_tipo_pago_cheque").value;
             if (MONEDA == "peso") {
                 var total_peso = document.getElementById("monto_total_peso_f").value;
-                $('#T_Cuenta2').val('');
+
+                var usuario = $("#LoginName1").html();
+                if (usuario != "RSOLIS") {
+                    $('#T_Cuenta2').val(total_peso);
+                }
+                else {
+                    $('#T_Cuenta2').val('');
+                }
             }
-            else {
+            else if (MONEDA == "dolar") {
                 var total_dolar = document.getElementById("monto_total_dolar_f").value;
+
+                var usuario = $("#LoginName1").html();
+                if (usuario != "RSOLIS") {
+                    $('#T_Cuenta2').val(total_dolar);
+                }
+                else {
+                    $('#T_Cuenta2').val('');
+                }
+            }
+            else
+            {
+
                 $('#T_Cuenta2').val('');
+                     
             }
         }
 
@@ -3916,10 +3975,30 @@
             var MONEDA = document.getElementById("CB_TIPO_MONEDA2").value;
             if (MONEDA == "peso") {
                 var total_peso = document.getElementById("monto_total_peso_f").value;
-                $('#T_MONTO_PAGO2').val('');
+
+                var usuario = $("#LoginName1").html();
+                if (usuario != "RSOLIS")
+                {
+                    $('#T_MONTO_PAGO2').val(total_peso);
+                }
+                else
+                {
+                    $('#T_MONTO_PAGO2').val('');
+                }
+            }
+            else if (MONEDA == "dolar") {
+                var total_dolar = document.getElementById("monto_total_dolar_f").value;
+
+                var usuario = $("#LoginName1").html();
+                if (usuario != "RSOLIS") {
+                    $('#T_MONTO_PAGO2').val(total_dolar);
+                }
+                else {
+                    $('#T_MONTO_PAGO2').val('');
+                }
             }
             else {
-                var total_dolar = document.getElementById("monto_total_dolar_f").value;
+
                 $('#T_MONTO_PAGO2').val('');
             }
         }
@@ -5497,8 +5576,8 @@
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <select class="form-control input-sm" id="CB_TIPO_MONEDA2" onchange="CAMBIA_PESO_DOLAR()">
-                                          
-                                                                                                                        <option value="peso" selected>Peso</option>
+                                                                                                                        <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                                                                        <option value="peso">Peso</option>
                                                                                                                         <option value="dolar">Dolar</option>
                                                                                                                     </select>
                                                                                                                 </div>
@@ -5557,7 +5636,8 @@
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <select class="form-control" runat="server" id="cb_tipo_pago_cheque" onchange="CAMBIA_PESO_DOLAR_CHEQ()">
-                                                                                                                        <option value="peso" selected="selected">Peso</option>
+                                                                                                                        <option value="-1"  selected="selected">-- Seleccione Moneda--</option>
+                                                                                                                        <option value="peso">Peso</option>
                                                                                                                         <option value="dolar">Dolar</option>
                                                                                                                     </select>
                                                                                                                 </div>
@@ -5729,7 +5809,8 @@
 
                                                                                 <div class="col-sm-2 controls">
                                                                                     <select class="form-control input-sm" id="cb_tipo_pago_estim">
-                                                                                        <option value="peso" selected="selected">Peso</option>
+                                                                                        <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                                        <option value="peso">Peso</option>
                                                                                         <option value="dolar">Dolar</option>
                                                                                     </select>
 
@@ -5776,7 +5857,8 @@
 
                                                                     <div class="col-sm-2 controls">
                                                                         <select class="form-control input-sm" runat="server" id="cb_tipo_pago_1">
-                                                                            <option value="peso" selected="selected">Peso</option>
+                                                                            <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                            <option value="peso">Peso</option>
                                                                             <option value="dolar">Dolar</option>
                                                                         </select>
 
@@ -6111,7 +6193,8 @@
                                                                 </div>
                                                                 <div class="col-sm-3 controls">
                                                                     <select class="form-control input-sm" id="CB_TIPO_MONEDA">
-                                                                        <option value="peso" selected>Peso</option>
+                                                                        <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                        <option value="peso">Peso</option>
                                                                         <option value="dolar">Dolar</option>
                                                                     </select>
                                                                 </div>
@@ -6200,7 +6283,8 @@
 
                                                         <div class="col-sm-2 controls">
                                                             <select class="form-control input-sm" runat="server" id="cb_tipo_pago_2">
-                                                                <option value="peso" selected>Peso</option>
+                                                                <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                <option value="peso">Peso</option>
                                                                 <option value="dolar">Dolar</option>
                                                             </select>
 
@@ -6334,7 +6418,8 @@
                                                                         </div>
                                                                         <div class="col-sm-2 controls">
                                                                             <select class="form-control input-sm" id="CB_TIPO_MONEDA3">
-                                                                                <option value="peso" selected>Peso</option>
+                                                                                <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                                <option value="peso">Peso</option>
                                                                                 <option value="dolar">Dolar</option>
                                                                             </select>
                                                                         </div>
@@ -6369,7 +6454,8 @@
 
                                                                         <div class="col-sm-2 controls">
                                                                             <select class="form-control input-sm" runat="server" id="cb_moneda_3">
-                                                                                <option value="peso" selected="selected">Peso</option>
+                                                                                <option value="-1" selected="selected">-- Seleccione Moneda--</option>
+                                                                                <option value="peso">Peso</option>
                                                                                 <option value="dolar">Dolar</option>
                                                                             </select>
                                                                         </div>
