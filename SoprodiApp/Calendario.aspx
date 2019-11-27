@@ -633,7 +633,18 @@
 
             $('#titulo_panel_finanza').html('<i class="fa fa-list"></i>Cobranza -- infor');
 
-
+            let date = new Date();
+            let day = date.getDate();
+            let month = date.getMonth();
+            month = month + 1;
+            let year = date.getFullYear();
+            var fecha_hoy;
+            if (month < 10) {
+                fecha_hoy = day + '/0' + month + '/' + year;
+            } else {
+                fecha_hoy = day + '/' + month + '/' + year;
+            }
+            $('#ContentPlaceHolder_Contenido_t_desde_mov').val(fecha_hoy);
         }
 
         function pagar_cheques() {
@@ -1822,6 +1833,8 @@
 
                 var fecha = document.getElementById('t_fech_efec').value;
 
+                var cuenta_banco_ = $('#BANK_CUENTA').val();
+
                 if (id == "") {
                     alert("error");
                     //var gif = document.getElementById("GIF_COMPLETO");
@@ -1844,11 +1857,11 @@
                     alert("Seleccione tipo de Documento");
                     return false;
                 }
-                if (descripcion.length > 8) {
+                if (descripcion.length > 7) {
                     //var gif = document.getElementById("GIF_COMPLETO");
                     //gif.style.display = "none";
                     relojito(false);
-                    alert("Descripción no debe superar 8 letras como máximo. (considerando letras banco)");
+                    alert("Descripción no debe superar 7 letras como máximo. (considerando letras banco)");
                     return false;
                 }
                 if (fecha == "") {
@@ -1865,7 +1878,7 @@
                     alert("Descripción no puede tener doble guion (--)");
                     return false;
                 }
-
+               
 
                 var parameters = new Object();
                 parameters.id = id;
@@ -1876,6 +1889,7 @@
                 parameters.cerrar = "no";
                 parameters.fecha = fecha;
                 parameters.enviar_erp = chk_enviar_erp;
+                parameters.cuenta_banco = cuenta_banco_;
 
                 parameters = JSON.stringify(parameters);
 
@@ -1910,7 +1924,23 @@
                             document.getElementById('CB_BANCOS2').value = "-1";
                         } catch (e) { }
                     }
-                    $(<%=btn_filtra_grilla.ClientID%>).click();
+
+
+                    let date = new Date();
+                    let day = date.getDate();
+                    let month = date.getMonth();
+                    month = month + 1;
+                    let year = date.getFullYear();
+                    var fecha_hoy;
+                    if (month < 10) {
+                        fecha_hoy = day + '/0' + month + '/' + year;
+                    } else {
+                        fecha_hoy = day + '/' + month + '/' + year;
+                    }
+                    $('#ContentPlaceHolder_Contenido_t_desde_mov').val(fecha_hoy);      
+                    $('#bn_mov').click();
+                    relojito(false);
+                    //$(<%=btn_filtra_grilla.ClientID%>).click();
                 });
             }
             else if (tipo_doc == "cheque") {
@@ -1965,9 +1995,22 @@
 
                         Pagado23(respuesta);
                         GuardaAccion2();
-                        $(<%=btn_filtra_grilla.ClientID%>).click();
+                        <%--$(<%=btn_filtra_grilla.ClientID%>).click();--%>
 
-
+                        let date = new Date();
+                        let day = date.getDate();
+                        let month = date.getMonth();
+                        month = month + 1;
+                        let year = date.getFullYear();
+                        var fecha_hoy;
+                        if (month < 10) {
+                            fecha_hoy = day + '/0' + month + '/' + year;
+                        } else {
+                            fecha_hoy = day + '/' + month + '/' + year;
+                        }
+                        $('#ContentPlaceHolder_Contenido_t_desde_mov').val(fecha_hoy);
+                        $('#bn_mov').click();
+                        relojito(false);
 
                     } else {
 
@@ -3610,7 +3653,9 @@
             $('#CB_DEPOSITOS_BANCO2_chosen').hide();
 
             var id = $('#T_ID_EVENTO').val();
-            var tipo_DEPOSITO = 'TARJ';
+            var tipo_DEPOSITO = 'T';
+
+            $('#BANK_CUENTA').val('110205');
 
             $('#T_BANCO_2_LABEL').text(tipo_DEPOSITO);
 
@@ -3626,7 +3671,7 @@
             try {
 
                 var id2 = $('#fact_sele').val();
-                var tipo_DEPOSITO2 = 'TARJ';
+                var tipo_DEPOSITO2 = 'T';
 
                 if (tipo_DEPOSITO2 != "-1") {
                     document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
@@ -3639,7 +3684,7 @@
 
             try {
                 var id2 = $('#fact_sele').val();
-                var tipo_DEPOSITO2 = 'TARJ';
+                var tipo_DEPOSITO2 = 'T';
 
                 if (tipo_DEPOSITO2 != "-1") {
                     document.getElementById("T_DESCRIPCION_PAGO3").value = id2;
@@ -3656,6 +3701,7 @@
             var id = $('#T_ID_EVENTO').val();
 
             var tipo_DEPOSITO = document.getElementById("CB_DEPOSITOS_BANCO").value;
+         
 
             if (tipo_DEPOSITO != "-1") {
                 document.getElementById("T_DESCRIPCION_PAGO").value = id;
@@ -3671,13 +3717,17 @@
 
                 if (tipo_DEPOSITO2 != "-1") {
 
+                    //var texto_BANCO = document.getElementById("CB_DEPOSITOS_BANCO2").text;
+                    var texto_BANCO =  $("#CB_DEPOSITOS_BANCO2 option:selected").text();
+                    texto_BANCO = texto_BANCO.substring(0, texto_BANCO.indexOf("-"));
+                    $('#BANK_CUENTA').val(texto_BANCO);
 
                     $('#T_BANCO_2_LABEL').text(tipo_DEPOSITO2);
                     $('#T_BANCO_2_LABEL_LETRAS').text('(' + tipo_DEPOSITO2.length + ')');
 
                     var largo_cod_banco = tipo_DEPOSITO2.length;
 
-                    var maximo_permitido = 8 - largo_cod_banco;
+                    var maximo_permitido = 7 - largo_cod_banco;
 
                     $("#T_DESCRIPCION_PAGO2").attr('maxlength', maximo_permitido);
 
@@ -3688,6 +3738,7 @@
                     document.getElementById("T_DESCRIPCION_PAGO2").value = "";
                     $('#T_BANCO_2_LABEL').text("");
                     $('#T_BANCO_2_LABEL_LETRAS').text("");
+                    $('#BANK_CUENTA').val('');
                 }
             } catch (e) { }
 
@@ -4039,7 +4090,7 @@
             let day = date.getDate();
             let month = date.getMonth();
             let year = date.getFullYear();
-
+            month = month + 1;
             var fecha_hoy;
             if (month < 10) {
                 fecha_hoy = day + '/0' + month + '/' + year;
@@ -5446,7 +5497,7 @@
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <select class="form-control input-sm" id="CB_TIPO_MONEDA2" onchange="CAMBIA_PESO_DOLAR()">
-                                                                                                                        >
+                                          
                                                                                                                         <option value="peso" selected>Peso</option>
                                                                                                                         <option value="dolar">Dolar</option>
                                                                                                                     </select>
@@ -5457,7 +5508,7 @@
                                                                                                                 <%--                <h4 style="font-size:13px;color:yellowgreen;" id="T_BANCO_2_LABEL_LETRAS"></h4>--%>
 
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="text" maxlength="10" class="form-control input-sm" id="T_DESCRIPCION_PAGO2" placeholder="Descripcion..." />
+                                                                                                                    <input maxlength="9" class="form-control input-sm" id="T_DESCRIPCION_PAGO2" placeholder="Descripcion..." />
                                                                                                                 </div>
 
                                                                                                             </div>
@@ -5546,7 +5597,7 @@
                                                                                                         <div class="box">
                                                                                                             <div class="form-group">
                                                                                                                 <div class="col-sm-2 controls">
-                                                                                                                    <input type="text" maxlength="8" class="form-control" id="T_DESCRIPCION_CHEQUES_3" placeholder="Descrip.paraFactura ..." />
+                                                                                                                    <input type="text" maxlength="7" class="form-control" id="T_DESCRIPCION_CHEQUES_3" placeholder="Descrip.paraFactura ..." />
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
@@ -5831,6 +5882,7 @@
                                             <div class="form-horizontal">
                                                 <!-- ********************************************************************* -->
                                                 <input type="hidden" id="T_ID_EVENTO" />
+                                                <input type="hidden" id="BANK_CUENTA" />
                                                 <input type="hidden" id="T_MONTO_DOC" />
                                                 <div class="form-group">
                                                     <label class="col-sm-1 control-label">

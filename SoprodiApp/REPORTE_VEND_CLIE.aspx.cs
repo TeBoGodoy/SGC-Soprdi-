@@ -2964,7 +2964,6 @@ namespace SoprodiApp
             }
             HTML += "</tr>";
 
-
             //////aca sort ------------>
             HTML += "<tr>";
             HTML += "<th colspan=1; style='background-color: white !important; color:black !important;'> </th>";

@@ -2802,6 +2802,7 @@ namespace SoprodiApp
             smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //smtp.Credentials = new NetworkCredential("soc@soprodi.cl", "soprodi2019");
             try
             {
                 email = subir_y_adjuntar_archivos(email);
@@ -2823,7 +2824,7 @@ namespace SoprodiApp
             }
             catch (Exception ex)
             {
-                ScriptManager.RegisterStartupScript(Page, this.GetType(), "correo_bodega", "<script>alert('ERROR AL ENVIAR CORREO!');</script>", false);
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "correo_bodega", "<script>alert('ERROR AL ENVIAR CORREO! "+ex.Message+"');</script>", false);
             }
 
             /////desde gmail

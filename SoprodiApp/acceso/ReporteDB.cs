@@ -8868,7 +8868,30 @@ namespace SoprodiApp.acceso
             string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"select *, '' as Elim from [V_COBRANZA_MOVIMIENTOS] where 1=1 " + where;
+                string sql = @"select 
+	                       [id]
+                          ,[Nº DOCUMENTO]
+                          ,[Monto]
+                          ,[RutCliente]
+                          ,[NombreCliente]
+                          ,[Estado]
+                          ,[T.Doc]
+                          ,[OBS]
+                          ,[Usuario]
+                          ,[num_factura_origen]
+                          ,[FechaEvento]
+                          ,[FechaVenc]
+                          ,[estado_ingresado]
+                          ,[observacion]
+                          ,[aux1]
+                          ,[aux2]
+                          ,[aux3]
+                          ,[fecha_creada]
+                          ,[aux4]
+                          ,[id_estado]
+                          ,[G]
+                          ,[STUFF_BATNBR]
+                          ,'' as Elim from [V_COBRANZA_MOVIMIENTOS] where 1=1 " + where;
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 try

@@ -1083,7 +1083,7 @@ namespace SoprodiApp
             SP_formato += "         <td style='padding:0cm 0cm 0cm 0cm'></td> ";
             SP_formato += "     </tr> ";
             SP_formato += "     <tr> ";
-            SP_formato += "         <td style = 'padding:0cm 0cm 0cm 0cm' > ";
+            SP_formato += "         <td style='padding:0cm 0cm 0cm 0cm' > ";
             SP_formato += "             <span class='table'><b><span style = 'font-size:8pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > Teléfono </span></b><u></u><u></u></span> ";
             SP_formato += "         </td> ";
             SP_formato += "         <td style='padding:0cm 0cm 0cm 0cm'> ";
@@ -1407,6 +1407,30 @@ namespace SoprodiApp
             SP_formato += " </table> ";
 
             return SP_formato;
+        }
+
+
+        internal static List<DateTime> DiasEnSemana(DateTime desde, DateTime hasta)
+        {
+
+            List<DateTime> days = new List<DateTime>();
+
+            TimeSpan difference = hasta.Subtract(desde.Date);
+            DateTime hoy = desde;
+            days.Add(hoy);
+
+            if (difference.TotalDays == 0)
+            {
+
+            }
+            else
+            {
+                for (var i = 1; i <= difference.TotalDays; i++)
+                {
+                    days.Add(hoy.AddDays(i));
+                }
+            }
+            return days;
         }
 
         internal static string agrega_comillas(string p)

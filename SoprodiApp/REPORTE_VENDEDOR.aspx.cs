@@ -1864,7 +1864,7 @@ namespace SoprodiApp
             string correo_vendedor_por_cliente = ReporteRNegocio.trae_corr_vend_por_cliente(rutcliente.Replace("-", "").Replace(".", ""));
             if (correo_vendedor_por_cliente != "")
             {
-                email.CC.Add(correo_vendedor_por_cliente);
+                //email.CC.Add(correo_vendedor_por_cliente);
             }
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
@@ -1908,7 +1908,9 @@ namespace SoprodiApp
             smtp.Port = 25;
             smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            smtp.Credentials = new NetworkCredential("soc@soprodi.cl", "soprodi2019");
+
             try
             {
                 string MAIL_USER = "";
@@ -1931,7 +1933,7 @@ namespace SoprodiApp
             }
             catch (Exception ex)
             {
-                lb_mensaj.Text = "Error al enviar ";
+                lb_mensaj.Text = "Error al enviar "+ ex.Message;
             }
             g_doc.Visible = false;
             G_CRUZADO.Visible = false;

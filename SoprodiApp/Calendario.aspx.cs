@@ -3002,7 +3002,7 @@ namespace SoprodiApp
 
         //public static double suma_deposit;
         [WebMethod]
-        public static string Registrar_Pago_efectivo2(string id, string monto, string moneda, string tipo_doc, string descripcion, string cerrar, string fecha, string enviar_erp)
+        public static string Registrar_Pago_efectivo2(string id, string monto, string moneda, string tipo_doc, string descripcion, string cerrar, string fecha, string enviar_erp, string cuenta_banco)
         {
             string ok_pago = "Pago Realizado !";
             try
@@ -3157,7 +3157,7 @@ namespace SoprodiApp
                             query += "usuario, ";
                             query += "num_factura_origen, ";
                             query += "fecha, ";
-                            query += "fecha_venc, estado_ingresado, aux3, aux4, aux2 ";
+                            query += "fecha_venc, estado_ingresado, aux3, aux4, aux2, aux5 ";
                             query += ") VALUES ( ";
                             query += "@_num_factura, ";
                             query += "@_monto_doc, ";
@@ -3168,7 +3168,7 @@ namespace SoprodiApp
                             query += "@_usuario, ";
                             query += "@_num_factura_origen,  ";
                             query += "CONVERT(datetime, @_fecha, 103), ";
-                            query += "CONVERT(datetime, GETDATE(), 103), 0 , @_aux3, @_aux4, @_aux2";
+                            query += "CONVERT(datetime, GETDATE(), 103), 0 , @_aux3, @_aux4, @_aux2, @_aux5";
                             query += "); ";
 
                             List<SPVars> vars = new List<SPVars>();
@@ -3219,6 +3219,7 @@ namespace SoprodiApp
                                 vars.Add(new SPVars() { nombre = "_usuario", valor = HttpContext.Current.Session["user"].ToString() });
                                 vars.Add(new SPVars() { nombre = "_num_factura_origen", valor = id });
                                 vars.Add(new SPVars() { nombre = "_aux3", valor = facturas_aplicadas });
+                                vars.Add(new SPVars() { nombre = "_aux5", valor = cuenta_banco });
                                 vars.Add(new SPVars() { nombre = "_fecha", valor = fecha_pago });
                                 vars.Add(new SPVars() { nombre = "_fecha_venc", valor = DateTime.Now.ToShortDateString() });
 
@@ -3614,7 +3615,7 @@ namespace SoprodiApp
             string pago_ok = "";
             if (Convert.ToInt32(cont_cheq) == cont_cheq2)
             {
-                pago_ok = Registrar_Pago_efectivo2(id, total.ToString(), moneda, tipo_doc, "Pago Con Cheque *" + num_cheques + "*", "no", vencimiento, enviar_erp);
+                pago_ok = Registrar_Pago_efectivo2(id, total.ToString(), moneda, tipo_doc, "Pago Con Cheque *" + num_cheques + "*", "no", vencimiento, enviar_erp, "CHEQUE");
             }
             List<string> facturas_al_erp = new List<string>();
             foreach (string fact in facturas)
@@ -5501,8 +5502,7 @@ namespace SoprodiApp
 
                 try
                 {
-                    //e.Row.Cells[12].Visible = false;
-                    //G_MOV_SOL.HeaderRow.Cells[12].Visible = false;
+           
                     e.Row.Cells[13].Visible = false;
                     G_MOV_SOL.HeaderRow.Cells[13].Visible = false;
                     e.Row.Cells[14].Visible = false;
@@ -5517,6 +5517,7 @@ namespace SoprodiApp
                     G_MOV_SOL.HeaderRow.Cells[18].Visible = false;
                     e.Row.Cells[19].Visible = false;
                     G_MOV_SOL.HeaderRow.Cells[19].Visible = false;
+                 
                 }
                 catch { }
 
@@ -6010,8 +6011,7 @@ namespace SoprodiApp
             G_FACTURAS_PAGABLES.Visible = true;
             G_FACTURAS_PAGABLES.DataSource = facturas_pagables;
             G_FACTURAS_PAGABLES.DataBind();
-
-            
+    
             tabla_documentos = "<br>";
 
             tabla_documentos += "<input type='submit' name='btn_recalcular_saldos' style='visibility:hidden;position:absolute;' value='ASIGNAR NOTA CREDITO' onclick='recalcular_saldos_cm();' id='btn_recalcular_saldos' class='btn btn-success'> ";
