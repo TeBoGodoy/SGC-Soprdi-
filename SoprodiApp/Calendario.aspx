@@ -8,16 +8,17 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder_Master" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_Contenido" runat="server">
-    <ajaxToolkit:ToolkitScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="900000" EnableScriptGlobalization="True" EnableScriptLocalization="True">
-    </ajaxToolkit:ToolkitScriptManager>
+
+    
+<%--    <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="True" EnableScriptLocalization="True">
+    </ajaxToolkit:ToolkitScriptManager>--%>
 
     <style>
         .fa-input {
             font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
-        .doc_ingresado 
-        {
+        .doc_ingresado {
             background-color: #00ab0545 !important;
         }
 
@@ -1486,7 +1487,7 @@
                     alert(resp);
                     relojito(false);
                 }
-               
+
             });
         }
 
@@ -1891,7 +1892,7 @@
                     alert("Descripción no puede tener doble guion (--)");
                     return false;
                 }
-               
+
 
                 var parameters = new Object();
                 parameters.id = id;
@@ -1954,7 +1955,7 @@
                     } else {
                         fecha_hoy = day + '/' + month + '/' + year;
                     }
-                    $('#ContentPlaceHolder_Contenido_t_desde_mov').val(fecha_hoy);      
+                    $('#ContentPlaceHolder_Contenido_t_desde_mov').val(fecha_hoy);
                     $('#bn_mov').click();
                     relojito(false);
                     //$(<%=btn_filtra_grilla.ClientID%>).click();
@@ -2563,7 +2564,7 @@
 
             //aca LIMPIAR CAMPOS CHEQUE
 
-          
+
             try {
                 document.getElementById('T_NUM_CHEQUE2').value = "";
             } catch (e) { }
@@ -3717,7 +3718,7 @@
             var id = $('#T_ID_EVENTO').val();
 
             var tipo_DEPOSITO = document.getElementById("CB_DEPOSITOS_BANCO").value;
-         
+
 
             if (tipo_DEPOSITO != "-1") {
                 document.getElementById("T_DESCRIPCION_PAGO").value = id;
@@ -3734,7 +3735,7 @@
                 if (tipo_DEPOSITO2 != "-1") {
 
                     //var texto_BANCO = document.getElementById("CB_DEPOSITOS_BANCO2").text;
-                    var texto_BANCO =  $("#CB_DEPOSITOS_BANCO2 option:selected").text();
+                    var texto_BANCO = $("#CB_DEPOSITOS_BANCO2 option:selected").text();
                     texto_BANCO = texto_BANCO.substring(0, texto_BANCO.indexOf("-"));
                     $('#BANK_CUENTA').val(texto_BANCO);
 
@@ -3744,25 +3745,20 @@
                     var largo_cod_banco = tipo_DEPOSITO2.length;
                     var id2 = id2.replace('--', '-');
                     var cantidades_facturas = id2.length;
-                    if (cantidades_facturas <= 9)
-                    {
-                        if (largo_cod_banco == 3)
-                        {
+                    if (cantidades_facturas <= 9) {
+                        if (largo_cod_banco == 3) {
                             var id_aux = id2.slice(-4);
                             document.getElementById("T_DESCRIPCION_PAGO2").value = id_aux;
                         }
-                        else if (largo_cod_banco == 4)
-                        {
+                        else if (largo_cod_banco == 4) {
                             var id_aux = id2.slice(-3);
                             document.getElementById("T_DESCRIPCION_PAGO2").value = id_aux;
                         }
-                        else
-                        {
+                        else {
                             document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
                         }
                     }
-                    else
-                    {
+                    else {
                         document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
                     }
 
@@ -3954,7 +3950,7 @@
             }
             else if (MONEDA == "dolar") {
                 var total_dolar = document.getElementById("monto_total_dolar_f").value;
-
+                total_dolar = total_dolar.replace(',', '.');
                 var usuario = $("#LoginName1").html();
                 if (usuario != "RSOLIS") {
                     $('#T_Cuenta2').val(total_dolar);
@@ -3963,11 +3959,10 @@
                     $('#T_Cuenta2').val('');
                 }
             }
-            else
-            {
+            else {
 
                 $('#T_Cuenta2').val('');
-                     
+
             }
         }
 
@@ -3976,20 +3971,18 @@
             if (MONEDA == "peso") {
                 var total_peso = document.getElementById("monto_total_peso_f").value;
 
-                var usuario = $("#LoginName1").html();
-                if (usuario != "RSOLIS")
-                {
+                var usuario = $("#LoginName1").html().toUpperCase();
+                if (usuario != "RSOLIS") {
                     $('#T_MONTO_PAGO2').val(total_peso);
                 }
-                else
-                {
+                else {
                     $('#T_MONTO_PAGO2').val('');
                 }
             }
             else if (MONEDA == "dolar") {
                 var total_dolar = document.getElementById("monto_total_dolar_f").value;
-
-                var usuario = $("#LoginName1").html();
+                total_dolar = total_dolar.replace(',', '.');
+                var usuario = $("#LoginName1").html().toUpperCase();
                 if (usuario != "RSOLIS") {
                     $('#T_MONTO_PAGO2').val(total_dolar);
                 }
@@ -4176,6 +4169,8 @@
             } else {
                 fecha_hoy = day + '/' + month + '/' + year;
             }
+
+            $('#CB_TIPO_MONEDA2').val("peso");
 
             var fecha_neteo = $('#T_FECHA_NETEO').val();
 
@@ -4590,6 +4585,8 @@
             }
     </style>
 
+        <ajaxToolkit:ToolkitScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="900000" EnableScriptGlobalization="True" EnableScriptLocalization="True">
+    </ajaxToolkit:ToolkitScriptManager>
     <%--  <div class="page-title" style="margin-top: -27px">
         <div>
             <i class="fa fa-file-o fa-3x"></i><a class="h1" href="MENU_finanzas.aspx">Finanzas</a>
@@ -4611,13 +4608,13 @@
         </ul>
     </div>
     <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
-        <Triggers>
+        <triggers>
             <asp:PostBackTrigger ControlID="btn_cobrar" />
             <asp:PostBackTrigger ControlID="btn_excel_3" />
             <asp:PostBackTrigger ControlID="btn_excel2" />
 
-        </Triggers>
-        <ContentTemplate>
+        </triggers>
+        <contenttemplate>
 
 
             <script type="text/javascript">
@@ -5192,9 +5189,17 @@
                                                 <br />
                                                 <div class="row"></div>
                                                 <div class="row"></div>
+
+                  
+                                            <asp:UpdatePanel runat="server" ID="UpdatePanel5" UpdateMode="Conditional">
+                                                <Triggers>
+                                                    <asp:AsyncPostBackTrigger ControlID="G_INIT"  />
+                                                </Triggers>
+                                                <ContentTemplate>
+
                                                 <div style="overflow: auto;">
                                                     <asp:GridView ID="G_INIT" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar" OnRowDataBound="G_INIT_RowDataBound" runat="server" Visible="true"
-                                                        ShowHeaderWhenEmpty="True" Font-Size="13px" DataKeyNames="rutcliente, id, Saldo_Peso, Saldo_Dolar, TDoc, NºDoc, FVenc, neto_peso, tcamb">
+                                                        ShowHeaderWhenEmpty="True" Font-Size="13px" DataKeyNames="rutcliente, id, Saldo_Peso, Saldo_Dolar, TDoc, NºDoc, FVenc, neto_peso, tcamb, TMoned">
                                                         <HeaderStyle CssClass="test no-sort" />
                                                         <Columns>
 
@@ -5210,9 +5215,10 @@
                                                                 <ItemTemplate>
                                                                     <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
                                                                     </div>
-                                                                    <asp:TextBox runat="server" ID="txt_peso" Style="width: 78px;" Text='<%# Eval("Saldo_Peso") %>' CssClass="txtgrilla" />
-                                                                    <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
-                                                                        CommandName="Actualiza_invoice" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />--%>
+                                                                    <asp:TextBox runat="server" ID="txt_peso"
+                                                                        OnTextChanged="txt_peso_TextChanged" 
+                                                                        Style="width: 78px;" Text='<%# Eval("Saldo_Peso") %>' CssClass="txtgrilla" />
+                                                        
                                                                 </ItemTemplate>
                                                                 <HeaderStyle Width="15px" />
                                                                 <ItemStyle HorizontalAlign="Center" />
@@ -5223,7 +5229,9 @@
                                                                 <ItemTemplate>
                                                                     <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
                                                                     </div>
-                                                                    <asp:TextBox runat="server" ID="txt_dolar" Style="width: 78px;" Text='<%# Eval("Saldo_Dolar") %>' CssClass="txtgrilla" />
+                                                                    <asp:TextBox runat="server" ID="txt_dolar"
+                                                                              OnTextChanged="txt_peso_TextChanged" 
+                                                                        Style="width: 78px;" Text='<%# Eval("Saldo_Dolar") %>' CssClass="txtgrilla" />
                                                                     <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
                                                                         CommandName="Actualiza_invoice" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />--%>
                                                                 </ItemTemplate>
@@ -5289,6 +5297,12 @@
                                                     </asp:GridView>
 
                                                 </div>
+
+                                                    
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                 
+
                                                 <div id="cerrad_abier" runat="server" class="col-sm-12">
 
                                                     <div class="row grid-demo">
@@ -6971,12 +6985,12 @@
                 </div>
             </div>
 
-        </ContentTemplate>
+        </contenttemplate>
     </asp:UpdatePanel>
 
 
     <asp:UpdateProgress ID="prgLoadingStatus" runat="server" DynamicLayout="true">
-        <ProgressTemplate>
+        <progresstemplate>
             <div id="overlay" class="gif">
                 <div id="modalprogress">
                     <div id="theprogress">
@@ -6984,7 +6998,7 @@
                     </div>
                 </div>
             </div>
-        </ProgressTemplate>
+        </progresstemplate>
     </asp:UpdateProgress>
 
 

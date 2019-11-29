@@ -1562,7 +1562,8 @@ namespace SoprodiApp
                 double.TryParse(p.Substring(0, p.IndexOf(",")), out d3);
                 string aux3 = "";
                 if (d3 == 0) { aux3 = "0"; } else { aux3 = d3.ToString("N0"); }
-                return aux3 + p.Substring(p.IndexOf(","), 4);
+                string ceros_decimales = p.Substring(p.IndexOf(","))+"00000";
+                return aux3 + ceros_decimales.Substring(0,4);
             }
             catch
             {

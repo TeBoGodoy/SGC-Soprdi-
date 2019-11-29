@@ -35,6 +35,7 @@ namespace SoprodiApp
             once_planificador.Attributes["style"] = "display:none";
             doce_cotizador.Attributes["style"] = "display:none";
             trece_admin_cotizador_.Attributes["style"] = "display:none";
+            catorce_trayectora.Attributes["style"] = "display:none";
 
 
             foreach (string u_ne in u_negocio)
@@ -93,6 +94,11 @@ namespace SoprodiApp
                 {
                     trece_admin_cotizador_.Attributes["style"] = "display:block";
                 }
+                if (u_ne.Trim() == "14")
+                {
+                    catorce_trayectora.Attributes["style"] = "display:block";
+                }
+
             }
             //List<string> u_app = ReporteRNegocio.trae_app(User.Identity.Name).Split(',').ToList();
             //bool correcto_app = false;

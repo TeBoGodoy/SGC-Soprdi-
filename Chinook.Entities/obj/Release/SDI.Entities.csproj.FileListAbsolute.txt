@@ -15,3 +15,8 @@ C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Release\CRM.E
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Release\SDI.Entities.csprojAssemblyReference.cache
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Release\CRM.Entities.dll
 C:\Users\ESTEBAN\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Release\CRM.Entities.pdb
+C:\Users\Acer\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Release\CRM.Entities.dll
+C:\Users\Acer\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\bin\Release\CRM.Entities.pdb
+C:\Users\Acer\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Release\SDI.Entities.csprojAssemblyReference.cache
+C:\Users\Acer\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Release\CRM.Entities.dll
+C:\Users\Acer\Documents\GitHub\SGC-Soprdi-\Chinook.Entities\obj\Release\CRM.Entities.pdb

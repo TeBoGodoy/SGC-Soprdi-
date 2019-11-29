@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/COTIZADOR/Cotizador2.Master" AutoEventWireup="true" CodeBehind="DashboardAdmin.aspx.cs" Inherits="SoprodiApp.COTIZADOR.DashboardAdmin" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="CONTENIDO_BODY" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
@@ -193,6 +194,7 @@
                             </asp:UpdatePanel>
                         </div>
                     </div>
+                </div>
             </section>
         </ContentTemplate>
     </asp:UpdatePanel>
@@ -446,129 +448,7 @@
             }
         }
 
-        function grafico1() {
-            <%--try {
-                // Set paths
-                // ------------------------------
 
-                require.config({
-                    paths: {
-                        echarts: 'app-assets/vendors/js/charts/echarts'
-                    }
-                });
-
-
-                // Configuration
-                // ------------------------------
-
-                require(
-                    [
-                        'echarts',
-                        'echarts/chart/pie',
-                        'echarts/chart/funnel'
-                    ],
-
-
-                    // Charts setup
-                    function (ec) {
-
-                        var _cats = JSON.parse(document.getElementById('<%= T_GRAF1_CATS.ClientID %>').value);
-                        var _data = JSON.parse(document.getElementById('<%= T_GRAF1_DATA.ClientID %>').value);
-
-                        console.log(_cats);
-                        console.log(_data);
-
-                        // Initialize chart
-                        // ------------------------------
-                        var myChart = ec.init(document.getElementById('basic-pie'));
-
-                        // Chart Options
-                        // ------------------------------
-                        chartOptions = {
-
-                            // Add title
-                            title: {
-                                text: 'Categorías',
-                                subtext: '% Cotizadas',
-                                x: 'center'
-                            },
-
-                            // Add tooltip
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b}: {c} ({d}%)"
-                            },
-
-                            // Add legend
-                            legend: {
-                                orient: 'vertical',
-                                x: 'left',
-                                data: _cats
-                                //data: ['IE', 'Opera', 'Safari', 'Firefox', 'Chrome']
-                            },
-
-                            // Display toolbox
-                            toolbox: {
-                                show: true,
-                                orient: 'vertical',
-                                feature: {
-                                    saveAsImage: {
-                                        show: true,
-                                        title: 'Guardar como imagen',
-                                        lang: ['Save']
-                                    }
-                                }
-                            },
-
-                            // Add series
-                            series: [{
-                                name: 'Categoría',
-                                type: 'pie',
-                                radius: '70%',
-                                center: ['70%', '57.5%'],
-                                data: _data
-                                //    [
-                                //    { value: 335, name: 'IE' },
-                                //    { value: 310, name: 'Opera' },
-                                //    { value: 234, name: 'Safari' },
-                                //    { value: 135, name: 'Firefox' },
-                                //    { value: 1548, name: 'Chrome' }
-                                //]
-                            }]
-                        };
-
-                        // Apply options
-                        // ------------------------------
-
-                        myChart.setOption(chartOptions);
-
-
-                        // Resize chart
-                        // ------------------------------
-
-                        $(function () {
-
-                            // Resize chart on menu width change and window resize
-                            $(window).on('resize', resize);
-                            $(".menu-toggle").on('click', resize);
-
-                            // Resize function
-                            function resize() {
-                                setTimeout(function () {
-
-                                    // Resize chart
-                                    myChart.resize();
-                                }, 200);
-                            }
-                        });
-                    }
-                );
-            }
-            catch (exc) {
-
-
-            }--%>
-        }
 
     </script>
 </asp:Content>

@@ -3071,7 +3071,7 @@ namespace SoprodiApp
                             }
                         }
 
-                        if (facturas_aplicadas == "") 
+                        if (facturas_aplicadas == "")
                         {
                             facturas_aplicadas = fact.Trim();
                         }
@@ -3127,7 +3127,7 @@ namespace SoprodiApp
                             }
                             DBUtil db = new DBUtil();
                             DataTable dt = new DataTable();
-                            dt = db.consultar("select top 1 rutcliente from V_COBRANZA where factura =  '" + fact.Trim() + "'");
+                            dt = db.consultar("select top 1 rutcliente, tipo_moneda from V_COBRANZA where factura =  '" + fact.Trim() + "'");
                             string query = "";
                             query += "INSERT INTO COBRANZA_PAGOS ( ";
                             query += "id_cobranza, ";
@@ -3182,11 +3182,19 @@ namespace SoprodiApp
                                 string descripcion_cheque = HttpContext.Current.Session["descrip_cheque"].ToString();
                                 vars.Add(new SPVars() { nombre = "_aux2", valor = descripcion_cheque });
                             }
-                            else {
+                            else
+                            {
 
                                 vars.Add(new SPVars() { nombre = "_aux2", valor = DBNull.Value });
 
                             }
+
+                            string moneda_cm = dt.Rows[0]["tipo_moneda"].ToString().Replace("'", "");
+                            if (descripcion.Contains("NET"))
+                            {
+                                moneda = "";
+                            }
+
                             vars.Add(new SPVars() { nombre = "descripcion", valor = descripcion.Replace("'", "") + "(" + moneda + ")" });
                             vars.Add(new SPVars() { nombre = "banco", valor = fact.Trim() });
 
@@ -3316,7 +3324,7 @@ namespace SoprodiApp
                                     monto = monto_fac;
                                     DBUtil db = new DBUtil();
                                     DataTable dt = new DataTable();
-                                    dt = db.consultar("select top 1 rutcliente from V_COBRANZA where factura =  '" + fact.Trim() + "'");
+                                    dt = db.consultar("select top 1 rutcliente, tipo_moneda from V_COBRANZA where factura =  '" + fact.Trim() + "'");
                                     string query = "";
                                     query += "INSERT INTO COBRANZA_PAGOS ( ";
                                     query += "id_cobranza, ";
@@ -3599,8 +3607,8 @@ namespace SoprodiApp
 
         [WebMethod]
         public static string Registrar_Pago_cheque2(string id, string monto, string moneda, string tipo_doc, string banco, string vencimiento,
-                                                       string num_cheque, string tcamb, string tobs, string ttdolar, string cerrar, string total, string num_cheques, 
-                                                       string cont_cheq, string monto_cheques, string enviar_erp,string descrip_cheque)
+                                                       string num_cheque, string tcamb, string tobs, string ttdolar, string cerrar, string total, string num_cheques,
+                                                       string cont_cheq, string monto_cheques, string enviar_erp, string descrip_cheque)
         {
             //APLICACION PARA PAGAR CHEQUE VIGENTE  =  28/08/2019
             HttpContext.Current.Session["descrip_cheque"] = descrip_cheque;
@@ -3636,9 +3644,9 @@ namespace SoprodiApp
                         {
                             aux_monto = Convert.ToDouble(monto.Replace("'", "").Trim());
                         }
-                        catch 
-                        { 
-                            
+                        catch
+                        {
+
                         }
                         List<SPVars> vars2 = new List<SPVars>();
 
@@ -4634,14 +4642,35 @@ namespace SoprodiApp
                 bool puede_ = true;
 
 
-
-
+                if (busca_columna_fac)
+                {
+                    try
+                    {
+                        for (int x = 0; x <= G_INIT.HeaderRow.Cells.Count; x++)
+                        {
+                            if (G_INIT.HeaderRow.Cells[x].Text.Contains("N&#186;Doc"))
+                            {
+                                columna_fac = true;
+                                COLUMNA_DE_FACTURA = x;
+                                busca_columna_fac = false;
+                                break;
+                            }
+                        }
+                    }
+                    catch { }
+                }
 
                 //if (e.Row.Cells[4].Text == "PA" && IsNumeric(e.Row.Cells[3].Text))
                 //{
                 //    puede_ = false;
                 //    e.Row.Visible = false;
                 //}
+                TextBox tx_peso = ((TextBox)e.Row.FindControl("txt_peso"));
+                TextBox tx_dolar = ((TextBox)e.Row.FindControl("txt_dolar"));
+
+                //tx_peso.ClientID = "txt_peso" + e.Row.Cells[COLUMNA_DE_FACTURA].Text;
+
+
                 if (e.Row.Cells[4].Text == "PA")
                 {
 
@@ -4650,10 +4679,8 @@ namespace SoprodiApp
                     e.Row.Cells[13].Text = "-" + e.Row.Cells[13].Text;
                     e.Row.Cells[14].Text = "-" + e.Row.Cells[14].Text;
 
-
-                    ((TextBox)e.Row.FindControl("txt_peso")).Text = "-" + ((TextBox)e.Row.FindControl("txt_peso")).Text;
-                    ((TextBox)e.Row.FindControl("txt_dolar")).Text = "-" + ((TextBox)e.Row.FindControl("txt_dolar")).Text;
-
+                    tx_peso.Text = "-" + ((TextBox)e.Row.FindControl("txt_peso")).Text;
+                    tx_dolar.Text = "-" + ((TextBox)e.Row.FindControl("txt_dolar")).Text;
 
 
                 }
@@ -4665,12 +4692,8 @@ namespace SoprodiApp
                     e.Row.Cells[13].Text = "-" + e.Row.Cells[13].Text;
                     e.Row.Cells[14].Text = "-" + e.Row.Cells[14].Text;
 
-
-
-                    ((TextBox)e.Row.FindControl("txt_peso")).Text = "-" + ((TextBox)e.Row.FindControl("txt_peso")).Text;
-                    ((TextBox)e.Row.FindControl("txt_dolar")).Text = "-" + ((TextBox)e.Row.FindControl("txt_dolar")).Text;
-
-
+                    tx_peso.Text = "-" + ((TextBox)e.Row.FindControl("txt_peso")).Text;
+                    tx_dolar.Text = "-" + ((TextBox)e.Row.FindControl("txt_dolar")).Text;
 
                     if (e.Row.Cells[3].Text.Trim().Substring(0, 1) == "1")
                     {
@@ -4688,9 +4711,7 @@ namespace SoprodiApp
                     {
                         e.Row.Cells[13].Text = e.Row.Cells[11].Text;
                     }
-
                 }
-
 
                 if (puede_)
                 {
@@ -4835,23 +4856,7 @@ namespace SoprodiApp
                 e.Row.Cells[25].Visible = false;
                 G_INIT.HeaderRow.Cells[25].Visible = false;
 
-                if (busca_columna_fac)
-                {
-                    try
-                    {
-                        for (int x = 0; x <= G_INIT.HeaderRow.Cells.Count; x++)
-                        {
-                            if (G_INIT.HeaderRow.Cells[x].Text.Contains("N&#186;Doc"))
-                            {
-                                columna_fac = true;
-                                COLUMNA_DE_FACTURA = x;
-                                busca_columna_fac = false;
-                                break;
-                            }
-                        }
-                    }
-                    catch { }
-                }
+
                 string año_factura = e.Row.Cells[6].Text.Substring(0, 4);
                 if (columna_fac)
                 {
@@ -5409,7 +5414,7 @@ namespace SoprodiApp
                     if (e.Row.Cells[13].Text == "0")
                     {
                         e.Row.Attributes["class"] = "table-flag-red";
-                        
+
                     }
                     else
                     {
@@ -5502,7 +5507,7 @@ namespace SoprodiApp
 
                 try
                 {
-           
+
                     e.Row.Cells[13].Visible = false;
                     G_MOV_SOL.HeaderRow.Cells[13].Visible = false;
                     e.Row.Cells[14].Visible = false;
@@ -5517,7 +5522,7 @@ namespace SoprodiApp
                     G_MOV_SOL.HeaderRow.Cells[18].Visible = false;
                     e.Row.Cells[19].Visible = false;
                     G_MOV_SOL.HeaderRow.Cells[19].Visible = false;
-                 
+
                 }
                 catch { }
 
@@ -5831,6 +5836,7 @@ namespace SoprodiApp
             facturas_pagables.Columns.Add("saldo_final_peso");
             facturas_pagables.Columns.Add("saldo_final_dolar");
             facturas_pagables.Columns.Add("facturas_aplicadas");
+            facturas_pagables.Columns.Add("tipo_moneda");
 
             tabla_documentos += "<table class=\"table fill-head table-bordered\">";
             tabla_documentos += "<thead class=\"test\">";
@@ -5851,6 +5857,9 @@ namespace SoprodiApp
 
             Boolean existe_nota_credito = false;
             Boolean tasa_cambio_iguales_bool = false;
+
+            string moneda_cm = "";
+            string tasas_cambio_cm = "";
             string tipo_cambio_iguales = "";
             double tasa_Cambio_q = 0;
             foreach (GridViewRow dtgItem in this.G_INIT.Rows)
@@ -5864,12 +5873,37 @@ namespace SoprodiApp
                     DataRow row;
                     row = facturas_pagables.NewRow();
 
+                    string tipo_moneda = G_INIT.DataKeys[dtgItem.RowIndex].Values[9].ToString().Trim();
 
                     if (trues)
                     { rut_cliente = G_INIT.DataKeys[dtgItem.RowIndex].Values[0].ToString(); trues = false; }
 
                     string tipo_doc = G_INIT.DataKeys[dtgItem.RowIndex].Values[4].ToString().Trim();
                     string num_fact = G_INIT.DataKeys[dtgItem.RowIndex].Values[5].ToString().Trim();
+
+
+                    ///TASA CAMBIO 
+                    string tasa_cambio = G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim();
+
+                    try
+                    {
+                        tasa_Cambio_q += Convert.ToDouble(tasa_cambio);
+                    }
+                    catch
+                    {
+
+                    }
+
+                    if (tasa_cambio != tipo_cambio_iguales)
+                    {
+                        tasa_cambio_iguales_bool = false;
+                        tipo_cambio_iguales = G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim();
+                    }
+                    else
+                    {
+                        tasa_cambio_iguales_bool = true;
+                    }
+
 
                     string peso = "";
                     string dolar = "";
@@ -5878,6 +5912,8 @@ namespace SoprodiApp
                         peso = "-" + G_INIT.DataKeys[dtgItem.RowIndex].Values[2].ToString(); trues = false;
                         dolar = "-" + G_INIT.DataKeys[dtgItem.RowIndex].Values[3].ToString(); trues = false;
                         existe_nota_credito = true;
+                        moneda_cm = tipo_moneda;
+                        tasas_cambio_cm = tasa_cambio;
                     }
                     else
                     {
@@ -5885,6 +5921,10 @@ namespace SoprodiApp
                         dolar = G_INIT.DataKeys[dtgItem.RowIndex].Values[3].ToString(); trues = false;
                     }
 
+                    double tasa_cmb;
+                    double.TryParse(tasa_cambio, out tasa_cmb);
+
+                    // se modifica valores para aplicar diferente saldo
                     string valors_peso = "";
                     string valors_dolar = "";
                     if (chk_ocultar_txt.Checked)
@@ -5894,9 +5934,32 @@ namespace SoprodiApp
                     }
                     else
                     {
+
                         valors_peso = ((TextBox)G_INIT.Rows[Convert.ToInt32(dtgItem.RowIndex)].FindControl("txt_peso")).Text.Replace(".", "");
-                        valors_dolar = ((TextBox)G_INIT.Rows[Convert.ToInt32(dtgItem.RowIndex)].FindControl("txt_dolar")).Text.Replace(".", "");
+
+                        string valor_dolar = ((TextBox)G_INIT.Rows[Convert.ToInt32(dtgItem.RowIndex)].FindControl("txt_dolar")).Text;
+                        if (valor_dolar.Contains(',') && valor_dolar.Contains('.'))
+                        {
+                            valor_dolar = valor_dolar.Replace(".", "");
+                            valors_dolar = valor_dolar;
+                        }
+                        else if (valor_dolar.Contains('.'))
+                        {
+                            valor_dolar = valor_dolar.Replace(".", ",");
+                            valors_dolar = valor_dolar;
+                        }
+                        else
+                        {
+                            valors_dolar = valor_dolar;
+                        }
+                   
+
+
                     }
+
+
+
+
                     if (tipo_doc == "IN" || tipo_doc == "DM" || tipo_doc == "CM" || (tipo_doc == "PA" && !IsNumeric(num_fact)))
                     {
                         if (tipo_doc == "IN" || tipo_doc == "DM")
@@ -5938,27 +6001,6 @@ namespace SoprodiApp
                     tabla_documentos += "<td>" + Base.monto_format(valors_peso) + "</td>";
                     tabla_documentos += "<td>" + Base.monto_format(valors_dolar) + "</td>";
 
-                    ///TASA CAMBIO 
-                    string tasa_cambio = G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim();
-
-                    try
-                    {
-                        tasa_Cambio_q += Convert.ToDouble(tasa_cambio);
-                    }
-                    catch
-                    {
-
-                    }
-
-                    if (tasa_cambio != tipo_cambio_iguales)
-                    {
-                        tasa_cambio_iguales_bool = false;
-                        tipo_cambio_iguales = G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim();
-                    }
-                    else
-                    {
-                        tasa_cambio_iguales_bool = true;
-                    }
 
                     tabla_documentos += "<td>" + G_INIT.DataKeys[dtgItem.RowIndex].Values[6].ToString().Trim() + "</td>";
                     tabla_documentos += "<td>" + G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim() + "</td>";
@@ -5968,6 +6010,8 @@ namespace SoprodiApp
                     row[7] = valors_peso;
                     row[8] = valors_dolar;
                     row[9] = "";
+
+                    row[10] = tipo_moneda;
 
                     facturas_pagables.Rows.Add(row);
 
@@ -6008,10 +6052,40 @@ namespace SoprodiApp
             DataView dv = facturas_pagables.DefaultView;
             dv.Sort = "sw_abono ASC,  SALDO_PESO asc";
             facturas_pagables = dv.ToTable();
+
+            foreach (DataRow row_1 in facturas_pagables.Rows)
+            {
+                if (existe_nota_credito)
+                {
+                    string aux_dolar_texto = row_1[2].ToString();
+
+                    double tas_cambio_cm = Convert.ToDouble(tasas_cambio_cm);
+                    double saldo_peso = Convert.ToDouble(row_1[1].ToString()); ;
+                    
+                    if (row_1[3].ToString() == "A")
+                    {
+                     
+                        float saldo_dolar = float.Parse(aux_dolar_texto);
+                        
+
+                        if (moneda_cm.Contains("PESO"))
+                        {
+                            row_1[2] = Math.Round((saldo_peso / tas_cambio_cm), 3);
+                            row_1[8] = Math.Round((saldo_peso / tas_cambio_cm), 3);
+                        }
+                        else
+                        {
+                            row_1[1] = Math.Round(saldo_dolar * tas_cambio_cm);
+                            row_1[7] = Math.Round(saldo_dolar * tas_cambio_cm);
+                        }
+                    }
+                }
+            }
+
             G_FACTURAS_PAGABLES.Visible = true;
             G_FACTURAS_PAGABLES.DataSource = facturas_pagables;
             G_FACTURAS_PAGABLES.DataBind();
-    
+
             tabla_documentos = "<br>";
 
             tabla_documentos += "<input type='submit' name='btn_recalcular_saldos' style='visibility:hidden;position:absolute;' value='ASIGNAR NOTA CREDITO' onclick='recalcular_saldos_cm();' id='btn_recalcular_saldos' class='btn btn-success'> ";
@@ -6108,7 +6182,7 @@ namespace SoprodiApp
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "dolar", "<script language='javascript'> $('#monto_total_dolar_f').val('" + sum_dolar + "'); </script>", false);
 
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "creagrilla", "<script language='javascript'>creagrilla();</script>", false);
-     
+
             relojito_false();
         }
         public void relojito_false()
@@ -6298,6 +6372,7 @@ namespace SoprodiApp
             notasdecredito.Columns.Add("tasacambio");
             notasdecredito.Columns.Add("fvenc");
             notasdecredito.Columns.Add("tipo_doc");
+            notasdecredito.Columns.Add("tipo_moneda");
 
             foreach (DataRow r in dt_facturas_pagables.Rows)
             {
@@ -6313,6 +6388,7 @@ namespace SoprodiApp
                     row[3] = r["tasacambio"].ToString();
                     row[4] = r["fvenc"].ToString();
                     row[5] = r["tipo_doc"].ToString();
+                    row[6] = r["tipo_moneda"].ToString();
 
                     notasdecredito.Rows.Add(row);
                 }
@@ -6328,6 +6404,7 @@ namespace SoprodiApp
             facturas_pagables.Columns.Add("saldo_final_peso");
             facturas_pagables.Columns.Add("saldo_final_dolar");
             facturas_pagables.Columns.Add("facturas_aplicadas");
+            facturas_pagables.Columns.Add("tipo_moneda");
 
             int cont_notas_credito = 0;
             foreach (DataRow r2 in notasdecredito.Rows)
@@ -6347,6 +6424,8 @@ namespace SoprodiApp
                 double saldo_peso_CM_aux = saldo_peso_CM;
                 double saldo_dolar_CM_aux = saldo_dolar_CM;
 
+                string tipo_moneda = r2["tipo_moneda"].ToString().Trim();
+
                 int count_facturas = 0;
                 foreach (GridViewRow dtgItem in this.G_FACTURAS_PAGABLES.Rows)
                 {
@@ -6362,7 +6441,6 @@ namespace SoprodiApp
                         double saldo_final_peso = 0;
                         double saldo_final_dolar = 0;
                         string facturas_aplicadas = "";
-
 
                         double saldo_peso_aux = Convert.ToDouble(G_FACTURAS_PAGABLES.DataKeys[dtgItem.RowIndex].Values[2].ToString());
                         double saldo_dolar_aux = Convert.ToDouble(G_FACTURAS_PAGABLES.DataKeys[dtgItem.RowIndex].Values[3].ToString());
@@ -6470,7 +6548,9 @@ namespace SoprodiApp
                                         facturas_pagables.Rows.Add(row_final);
                                     }
                                 }
+                                //if
                             }
+                            //foreach
                         }
                         else
                         {
@@ -6676,6 +6756,16 @@ namespace SoprodiApp
         protected void BTN_NETEO_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void txt_peso_TextChanged(object sender, EventArgs e)
+        {
+            string asd = "";
+        }
+
+        protected void txt_dolar_TextChanged(object sender, EventArgs e)
+        {
+            string asd = "";
         }
     }
 }

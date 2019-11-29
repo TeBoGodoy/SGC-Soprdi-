@@ -84,14 +84,10 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>bin\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>bin\Microsoft.Office.Interop.Word.dll</HintPath>
     </Reference>
     <Reference Include="SessionTimeoutControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -218,6 +214,13 @@
     </Compile>
     <Compile Include="COTIZADOR\Cotizador2.Master.designer.cs">
       <DependentUpon>Cotizador2.Master</DependentUpon>
+    </Compile>
+    <Compile Include="COTIZADOR\DashboardAdmin.aspx.cs">
+      <DependentUpon>DashboardAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="COTIZADOR\DashboardAdmin.aspx.designer.cs">
+      <DependentUpon>DashboardAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="COTIZADOR\Dashboard_admin.aspx.cs">
       <DependentUpon>Dashboard_admin.aspx</DependentUpon>
@@ -749,6 +752,13 @@
       <DependentUpon>REPORTE_VENDEDOR.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="TRAYECTORIA_VENTAS.aspx.cs">
+      <DependentUpon>TRAYECTORIA_VENTAS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TRAYECTORIA_VENTAS.aspx.designer.cs">
+      <DependentUpon>TRAYECTORIA_VENTAS.aspx</DependentUpon>
+    </Compile>
     <Compile Include="USUARIO_PRODUCTO.aspx.cs">
       <DependentUpon>USUARIO_PRODUCTO.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -766,143 +776,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Acceso.aspx" />
-    <Content Include="assets\bootstrap-colorpicker\css\colorpicker.css" />
-    <Content Include="assets\bootstrap-colorpicker\img\alpha.png" />
-    <Content Include="assets\bootstrap-colorpicker\img\hue.png" />
-    <Content Include="assets\bootstrap-colorpicker\img\saturation.png" />
-    <Content Include="assets\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
-    <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
-    <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
-    <Content Include="assets\bootstrap-daterangepicker\date.js" />
-    <Content Include="assets\bootstrap-daterangepicker\daterangepicker.css" />
-    <Content Include="assets\bootstrap-daterangepicker\daterangepicker.js" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\css\bootstrap-theme.css" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\css\bootstrap.css" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="assets\bootstrap-duallistbox\duallistbox\bootstrap-duallistbox.css" />
-    <Content Include="assets\bootstrap-duallistbox\duallistbox\bootstrap-duallistbox.js" />
-    <Content Include="assets\bootstrap-duallistbox\index.html" />
-    <Content Include="assets\bootstrap-duallistbox\libraries\jquery-1.9.0.min.js" />
-    <Content Include="assets\bootstrap-duallistbox\libraries\jquery-placeholder\jquery.placeholder.js" />
-    <Content Include="assets\bootstrap-duallistbox\libraries\modernizr\modernizr-custom.min.js" />
-    <Content Include="assets\bootstrap-duallistbox\libraries\prettify\prettify.css" />
-    <Content Include="assets\bootstrap-duallistbox\libraries\prettify\prettify.js" />
-    <Content Include="assets\bootstrap-fileupload\bootstrap-fileupload.css" />
-    <Content Include="assets\bootstrap-fileupload\bootstrap-fileupload.min.js" />
-    <Content Include="assets\bootstrap-inputmask\bootstrap-inputmask.min.js" />
-    <Content Include="assets\bootstrap-switch\examples\index.html" />
-    <Content Include="assets\bootstrap-switch\static\js\bootstrap-switch.js" />
-    <Content Include="assets\bootstrap-switch\static\stylesheets\bootstrap-switch.css" />
-    <Content Include="assets\bootstrap-timepicker\compiled\timepicker.css" />
-    <Content Include="assets\bootstrap-timepicker\js\bootstrap-timepicker.js" />
-    <Content Include="assets\bootstrap-wizard\jquery.bootstrap.wizard.js" />
-    <Content Include="assets\bootstrap-wysihtml5\bootstrap-wysihtml5.css" />
-    <Content Include="assets\bootstrap-wysihtml5\bootstrap-wysihtml5.js" />
-    <Content Include="assets\bootstrap-wysihtml5\wysihtml5-0.3.0.js" />
-    <Content Include="assets\bootstrap\css\bootstrap.min.css" />
-    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="assets\bootstrap\js\bootstrap.min.js" />
-    <Content Include="assets\ckeditor\ckeditor.js" />
-    <Content Include="assets\clockface\css\clockface.css" />
-    <Content Include="assets\clockface\js\clockface.js" />
-    <Content Include="assets\code-prettify\code-prettify.css" />
-    <Content Include="assets\code-prettify\code-prettify.js" />
-    <Content Include="assets\data-tables\bootstrap3\dataTables.bootstrap.css" />
-    <Content Include="assets\data-tables\bootstrap3\dataTables.bootstrap.js" />
-    <Content Include="assets\data-tables\images\sort_asc.png" />
-    <Content Include="assets\data-tables\images\sort_both.png" />
-    <Content Include="assets\data-tables\images\sort_desc.png" />
-    <Content Include="assets\data-tables\jquery.dataTables.js" />
-    <Content Include="assets\dropzone\downloads\css\dropzone.css" />
-    <Content Include="assets\dropzone\downloads\dropzone.min.js" />
-    <Content Include="assets\dropzone\downloads\images\spritemap%402x.png" />
-    <Content Include="assets\dropzone\downloads\images\spritemap.png" />
-    <Content Include="assets\flot\jquery.flot.crosshair.js" />
-    <Content Include="assets\flot\jquery.flot.js" />
-    <Content Include="assets\flot\jquery.flot.pie.js" />
-    <Content Include="assets\flot\jquery.flot.resize.js" />
-    <Content Include="assets\flot\jquery.flot.stack.js" />
-    <Content Include="assets\flot\jquery.flot.tooltip.min.js" />
-    <Content Include="assets\font-awesome\css\font-awesome.min.css" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\css\font-awesome.css" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\css\font-awesome.min.css" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\HELP-US-OUT.txt" />
-    <Content Include="assets\font-awesome\fonts\fontawesome-webfont-v=4.1.0.svg" />
-    <Content Include="assets\fullcalendar\fullcalendar\fullcalendar.css" />
-    <Content Include="assets\fullcalendar\fullcalendar\fullcalendar.min.js" />
-    <Content Include="assets\gmaps\gmaps.js" />
-    <Content Include="assets\gritter\css\jquery.gritter.css" />
-    <Content Include="assets\gritter\images\gritter-light.png" />
-    <Content Include="assets\gritter\images\gritter.png" />
-    <Content Include="assets\gritter\images\ie-spacer.gif" />
-    <Content Include="assets\gritter\js\jquery.gritter.js" />
-    <Content Include="assets\jquery-cookie\jquery.cookie.js" />
-    <Content Include="assets\jquery-knob\jquery.knob.js" />
-    <Content Include="assets\jquery-pwstrength\jquery.pwstrength.css" />
-    <Content Include="assets\jquery-pwstrength\jquery.pwstrength.min.js" />
-    <Content Include="assets\jquery-slimscroll\jquery.slimscroll.min.js" />
-    <Content Include="assets\jquery-tags-input\jquery.tagsinput.css" />
-    <Content Include="assets\jquery-tags-input\jquery.tagsinput.min.js" />
-    <Content Include="assets\jquery-ui\images\animated-overlay.gif" />
-    <Content Include="assets\jquery-ui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="assets\jquery-ui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="assets\jquery-ui\images\ui-icons_222222_256x240.png" />
-    <Content Include="assets\jquery-ui\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="assets\jquery-ui\images\ui-icons_454545_256x240.png" />
-    <Content Include="assets\jquery-ui\images\ui-icons_888888_256x240.png" />
-    <Content Include="assets\jquery-ui\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="assets\jquery-ui\jquery-ui.min.css" />
-    <Content Include="assets\jquery-ui\jquery-ui.min.js" />
-    <Content Include="assets\jquery-validation\dist\additional-methods.min.js" />
-    <Content Include="assets\jquery-validation\dist\jquery.validate.min.js" />
-    <Content Include="assets\jqvmap\jqvmap\data\jquery.vmap.sampledata.js" />
-    <Content Include="assets\jqvmap\jqvmap\jquery.vmap.min.js" />
-    <Content Include="assets\jqvmap\jqvmap\jqvmap.css" />
-    <Content Include="assets\jqvmap\jqvmap\maps\jquery.vmap.europe.js" />
-    <Content Include="assets\jqvmap\jqvmap\maps\jquery.vmap.germany.js" />
-    <Content Include="assets\jqvmap\jqvmap\maps\jquery.vmap.usa.js" />
-    <Content Include="assets\jqvmap\jqvmap\maps\jquery.vmap.world.js" />
-    <Content Include="assets\prettyPhoto\css\prettyPhoto.css" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_rounded\btnNext.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_rounded\btnPrevious.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_rounded\contentPattern.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_rounded\loader.gif" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_rounded\sprite.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_square\btnNext.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_square\btnPrevious.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_square\loader.gif" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\dark_square\sprite.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\default_thumb.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\loader.gif" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\sprite.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\sprite_next.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\sprite_prev.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\sprite_x.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\default\sprite_y.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\btnNext.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\btnPrevious.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\contentPatternBottom.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\contentPatternLeft.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\contentPatternRight.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\contentPatternTop.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\loader.gif" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\facebook\sprite.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_rounded\btnNext.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_rounded\btnPrevious.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_rounded\loader.gif" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_rounded\sprite.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_square\btnNext.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_square\btnPrevious.png" />
-    <Content Include="assets\prettyPhoto\images\prettyPhoto\light_square\sprite.png" />
-    <Content Include="assets\prettyPhoto\js\jquery.prettyPhoto.js" />
-    <Content Include="assets\sparkline\jquery.sparkline.min.js" />
     <Content Include="bin\EPPlus.dll" />
     <Content Include="BODEGA_GRUPOS.aspx" />
     <Content Include="Calendario.aspx" />
@@ -931,6 +804,7 @@
     <Content Include="COTIZADOR\Cotizacion_log_pdf.aspx" />
     <Content Include="COTIZADOR\Cotizacion_pdf.aspx" />
     <Content Include="COTIZADOR\Cotizador.Master" />
+    <Content Include="COTIZADOR\DashboardAdmin.aspx" />
     <Content Include="COTIZADOR\Dashboard_admin.aspx" />
     <Content Include="COTIZADOR\dashboard_vendedor.aspx" />
     <Content Include="COTIZADOR\Dashboard_vend_cliente.aspx" />
@@ -1046,6 +920,7 @@
     <Content Include="REPORTE_SALA.aspx" />
     <Content Include="REPORTE_USUARIOS.aspx" />
     <Content Include="REPORTE_VENDEDOR.aspx" />
+    <Content Include="TRAYECTORIA_VENTAS.aspx" />
     <Content Include="USUARIO_PRODUCTO.aspx" />
     <Content Include="VISOR_DOCUMENTAL.aspx" />
   </ItemGroup>
@@ -1058,52 +933,6 @@
     <Content Include="CHOSEN\bower.json" />
     <Content Include="DOCUMENTOS\11.pdf" />
     <Content Include="DOCUMENTOS\3.pdf" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\fonts\glyphicons-halflings-regular-.eot" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="assets\bootstrap-duallistbox\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular-.eot" />
-    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="assets\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="assets\font-awesome.rar" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\fonts\fontawesome-webfont.eot" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\fonts\fontawesome-webfont.ttf" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\fonts\fontawesome-webfont.woff" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\fonts\fontawesome-webfont.woff2" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\fonts\FontAwesome.otf" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\animated.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\bordered-pulled.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\core.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\fixed-width.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\font-awesome.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\icons.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\larger.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\list.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\mixins.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\path.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\rotated-flipped.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\screen-reader.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\stacked.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\less\variables.less" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\font-awesome.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_animated.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_bordered-pulled.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_core.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_fixed-width.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_icons.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_larger.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_list.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_mixins.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_path.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_rotated-flipped.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_screen-reader.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_stacked.scss" />
-    <Content Include="assets\font-awesome\font-awesome-4.6.1\scss\_variables.scss" />
-    <Content Include="assets\font-awesome\fonts\fontawesome-webfont-.eot" />
-    <Content Include="assets\font-awesome\fonts\fontawesome-webfont-v=4.1.0.eot" />
-    <Content Include="assets\font-awesome\fonts\fontawesome-webfont-v=4.1.0.ttf" />
-    <Content Include="assets\font-awesome\fonts\fontawesome-webfont-v=4.1.0.woff" />
     <Content Include="COTIZADOR\COTIZACIONES\cotizacion_admin_17.pdf" />
     <Content Include="COTIZADOR\COTIZACIONES\cotizacion_JH014_18.pdf" />
     <Content Include="COTIZADOR\COTIZACIONES\ctz_10_JH014_0038763237.pdf" />

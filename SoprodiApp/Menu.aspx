@@ -324,12 +324,21 @@
                         <p class="title text-center">Cotizador</p>
                     </a>
                 </div>
-                 <div class="col-md-3" runat="server" id="trece_admin_cotizador_">
+                <div class="col-md-3" runat="server" id="trece_admin_cotizador_">
                     <a class="tile tile-green" style="background-color: #b200ff !important;" data-stop="0" href="COTIZADOR/Dashboard_admin.aspx">
                         <div class="img img-center">
                             <i class="fa fa-dashboard fa-2x"></i>
                         </div>
                         <p class="title text-center">Administrador Cotizaciones</p>
+                    </a>
+                </div>
+
+                <div class="col-md-3" runat="server" id="catorce_trayectora">
+                    <a class="tile tile-blue" style="background-color: #002423 !important;" data-stop="0" href="TRAYECTORIA_VENTAS.aspx">
+                        <div class="img img-center">
+                            <i class="fa fa-dashboard fa-2x"></i>
+                        </div>
+                        <p class="title text-center">Trayectoria Ventas</p>
                     </a>
                 </div>
             </div>

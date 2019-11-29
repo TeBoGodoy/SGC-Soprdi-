@@ -7,11 +7,13 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace SoprodiApp {
-    
-    
-    public partial class Menu {
-        
+namespace SoprodiApp
+{
+
+
+    public partial class Menu
+    {
+
         /// <summary>
         /// Control Head1.
         /// </summary>
@@ -20,7 +22,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
-        
+
         /// <summary>
         /// Control SessionTimeoutControl1.
         /// </summary>
@@ -29,7 +31,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::PAB.WebControls.SessionTimeoutControl SessionTimeoutControl1;
-        
+
         /// <summary>
         /// Control Form2.
         /// </summary>
@@ -38,7 +40,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm Form2;
-        
+
         /// <summary>
         /// Control LoginName1.
         /// </summary>
@@ -47,7 +49,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LoginName LoginName1;
-        
+
         /// <summary>
         /// Control LoginStatus1.
         /// </summary>
@@ -56,7 +58,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LoginStatus LoginStatus1;
-        
+
         /// <summary>
         /// Control uno_abarrote.
         /// </summary>
@@ -65,7 +67,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl uno_abarrote;
-        
+
         /// <summary>
         /// Control dos_grano.
         /// </summary>
@@ -74,7 +76,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dos_grano;
-        
+
         /// <summary>
         /// Control tres_finanzas.
         /// </summary>
@@ -83,7 +85,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tres_finanzas;
-        
+
         /// <summary>
         /// Control cuatro_gestor.
         /// </summary>
@@ -92,7 +94,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cuatro_gestor;
-        
+
         /// <summary>
         /// Control cinco_usuarios.
         /// </summary>
@@ -101,7 +103,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cinco_usuarios;
-        
+
         /// <summary>
         /// Control seis_ficha_cliente.
         /// </summary>
@@ -110,7 +112,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl seis_ficha_cliente;
-        
+
         /// <summary>
         /// Control siete_nacho.
         /// </summary>
@@ -119,7 +121,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl siete_nacho;
-        
+
         /// <summary>
         /// Control ocho_gama.
         /// </summary>
@@ -128,7 +130,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ocho_gama;
-        
+
         /// <summary>
         /// Control nueve_permanencia.
         /// </summary>
@@ -137,7 +139,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl nueve_permanencia;
-        
+
         /// <summary>
         /// Control diez_vencimientos.
         /// </summary>
@@ -146,7 +148,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl diez_vencimientos;
-        
+
         /// <summary>
         /// Control once_planificador.
         /// </summary>
@@ -155,7 +157,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl once_planificador;
-        
+
         /// <summary>
         /// Control doce_cotizador.
         /// </summary>
@@ -164,7 +166,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl doce_cotizador;
-        
+
         /// <summary>
         /// Control trece_admin_cotizador_.
         /// </summary>
@@ -173,5 +175,14 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl trece_admin_cotizador_;
+
+        /// <summary>
+        /// Control catorce_trayectora.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl catorce_trayectora;
     }
 }
