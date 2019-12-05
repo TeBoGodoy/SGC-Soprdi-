@@ -9,8 +9,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_Contenido" runat="server">
 
-    
-<%--    <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="True" EnableScriptLocalization="True">
+
+    <%--    <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="True" EnableScriptLocalization="True">
     </ajaxToolkit:ToolkitScriptManager>--%>
 
     <style>
@@ -168,6 +168,17 @@
             //LlenarCalendario();
             //document.querySelector('form').onkeypress = checkEnter;
 
+            $("#btn_bajar_mov").on('click', function (event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+                    var hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function () {
+                        window.location.hash = hash;
+                    });
+                }
+            });
 
 
             $(document).keypress(function (event) {
@@ -336,7 +347,7 @@
                             "thousands": "."
                         }
                     });
-                    $("#G_MOV_SOL").DataTable({
+                    var table = $("#G_MOV_SOL").DataTable({
                         "lengthChange": false,
                         "searching": false,
                         "destroy": true,
@@ -370,6 +381,14 @@
                             "thousands": "."
                         }
                     });
+
+
+                    //var num_rows = $("#G_MOV_SOL").api().page.info().recordsTotal
+                    //table.api().page('last').draw(false);
+                    //table.api().row(num_rows - 1).scrollTo()
+
+                    //var $scrollBody = $(table.table().node()).parent();
+                    //$scrollBody.scrollTop($scrollBody.get(0).scrollHeight);
 
 
 
@@ -1693,6 +1712,7 @@
                         relojito(false);
                     }
                 }).done(function (resp) {
+                    relojito(false);
                     sleep(1000);
                     resp = resp.d;
                     Pagado23(resp);
@@ -1709,7 +1729,7 @@
                         } catch (e) { }
                     }
                         //$(<%=btn_filtra_grilla.ClientID%>).click();
-                    relojito(false);
+                    
                     //alert(resp);
                     //CARGANDO();
 
@@ -1767,7 +1787,7 @@
                         });
                     }
                     if (respuesta == "Pago Realizado !") {
-
+                        relojito(false);
                         Pagado23(respuesta);
                         GuardaAccion2();
                             //$(<%=btn_filtra_grilla.ClientID%>).click();
@@ -4186,6 +4206,19 @@
             $('#t_fech_efec').val(fecha_neteo);
         }
 
+        function cambia_color_fondo() {
+
+            var elem88 = document.getElementById("fondo_para_check");
+            elem88.style.backgroundColor = "#0008ff7a";
+
+        }
+
+        function cambia_color_fondo2() {
+
+            var elem89 = document.getElementById("fondo_para_check");
+            elem89.style.backgroundColor = "#e7ebfe0d";
+
+        }
 
         function CAMBIA_ACCION2() {
             var tipo = document.getElementById("CB_ACCIONES2").value;
@@ -4585,7 +4618,7 @@
             }
     </style>
 
-        <ajaxToolkit:ToolkitScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="900000" EnableScriptGlobalization="True" EnableScriptLocalization="True">
+    <ajaxToolkit:ToolkitScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="900000" EnableScriptGlobalization="True" EnableScriptLocalization="True">
     </ajaxToolkit:ToolkitScriptManager>
     <%--  <div class="page-title" style="margin-top: -27px">
         <div>
@@ -4608,13 +4641,13 @@
         </ul>
     </div>
     <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
-        <triggers>
+        <Triggers>
             <asp:PostBackTrigger ControlID="btn_cobrar" />
             <asp:PostBackTrigger ControlID="btn_excel_3" />
             <asp:PostBackTrigger ControlID="btn_excel2" />
 
-        </triggers>
-        <contenttemplate>
+        </Triggers>
+        <ContentTemplate>
 
 
             <script type="text/javascript">
@@ -4631,6 +4664,18 @@
                             return false;
                         }
                     });
+
+                    const checkbox = document.getElementById('chk_enviar_erp')
+
+                    checkbox.addEventListener('change', (event) => {
+                        if (event.target.checked) {
+                            cambia_color_fondo();
+                        } else {
+                            cambia_color_fondo2();
+                        }
+                    });
+
+
                     $("#<%=CB_VENDEDOR_GRILLA.ClientID%>").change(function () {
                         document.getElementById("<%=L_CLIENTES.ClientID %>").value = "";
                         // armo el objeto que servira de parametro, para ello utilizo una libreria de JSON
@@ -4687,7 +4732,7 @@
                 <i id="GIF_COMPLETO" class="gif" style="display: none; font-size: 3em;"></i>
                 <input type="text" id="sw_gif" value="1" style="visibility: hidden; position: absolute;">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="fondo_para_check">
                         <div class="box">
                             <div class="box-title">
                                 <h3 id="titulo_panel_finanza"><i class="fa fa-list"></i>Cobranza -- Tabla</h3>
@@ -4872,7 +4917,6 @@
                                                 <div class="pull-right" id="Div1" style="position: relative;">
                                                     <asp:Button ID="btn_filtra_mov" CssClass="btn btn-lime" OnClientClick="relojito(true);lod();" Text="Filtrar" runat="server" OnClick="btn_filtra_mov_Click" />
                                                     <%--<i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom" id="cargando_en_filtrar" style="display: none; font-size: 3em;"></i>--%>
-                                                    <input id="btn_grafico_cobr" type="button" class="btn btn-success" value="Gráfico" onclick="grafico()" style="display: block; margin-top: 20%;" />
                                                 </div>
 
                                             </div>
@@ -4893,12 +4937,15 @@
 
                                                 <div class="box-content">
                                                     <div class="row">
+                                                        <div class="btn-toolbar pull-right">
+                                                            <a id="btn_bajar_mov" class="btn btn-circle btn-lg" href="#id_down" style="background-color: #b3eaff;"><i class="fa fa-chevron-down"></i></a>
+                                                        </div>
+
                                                         <div class="input-group">
                                                             <%--<input type="text" id="t_filtro_memoria2" style="width: 200px; margin-right: 7px; padding: 5px;" placeholder="Filtrar..." class="form-control" />--%>
                                                             <input type="text" id="t_filtro_memoria3" placeholder="Filtrar..." class="form-control" style="width: 300px">
                                                             <button class="btn-sm btn btn-primary" type="button" id="btn_filtro_nuevo3"><i class="fa fa-search"></i></button>
                                                         </div>
-
 
                                                         <div class="btn-toolbar pull-right">
 
@@ -4913,6 +4960,7 @@
 
                                                         <div class="row"></div>
                                                         <div style="overflow-y: auto; height: 630px">
+
                                                             <asp:GridView ID="G_MOV_SOL" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar3" OnRowDataBound="G_MOV_SOL_RowDataBound" runat="server" Visible="true"
                                                                 ShowHeaderWhenEmpty="True" Font-Size="13px">
                                                                 <HeaderStyle CssClass="test no-sort" />
@@ -4935,10 +4983,12 @@
                                                                     No existen datos.
                                                                 </EmptyDataTemplate>
                                                             </asp:GridView>
+                                                            <div id="id_down"></div>
                                                         </div>
 
                                                         <div class="row">
                                                             <hr />
+                                                            <input id="btn_grafico_cobr" type="button" class="btn btn-success" value="Gráfico" onclick="grafico()" style="display: block; margin-right: 1%; margin-bottom: 1%; float: right;" />
                                                             <hr />
                                                             <div class="col-sm-12">
                                                                 <div class="col-sm-2 controls">
@@ -5190,118 +5240,118 @@
                                                 <div class="row"></div>
                                                 <div class="row"></div>
 
-                  
-                                            <asp:UpdatePanel runat="server" ID="UpdatePanel5" UpdateMode="Conditional">
-                                                <Triggers>
-                                                    <asp:AsyncPostBackTrigger ControlID="G_INIT"  />
-                                                </Triggers>
-                                                <ContentTemplate>
 
-                                                <div style="overflow: auto;">
-                                                    <asp:GridView ID="G_INIT" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar" OnRowDataBound="G_INIT_RowDataBound" runat="server" Visible="true"
-                                                        ShowHeaderWhenEmpty="True" Font-Size="13px" DataKeyNames="rutcliente, id, Saldo_Peso, Saldo_Dolar, TDoc, NºDoc, FVenc, neto_peso, tcamb, TMoned">
-                                                        <HeaderStyle CssClass="test no-sort" />
-                                                        <Columns>
+                                                <asp:UpdatePanel runat="server" ID="UpdatePanel5" UpdateMode="Conditional">
+                                                    <Triggers>
+                                                        <asp:AsyncPostBackTrigger ControlID="G_INIT" />
+                                                    </Triggers>
+                                                    <ContentTemplate>
 
-                                                            <asp:TemplateField HeaderText="">
-                                                                <ItemTemplate>
-                                                                    <asp:CheckBox ID="chkAccept" runat="server" EnableViewState="true"
-                                                                        OnCheckedChanged="chkAccept_CheckedChanged" />
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
+                                                        <div style="overflow: auto;">
+                                                            <asp:GridView ID="G_INIT" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar" OnRowDataBound="G_INIT_RowDataBound" runat="server" Visible="true"
+                                                                ShowHeaderWhenEmpty="True" Font-Size="13px" DataKeyNames="rutcliente, id, Saldo_Peso, Saldo_Dolar, TDoc, NºDoc, FVenc, neto_peso, tcamb, TMoned">
+                                                                <HeaderStyle CssClass="test no-sort" />
+                                                                <Columns>
 
-                                                            <%--ItemStyle-HorizontalAlign="Center"--%>
-                                                            <asp:TemplateField HeaderText="Abon(Peso)">
-                                                                <ItemTemplate>
-                                                                    <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
-                                                                    </div>
-                                                                    <asp:TextBox runat="server" ID="txt_peso"
-                                                                        OnTextChanged="txt_peso_TextChanged" 
-                                                                        Style="width: 78px;" Text='<%# Eval("Saldo_Peso") %>' CssClass="txtgrilla" />
-                                                        
-                                                                </ItemTemplate>
-                                                                <HeaderStyle Width="15px" />
-                                                                <ItemStyle HorizontalAlign="Center" />
-                                                            </asp:TemplateField>
-                                                            <%--ItemStyle-HorizontalAlign="Center"--%>
+                                                                    <asp:TemplateField HeaderText="">
+                                                                        <ItemTemplate>
+                                                                            <asp:CheckBox ID="chkAccept" runat="server" EnableViewState="true"
+                                                                                OnCheckedChanged="chkAccept_CheckedChanged" />
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
 
-                                                            <asp:TemplateField HeaderText="Abon(Dolar)">
-                                                                <ItemTemplate>
-                                                                    <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
-                                                                    </div>
-                                                                    <asp:TextBox runat="server" ID="txt_dolar"
-                                                                              OnTextChanged="txt_peso_TextChanged" 
-                                                                        Style="width: 78px;" Text='<%# Eval("Saldo_Dolar") %>' CssClass="txtgrilla" />
-                                                                    <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
+                                                                    <%--ItemStyle-HorizontalAlign="Center"--%>
+                                                                    <asp:TemplateField HeaderText="Abon(Peso)">
+                                                                        <ItemTemplate>
+                                                                            <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
+                                                                            </div>
+                                                                            <asp:TextBox runat="server" ID="txt_peso"
+                                                                                OnTextChanged="txt_peso_TextChanged"
+                                                                                Style="width: 78px;" Text='<%# Eval("Saldo_Peso") %>' CssClass="txtgrilla" />
+
+                                                                        </ItemTemplate>
+                                                                        <HeaderStyle Width="15px" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:TemplateField>
+                                                                    <%--ItemStyle-HorizontalAlign="Center"--%>
+
+                                                                    <asp:TemplateField HeaderText="Abon(Dolar)">
+                                                                        <ItemTemplate>
+                                                                            <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
+                                                                            </div>
+                                                                            <asp:TextBox runat="server" ID="txt_dolar"
+                                                                                OnTextChanged="txt_peso_TextChanged"
+                                                                                Style="width: 78px;" Text='<%# Eval("Saldo_Dolar") %>' CssClass="txtgrilla" />
+                                                                            <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
                                                                         CommandName="Actualiza_invoice" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />--%>
-                                                                </ItemTemplate>
-                                                                <HeaderStyle Width="15px" />
-                                                                <ItemStyle HorizontalAlign="Center" />
-                                                            </asp:TemplateField>
+                                                                        </ItemTemplate>
+                                                                        <HeaderStyle Width="15px" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:TemplateField>
 
 
 
 
-                                                        </Columns>
-                                                        <EmptyDataTemplate>
-                                                            No existen datos.
-                                                        </EmptyDataTemplate>
-                                                    </asp:GridView>
+                                                                </Columns>
+                                                                <EmptyDataTemplate>
+                                                                    No existen datos.
+                                                                </EmptyDataTemplate>
+                                                            </asp:GridView>
 
 
-                                                    <asp:GridView ID="G_INIT_EXCEL" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar" OnRowDataBound="G_INIT_EXCEL_RowDataBound" runat="server" Visible="false"
-                                                        ShowHeaderWhenEmpty="True" Font-Size="12px" DataKeyNames="rutcliente, id, Saldo_Peso, Saldo_Dolar, TDoc, NºDoc">
-                                                        <HeaderStyle CssClass="test no-sort" />
-                                                        <Columns>
+                                                            <asp:GridView ID="G_INIT_EXCEL" ClientIDMode="Static" CssClass="table table-advance tablesorter filtrar" OnRowDataBound="G_INIT_EXCEL_RowDataBound" runat="server" Visible="false"
+                                                                ShowHeaderWhenEmpty="True" Font-Size="12px" DataKeyNames="rutcliente, id, Saldo_Peso, Saldo_Dolar, TDoc, NºDoc">
+                                                                <HeaderStyle CssClass="test no-sort" />
+                                                                <Columns>
 
-                                                            <asp:TemplateField HeaderText="">
-                                                                <ItemTemplate>
-                                                                    <asp:CheckBox ID="chkAccept" runat="server" EnableViewState="true"
-                                                                        OnCheckedChanged="chkAccept_CheckedChanged" />
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="">
+                                                                        <ItemTemplate>
+                                                                            <asp:CheckBox ID="chkAccept" runat="server" EnableViewState="true"
+                                                                                OnCheckedChanged="chkAccept_CheckedChanged" />
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
 
-                                                            <%--ItemStyle-HorizontalAlign="Center"--%>
-                                                            <asp:TemplateField HeaderText="Abon(Peso)">
-                                                                <ItemTemplate>
-                                                                    <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
-                                                                    </div>
-                                                                    <asp:TextBox runat="server" ID="txt_peso" Style="width: 78px;" Text='<%# Eval("Saldo_Peso") %>' CssClass="txtgrilla" />
-                                                                    <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
+                                                                    <%--ItemStyle-HorizontalAlign="Center"--%>
+                                                                    <asp:TemplateField HeaderText="Abon(Peso)">
+                                                                        <ItemTemplate>
+                                                                            <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
+                                                                            </div>
+                                                                            <asp:TextBox runat="server" ID="txt_peso" Style="width: 78px;" Text='<%# Eval("Saldo_Peso") %>' CssClass="txtgrilla" />
+                                                                            <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
                                                                         CommandName="Actualiza_invoice" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />--%>
-                                                                </ItemTemplate>
-                                                                <HeaderStyle Width="15px" />
-                                                                <ItemStyle HorizontalAlign="Center" />
-                                                            </asp:TemplateField>
-                                                            <%--ItemStyle-HorizontalAlign="Center"--%>
+                                                                        </ItemTemplate>
+                                                                        <HeaderStyle Width="15px" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:TemplateField>
+                                                                    <%--ItemStyle-HorizontalAlign="Center"--%>
 
-                                                            <asp:TemplateField HeaderText="Abon(Dolar)">
-                                                                <ItemTemplate>
-                                                                    <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
-                                                                    </div>
-                                                                    <asp:TextBox runat="server" ID="txt_dolar" Style="width: 78px;" Text='<%# Eval("Saldo_Dolar") %>' CssClass="txtgrilla" />
-                                                                    <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
+                                                                    <asp:TemplateField HeaderText="Abon(Dolar)">
+                                                                        <ItemTemplate>
+                                                                            <div id="prueba_div" style="height: 0px; width: 0px; overflow: hidden">
+                                                                            </div>
+                                                                            <asp:TextBox runat="server" ID="txt_dolar" Style="width: 78px;" Text='<%# Eval("Saldo_Dolar") %>' CssClass="txtgrilla" />
+                                                                            <%--    <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/images/save-128.png" Width="17"
                                                                         CommandName="Actualiza_invoice" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />--%>
-                                                                </ItemTemplate>
-                                                                <HeaderStyle Width="15px" />
-                                                                <ItemStyle HorizontalAlign="Center" />
-                                                            </asp:TemplateField>
+                                                                        </ItemTemplate>
+                                                                        <HeaderStyle Width="15px" />
+                                                                        <ItemStyle HorizontalAlign="Center" />
+                                                                    </asp:TemplateField>
 
 
 
 
-                                                        </Columns>
-                                                        <EmptyDataTemplate>
-                                                            No existen datos.
-                                                        </EmptyDataTemplate>
-                                                    </asp:GridView>
+                                                                </Columns>
+                                                                <EmptyDataTemplate>
+                                                                    No existen datos.
+                                                                </EmptyDataTemplate>
+                                                            </asp:GridView>
 
-                                                </div>
+                                                        </div>
 
-                                                    
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
-                 
+
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+
 
                                                 <div id="cerrad_abier" runat="server" class="col-sm-12">
 
@@ -5338,7 +5388,7 @@
 
                                                             <div style="overflow-y: auto;">
                                                                 <asp:GridView ID="G_FACTURAS_PAGABLES" ClientIDMode="Static" CssClass="table table-advance tablesorter" OnRowDataBound="G_FACTURAS_PAGABLES_RowDataBound" runat="server" Visible="true"
-                                                                    DataKeyNames="factura, tipo_doc, saldo_peso, saldo_dolar, fvenc, tasacambio,sw_abono " ShowHeaderWhenEmpty="True" Font-Size="13px" AutoGenerateColumns="false">
+                                                                    DataKeyNames="factura, tipo_doc, saldo_peso, saldo_dolar, fvenc, tasacambio,sw_abono, tipo_moneda, rutcliente " ShowHeaderWhenEmpty="True" Font-Size="13px" AutoGenerateColumns="false">
                                                                     <HeaderStyle CssClass="test no-sort" Font-Bold="True" />
                                                                     <Columns>
                                                                         <asp:TemplateField HeaderText="">
@@ -5608,7 +5658,8 @@
                                                                                                             <div class="col-md-5" style="left: 5%;">
 
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="number" class="form-control input-sm" step="any" pattern="[0-9]+([\.,][0-9]+)?" id="T_MONTO_PAGO2" placeholder="Monto..." />                                                                                                                    <span class="help-inline">Monto</span>
+                                                                                                                    <input type="number" class="form-control input-sm" step="any" pattern="[0-9]+([\.,][0-9]+)?" id="T_MONTO_PAGO2" placeholder="Monto..." />
+                                                                                                                    <span class="help-inline">Monto</span>
                                                                                                                 </div>
 
                                                                                                                 <div class="form-group">
@@ -5650,7 +5701,7 @@
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
                                                                                                                     <select class="form-control" runat="server" id="cb_tipo_pago_cheque" onchange="CAMBIA_PESO_DOLAR_CHEQ()">
-                                                                                                                        <option value="-1"  selected="selected">-- Seleccione Moneda--</option>
+                                                                                                                        <option value="-1" selected="selected">-- Seleccione Moneda--</option>
                                                                                                                         <option value="peso">Peso</option>
                                                                                                                         <option value="dolar">Dolar</option>
                                                                                                                     </select>
@@ -5659,7 +5710,7 @@
                                                                                                                     <input type="text" maxlength="8" class="form-control" id="T_NUM_CHEQUE2" placeholder="Nº Cheque..." />
                                                                                                                 </div>
                                                                                                                 <div class="form-group">
-                                                                                                                    <input type="number" class="form-control" step="any" pattern="[0-9]+([\.,][0-9]+)?"  id="T_Cuenta2" placeholder="Monto..." />
+                                                                                                                    <input type="number" class="form-control" step="any" pattern="[0-9]+([\.,][0-9]+)?" id="T_Cuenta2" placeholder="Monto..." />
                                                                                                                     <span class="help-inline">Monto</span>
                                                                                                                 </div>
                                                                                                             </div>
@@ -6985,12 +7036,12 @@
                 </div>
             </div>
 
-        </contenttemplate>
+        </ContentTemplate>
     </asp:UpdatePanel>
 
 
     <asp:UpdateProgress ID="prgLoadingStatus" runat="server" DynamicLayout="true">
-        <progresstemplate>
+        <ProgressTemplate>
             <div id="overlay" class="gif">
                 <div id="modalprogress">
                     <div id="theprogress">
@@ -6998,7 +7049,7 @@
                     </div>
                 </div>
             </div>
-        </progresstemplate>
+        </ProgressTemplate>
     </asp:UpdateProgress>
 
 

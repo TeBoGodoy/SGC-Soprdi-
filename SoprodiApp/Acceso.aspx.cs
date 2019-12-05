@@ -84,7 +84,7 @@ namespace SoprodiApp
             //string contrasena3 = encriptador.EncryptData("zsAy0X+UdTDpaKDwPiz/BA==");
             //string total = Base.monto_format2(Math.Round(1603500.250, MidpointRounding.AwayFromZero));
             string cont2rasena = encriptador.DecryptData("bkJ47VUtVQ/L0SBDQMWicA==");
-            string cont3rasena = encriptador.DecryptData("YHH3ohFGvSUgFlAW3BSk3cDUDey9UiZq");
+            string cont3rasena = encriptador.DecryptData("LDLtWndGkdhOF1HGL8aQKSb89UoldoTL");
             // GT015    ANTONIA2106
             // CG032     ITALIA90
             //string documentText = RetornaDocumentText("htt");

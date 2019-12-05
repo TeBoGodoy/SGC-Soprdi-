@@ -1006,6 +1006,7 @@ namespace SoprodiApp
             string cheques = "";
             string bankacct = ReporteRNegocio.cuenta_banco(factura);
             string es_cheque_factura = "";
+            string factura_aux = factura;
             // CAMPOS
 
             if (bankacct.Trim() != "110405")
@@ -1016,8 +1017,8 @@ namespace SoprodiApp
                     es_cheque_factura = factura;
 
 
-                    string factura_aux = factura;
-                    dt = db.consultar("SELECT id, nombrecliente, factura, rutcliente, CONVERT(varchar(20), fecha_trans, 103) as fecha_trans, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, monto_doc, transfor FROM V_COBRANZA_TODOS WHERE RUTCLIENTE = '" + rut + "' AND FACTURA = '" + factura + "'");
+
+                    dt = db.consultar("SELECT id, nombrecliente, factura, rutcliente, CONVERT(varchar(20), fecha_trans, 103) as fecha_trans, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, monto_doc, transfor FROM V_COBRANZA_TODOS WHERE RUTCLIENTE = '" + rut + "' AND FACTURA = '" + factura + "'  AND tipo_doc <> 'PA'");
                     try
                     {
                         factura = (db.Scalar("select top 1 num_factura_origen from cobranza_seguimiento where num_factura = '" + factura + "' and rutcliente = '" + rut + "' and tipo_doc = '" + tipo_doc + "'").ToString());
@@ -1143,7 +1144,65 @@ namespace SoprodiApp
 
                     if (tipo_doc == "IN" || tipo_doc == "DM")
                     {
-                        dt3 = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA = '" + factura + "' or num_factura_origen like '%" + factura.Trim() + "%'  ORDER BY fecha_trans desc");
+                        dt3 = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, " +
+                            "observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA = '" + factura + "' or num_factura_origen like '%" + factura.Trim() + "%'  ORDER BY fecha_trans desc");
+
+
+                        DataTable dt4_cheque_pagado = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, " +
+                            "observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA = '" + factura_aux + "' and num_factura_origen like '%" + factura_aux.Trim() + "%'  ORDER BY fecha_trans desc");
+
+
+                        dt3.Merge(dt4_cheque_pagado);
+
+                        var result = from rows in dt3.AsEnumerable()
+                                     group rows by new
+                                     {
+                                         id = rows["id"]
+                                                        ,
+                                         fecha_venc = rows["fecha_venc"]
+                                                        ,
+                                         fecha_trans = rows["fecha_trans"]
+                                                        ,
+                                         monto_doc = rows["monto_doc"]
+                                                        ,
+                                         observacion = rows["observacion"]
+                                                        ,
+                                         num_factura = rows["num_factura"]
+                                                        ,
+                                         tipo_doc = rows["tipo_doc"]
+                                                        ,
+                                         num_factura_origen = rows["num_factura_origen"]
+                                                        ,
+                                         sw = rows["sw"]
+                                     } into grp
+                                     select grp;
+
+                        DataTable dt_final = new DataTable();
+                        dt_final.Columns.Add("id");
+                        dt_final.Columns.Add("fecha_venc");
+                        dt_final.Columns.Add("fecha_trans");
+                        dt_final.Columns.Add("monto_doc");
+                        dt_final.Columns.Add("observacion");
+                        dt_final.Columns.Add("num_factura");
+                        dt_final.Columns.Add("tipo_doc");
+                        dt_final.Columns.Add("num_factura_origen");
+                        dt_final.Columns.Add("sw");
+
+                        foreach (var item in result)
+                        {
+                            DataRow row = dt_final.NewRow();
+                            row[0] = item.Key.id;
+                            row[1] = item.Key.fecha_venc;
+                            row[2] = item.Key.fecha_trans;
+                            row[3] = item.Key.monto_doc;
+                            row[4] = item.Key.observacion;
+                            row[5] = item.Key.num_factura;
+                            row[6] = item.Key.tipo_doc;
+                            row[7] = item.Key.num_factura_origen;
+                            row[8] = item.Key.sw;
+                            dt_final.Rows.Add(row);
+
+                        }
 
 
                         tabla += "<h3>Documentos asociados por aplicación</h3>";
@@ -1168,14 +1227,14 @@ namespace SoprodiApp
 
                         //procesar los num_factura_origen para que cuadre con la factura en documentos asociados
 
-                        foreach (DataRow dr in dt3.Rows)
+                        foreach (DataRow dr in dt_final.Rows)
                         {
                             bool es_asociado = false;
                             int cont_fact = 0;
                             List<string> fact = dr["num_factura_origen"].ToString().Split('-').ToList();
                             foreach (string f in fact)
                             {
-                                if (f.Trim() == factura.Trim())
+                                if (f.Trim() == factura.Trim() || f.Trim() == factura_aux.Trim())
                                 {
 
                                     es_asociado = true;
@@ -1198,7 +1257,7 @@ namespace SoprodiApp
 
                         }
 
-                        foreach (DataRow dr in dt3.Rows)
+                        foreach (DataRow dr in dt_final.Rows)
                         {
                             if (dr["sw"].ToString() == "si")
                             {
@@ -2986,9 +3045,6 @@ namespace SoprodiApp
 
                 db.Scalar2(query, vars);
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -3020,23 +3076,36 @@ namespace SoprodiApp
 
                 List<string> facturas_al_erp = new List<string>();
 
+                int cont_pagables_2 = 0;
+                foreach (string fact in facturas)
+                {
+                    string tipo_del_docu = ReporteRNegocio.tipo_doc(fact.Trim());
+                    if (tipo_del_docu == "IN" || tipo_del_docu == "DM")
+                    {
+                        cont_pagables_2++;
+                    }
+                }
+                DataTable facturas_pagables = (DataTable)HttpContext.Current.Session["facturas_pagables"];
                 foreach (string fact in facturas)
                 {
                     //agrega list para enviar al solomon
 
                     cont_x++;
                     string tipo_del_docu = ReporteRNegocio.tipo_doc(fact.Trim());
+                    string rutcliente_ = "";
                     if (tipo_del_docu == "IN" || tipo_del_docu == "DM")
                     {
                         //cont_x++;
                         ////                                                                                            PAGO FACTURAS ----- NOTA DEBITO
                         string monto_fac = "";
                         string facturas_aplicadas = "";
-                        DataTable facturas_pagables = (DataTable)HttpContext.Current.Session["facturas_pagables"];
+
                         foreach (DataRow str in facturas_pagables.Rows)
                         {
                             if (str[0].ToString().Trim() == fact.ToString().Trim())
                             {
+                                rutcliente_ = str["rutcliente"].ToString().Trim();
+
                                 string facturas_aplicadas_in = "";
                                 try
                                 {
@@ -3101,7 +3170,7 @@ namespace SoprodiApp
                             }
                             else if (suma_deposit > Convert.ToDouble(monto_fac))
                             {
-                                if (cont_x == cont_pagables)
+                                if (cont_x == cont_pagables_2)
                                 {
                                     monto = suma_deposit.ToString();
                                     suma_deposit -= double.Parse(monto_fac);
@@ -3126,8 +3195,8 @@ namespace SoprodiApp
                                 suma_deposit -= double.Parse(monto);
                             }
                             DBUtil db = new DBUtil();
-                            DataTable dt = new DataTable();
-                            dt = db.consultar("select top 1 rutcliente, tipo_moneda from V_COBRANZA where factura =  '" + fact.Trim() + "'");
+                            //DataTable dt = new DataTable();
+                            //dt = db.consultar("select top 1 rutcliente, tipo_moneda from V_COBRANZA where factura =  '" + fact.Trim() + "'");
                             string query = "";
                             query += "INSERT INTO COBRANZA_PAGOS ( ";
                             query += "id_cobranza, ";
@@ -3189,7 +3258,6 @@ namespace SoprodiApp
 
                             }
 
-                            string moneda_cm = dt.Rows[0]["tipo_moneda"].ToString().Replace("'", "");
                             if (descripcion.Contains("NET"))
                             {
                                 moneda = "";
@@ -3198,66 +3266,66 @@ namespace SoprodiApp
                             vars.Add(new SPVars() { nombre = "descripcion", valor = descripcion.Replace("'", "") + "(" + moneda + ")" });
                             vars.Add(new SPVars() { nombre = "banco", valor = fact.Trim() });
 
-                            foreach (DataRow dr in dt.Rows)
+                            //foreach (DataRow dr in dt.Rows)
+                            //{
+                            vars.Add(new SPVars() { nombre = "_num_factura", valor = fact.Trim() });
+                            vars.Add(new SPVars() { nombre = "_monto_doc", valor = monto.Replace("'", "").Replace(",", ".") });
+                            vars.Add(new SPVars() { nombre = "_rutcliente", valor = rutcliente_ });
+
+                            if (cerrar == "si")
                             {
-                                vars.Add(new SPVars() { nombre = "_num_factura", valor = fact.Trim() });
-                                vars.Add(new SPVars() { nombre = "_monto_doc", valor = monto.Replace("'", "").Replace(",", ".") });
-                                vars.Add(new SPVars() { nombre = "_rutcliente", valor = dr["rutcliente"].ToString().Replace("'", "") });
-
-                                if (cerrar == "si")
-                                {
-                                    vars.Add(new SPVars() { nombre = "_estado", valor = "PAGADO" });
-                                    vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
-                                    ReporteRNegocio.quitar_pa_f(id);
-                                }
-                                else
-                                {
-                                    if (es_pa_f)
-                                    {
-                                        vars.Add(new SPVars() { nombre = "_estado", valor = "TEMPORAL" });
-                                        vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA-F" });
-                                    }
-                                    else
-                                    {
-                                        vars.Add(new SPVars() { nombre = "_estado", valor = "ABONO" });
-                                        vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
-                                    }
-                                }
-                                vars.Add(new SPVars() { nombre = "_observacion", valor = descripcion.Replace("'", "") + "(" + moneda + ")" });
-                                vars.Add(new SPVars() { nombre = "_usuario", valor = HttpContext.Current.Session["user"].ToString() });
-                                vars.Add(new SPVars() { nombre = "_num_factura_origen", valor = id });
-                                vars.Add(new SPVars() { nombre = "_aux3", valor = facturas_aplicadas });
-                                vars.Add(new SPVars() { nombre = "_aux5", valor = cuenta_banco });
-                                vars.Add(new SPVars() { nombre = "_fecha", valor = fecha_pago });
-                                vars.Add(new SPVars() { nombre = "_fecha_venc", valor = DateTime.Now.ToShortDateString() });
-
-
-                                //misma tasa cambio   Session["tipo_cambio_iguales"]
-                                bool misma_tasa = (bool)HttpContext.Current.Session["tipo_cambio_iguales"];
-                                if (misma_tasa)
-                                {
-                                    try
-                                    {
-                                        vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 10) });
-                                    }
-                                    catch
-                                    {
-                                        vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim() });
-                                    }
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 10) });
-                                    }
-                                    catch
-                                    {
-                                        vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim() });
-                                    }
-                                }
-
+                                vars.Add(new SPVars() { nombre = "_estado", valor = "PAGADO" });
+                                vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
+                                ReporteRNegocio.quitar_pa_f(id);
                             }
+                            else
+                            {
+                                if (es_pa_f)
+                                {
+                                    vars.Add(new SPVars() { nombre = "_estado", valor = "TEMPORAL" });
+                                    vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA-F" });
+                                }
+                                else
+                                {
+                                    vars.Add(new SPVars() { nombre = "_estado", valor = "ABONO" });
+                                    vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
+                                }
+                            }
+                            vars.Add(new SPVars() { nombre = "_observacion", valor = descripcion.Replace("'", "") + "(" + moneda + ")" });
+                            vars.Add(new SPVars() { nombre = "_usuario", valor = HttpContext.Current.Session["user"].ToString() });
+                            vars.Add(new SPVars() { nombre = "_num_factura_origen", valor = id });
+                            vars.Add(new SPVars() { nombre = "_aux3", valor = facturas_aplicadas });
+                            vars.Add(new SPVars() { nombre = "_aux5", valor = cuenta_banco });
+                            vars.Add(new SPVars() { nombre = "_fecha", valor = fecha_pago });
+                            vars.Add(new SPVars() { nombre = "_fecha_venc", valor = DateTime.Now.ToShortDateString() });
+
+
+                            //misma tasa cambio   Session["tipo_cambio_iguales"]
+                            bool misma_tasa = (bool)HttpContext.Current.Session["tipo_cambio_iguales"];
+                            if (misma_tasa)
+                            {
+                                try
+                                {
+                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 10) });
+                                }
+                                catch
+                                {
+                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim() });
+                                }
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 10) });
+                                }
+                                catch
+                                {
+                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim() });
+                                }
+                            }
+
+                            //}
 
                             db.Scalar2(query, vars);
                         }
@@ -3274,16 +3342,19 @@ namespace SoprodiApp
                         //agrega list para enviar al solomon
                         facturas_al_erp.Add(fact.Trim());
 
-                        string moneda_cm = ReporteRNegocio.tipo_moneda(fact.Trim());
+                        string moneda_cm = "";
 
                         string monto_fac = "";
                         string facturas_aplicadas = "";
-                        DataTable facturas_pagables = (DataTable)HttpContext.Current.Session["facturas_pagables"];
+
                         foreach (DataRow str in facturas_pagables.Rows)
                         {
                             if (str[4].ToString() != "IN")
                             {
                                 string facturas_aplicadas_CM = str[9].ToString().Trim();
+                                rutcliente_ = str["rutcliente"].ToString().Trim();
+                                moneda_cm = str["tipo_moneda"].ToString().Trim();
+
                                 try
                                 {
                                     if (str["facturas_aplicadas"].ToString().Trim().Substring(str[9].ToString().Trim().Length - 1) == "-")
@@ -3323,8 +3394,8 @@ namespace SoprodiApp
                                     string fecha_pago = fecha;
                                     monto = monto_fac;
                                     DBUtil db = new DBUtil();
-                                    DataTable dt = new DataTable();
-                                    dt = db.consultar("select top 1 rutcliente, tipo_moneda from V_COBRANZA where factura =  '" + fact.Trim() + "'");
+                                    //DataTable dt = new DataTable();
+                                    //dt = db.consultar("select top 1 rutcliente, tipo_moneda from V_COBRANZA where factura =  '" + fact.Trim() + "'");
                                     string query = "";
                                     query += "INSERT INTO COBRANZA_PAGOS ( ";
                                     query += "id_cobranza, ";
@@ -3376,53 +3447,53 @@ namespace SoprodiApp
                                     vars.Add(new SPVars() { nombre = "descripcion", valor = descripcion.Replace("'", "") + "(" + moneda_cm + ")" });
                                     vars.Add(new SPVars() { nombre = "banco", valor = facturas_aplicadas });
 
-                                    foreach (DataRow dr in dt.Rows)
+                                    //foreach (DataRow dr in dt.Rows)
+                                    //{
+                                    vars.Add(new SPVars() { nombre = "_num_factura", valor = fact.Trim() });
+                                    vars.Add(new SPVars() { nombre = "_monto_doc", valor = monto.Replace("'", "").Replace(",", ".") });
+                                    vars.Add(new SPVars() { nombre = "_rutcliente", valor = rutcliente_ });
+
+                                    if (cerrar == "si")
                                     {
-                                        vars.Add(new SPVars() { nombre = "_num_factura", valor = fact.Trim() });
-                                        vars.Add(new SPVars() { nombre = "_monto_doc", valor = monto.Replace("'", "").Replace(",", ".") });
-                                        vars.Add(new SPVars() { nombre = "_rutcliente", valor = dr["rutcliente"].ToString().Replace("'", "") });
-
-                                        if (cerrar == "si")
+                                        if (!IsNumeric2(fact))
                                         {
-                                            if (!IsNumeric2(fact))
-                                            {
-                                                vars.Add(new SPVars() { nombre = "_estado", valor = "SALDO_FAVOR" });
-                                                vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
-                                                ReporteRNegocio.quitar_pa_f(id);
-                                            }
+                                            vars.Add(new SPVars() { nombre = "_estado", valor = "SALDO_FAVOR" });
+                                            vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
+                                            ReporteRNegocio.quitar_pa_f(id);
+                                        }
 
-                                            else
-                                            {
-                                                vars.Add(new SPVars() { nombre = "_estado", valor = "NOTA_CREDITO" });
-                                                vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
-                                                ReporteRNegocio.quitar_pa_f(id);
-                                            }
+                                        else
+                                        {
+                                            vars.Add(new SPVars() { nombre = "_estado", valor = "NOTA_CREDITO" });
+                                            vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
+                                            ReporteRNegocio.quitar_pa_f(id);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!IsNumeric2(fact))
+                                        {
+                                            vars.Add(new SPVars() { nombre = "_estado", valor = "SALDO_FAVOR" });
+                                            vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
+                                            ReporteRNegocio.quitar_pa_f(id);
                                         }
                                         else
                                         {
-                                            if (!IsNumeric2(fact))
-                                            {
-                                                vars.Add(new SPVars() { nombre = "_estado", valor = "SALDO_FAVOR" });
-                                                vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
-                                                ReporteRNegocio.quitar_pa_f(id);
-                                            }
-                                            else
-                                            {
-                                                vars.Add(new SPVars() { nombre = "_estado", valor = "NOTA_CREDITO" });
-                                                vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
-                                                ReporteRNegocio.quitar_pa_f(id);
-                                            }
+                                            vars.Add(new SPVars() { nombre = "_estado", valor = "NOTA_CREDITO" });
+                                            vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
+                                            ReporteRNegocio.quitar_pa_f(id);
                                         }
-                                        vars.Add(new SPVars() { nombre = "_observacion", valor = descripcion.Replace("'", "") + "(" + moneda_cm + ")" });
-                                        vars.Add(new SPVars() { nombre = "_usuario", valor = HttpContext.Current.Session["user"].ToString() });
-                                        vars.Add(new SPVars() { nombre = "_num_factura_origen", valor = id });
-                                        vars.Add(new SPVars() { nombre = "_aux3", valor = facturas_aplicadas });
-                                        vars.Add(new SPVars() { nombre = "_fecha", valor = fecha_pago });
-                                        vars.Add(new SPVars() { nombre = "_fecha_venc", valor = DateTime.Now.ToShortDateString() });
-
-
-
                                     }
+                                    vars.Add(new SPVars() { nombre = "_observacion", valor = descripcion.Replace("'", "") + "(" + moneda_cm + ")" });
+                                    vars.Add(new SPVars() { nombre = "_usuario", valor = HttpContext.Current.Session["user"].ToString() });
+                                    vars.Add(new SPVars() { nombre = "_num_factura_origen", valor = id });
+                                    vars.Add(new SPVars() { nombre = "_aux3", valor = facturas_aplicadas });
+                                    vars.Add(new SPVars() { nombre = "_fecha", valor = fecha_pago });
+                                    vars.Add(new SPVars() { nombre = "_fecha_venc", valor = DateTime.Now.ToShortDateString() });
+
+
+
+                                    //}
                                     db.Scalar2(query, vars);
                                 }
                             }
@@ -5838,6 +5909,8 @@ namespace SoprodiApp
             facturas_pagables.Columns.Add("facturas_aplicadas");
             facturas_pagables.Columns.Add("tipo_moneda");
 
+            facturas_pagables.Columns.Add("rutcliente");
+
             tabla_documentos += "<table class=\"table fill-head table-bordered\">";
             tabla_documentos += "<thead class=\"test\">";
             tabla_documentos += "<tr>";
@@ -5952,7 +6025,7 @@ namespace SoprodiApp
                         {
                             valors_dolar = valor_dolar;
                         }
-                   
+
 
 
                     }
@@ -6006,12 +6079,11 @@ namespace SoprodiApp
                     tabla_documentos += "<td>" + G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim() + "</td>";
                     row[5] = G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim();
                     row[6] = G_INIT.DataKeys[dtgItem.RowIndex].Values[6].ToString().Trim();
-
                     row[7] = valors_peso;
                     row[8] = valors_dolar;
                     row[9] = "";
-
                     row[10] = tipo_moneda;
+                    row[11] = rut_cliente;
 
                     facturas_pagables.Rows.Add(row);
 
@@ -6061,12 +6133,12 @@ namespace SoprodiApp
 
                     double tas_cambio_cm = Convert.ToDouble(tasas_cambio_cm);
                     double saldo_peso = Convert.ToDouble(row_1[1].ToString()); ;
-                    
+
                     if (row_1[3].ToString() == "A")
                     {
-                     
+
                         float saldo_dolar = float.Parse(aux_dolar_texto);
-                        
+
 
                         if (moneda_cm.Contains("PESO"))
                         {
@@ -6100,7 +6172,7 @@ namespace SoprodiApp
                 if (si_insert != "")
                 {
 
-
+                    //aca al INICIAR COBRANZA se llena facturas_pagables
                     HttpContext.Current.Session["facturas_pagables"] = facturas_pagables;
                     string fac = "";
                     foreach (DataRow r in facturas_pagables.Rows)
@@ -6373,6 +6445,7 @@ namespace SoprodiApp
             notasdecredito.Columns.Add("fvenc");
             notasdecredito.Columns.Add("tipo_doc");
             notasdecredito.Columns.Add("tipo_moneda");
+            notasdecredito.Columns.Add("rutcliente");
 
             foreach (DataRow r in dt_facturas_pagables.Rows)
             {
@@ -6389,6 +6462,7 @@ namespace SoprodiApp
                     row[4] = r["fvenc"].ToString();
                     row[5] = r["tipo_doc"].ToString();
                     row[6] = r["tipo_moneda"].ToString();
+                    row[7] = r["rutcliente"].ToString();
 
                     notasdecredito.Rows.Add(row);
                 }
@@ -6405,6 +6479,7 @@ namespace SoprodiApp
             facturas_pagables.Columns.Add("saldo_final_dolar");
             facturas_pagables.Columns.Add("facturas_aplicadas");
             facturas_pagables.Columns.Add("tipo_moneda");
+            facturas_pagables.Columns.Add("rutcliente");
 
             int cont_notas_credito = 0;
             foreach (DataRow r2 in notasdecredito.Rows)
@@ -6424,7 +6499,8 @@ namespace SoprodiApp
                 double saldo_peso_CM_aux = saldo_peso_CM;
                 double saldo_dolar_CM_aux = saldo_dolar_CM;
 
-                string tipo_moneda = r2["tipo_moneda"].ToString().Trim();
+                string tipo_moneda_CM = r2["tipo_moneda"].ToString().Trim();
+                string rutcliente_CM = r2["rutcliente"].ToString().Trim();
 
                 int count_facturas = 0;
                 foreach (GridViewRow dtgItem in this.G_FACTURAS_PAGABLES.Rows)
@@ -6441,6 +6517,9 @@ namespace SoprodiApp
                         double saldo_final_peso = 0;
                         double saldo_final_dolar = 0;
                         string facturas_aplicadas = "";
+
+                        string tipo_moneda_IN = G_FACTURAS_PAGABLES.DataKeys[dtgItem.RowIndex].Values[7].ToString();
+                        string rutcliente_IN = G_FACTURAS_PAGABLES.DataKeys[dtgItem.RowIndex].Values[8].ToString();
 
                         double saldo_peso_aux = Convert.ToDouble(G_FACTURAS_PAGABLES.DataKeys[dtgItem.RowIndex].Values[2].ToString());
                         double saldo_dolar_aux = Convert.ToDouble(G_FACTURAS_PAGABLES.DataKeys[dtgItem.RowIndex].Values[3].ToString());
@@ -6492,6 +6571,8 @@ namespace SoprodiApp
                                             row_cm_historico[7] = saldo_peso * -1;
                                             row_cm_historico[8] = saldo_dolar * -1;
                                             row_cm_historico[9] = factura;
+                                            row_cm_historico[10] = tipo_moneda_CM;
+                                            row_cm_historico[11] = rutcliente_CM;
                                             facturas_pagables.Rows.Add(row_cm_historico);
                                         }
                                         else
@@ -6508,6 +6589,8 @@ namespace SoprodiApp
                                             row_cm_historico[7] = saldo_final_peso_CM;
                                             row_cm_historico[8] = saldo_final_dolar_CM;
                                             row_cm_historico[9] = factura;
+                                            row_cm_historico[10] = tipo_moneda_CM;
+                                            row_cm_historico[11] = rutcliente_CM;
                                             facturas_pagables.Rows.Add(row_cm_historico);
 
                                             saldo_final_peso_CM = 0;
@@ -6529,6 +6612,8 @@ namespace SoprodiApp
                                         row_final[7] = saldo_final_peso;
                                         row_final[8] = saldo_final_dolar;
                                         row_final[9] = r_dt_original[9].ToString();
+                                        row_final[10] = tipo_moneda_IN;
+                                        row_final[11] = rutcliente_IN;
                                     }
                                     else
                                     {
@@ -6542,6 +6627,8 @@ namespace SoprodiApp
                                         row_final[7] = saldo_peso;
                                         row_final[8] = saldo_dolar;
                                         row_final[9] = facturas_aplicadas;
+                                        row_final[10] = tipo_moneda_IN;
+                                        row_final[11] = rutcliente_IN;
                                     }
                                     if (cont_notas_credito == notasdecredito.Rows.Count)
                                     {
@@ -6566,6 +6653,8 @@ namespace SoprodiApp
                                 row_final[7] = saldo_peso;
                                 row_final[8] = saldo_dolar;
                                 row_final[9] = facturas_aplicadas;
+                                row_final[10] = tipo_moneda_IN;
+                                row_final[11] = rutcliente_IN;
                                 facturas_pagables.Rows.Add(row_final);
                             }
                         }
@@ -6595,6 +6684,9 @@ namespace SoprodiApp
                     else
                         row_final[9] = facturas_aplicadas_CM;
 
+                    row_final[10] = tipo_moneda_CM;
+                    row_final[11] = rutcliente_CM;
+
                     facturas_pagables.Rows.Add(row_final);
                 }
                 else if (saldo_final_peso_CM < 0 && saldo_final_dolar_CM < 0)
@@ -6613,6 +6705,9 @@ namespace SoprodiApp
                         row_final[9] = facturas_aplicadas_CM.Substring(0, facturas_aplicadas_CM.Length - 1);
                     else
                         row_final[9] = facturas_aplicadas_CM;
+
+                    row_final[10] = tipo_moneda_CM;
+                    row_final[11] = rutcliente_CM;
                     facturas_pagables.Rows.Add(row_final);
 
                 }
@@ -6632,6 +6727,8 @@ namespace SoprodiApp
                         row_final[9] = facturas_aplicadas_CM.Substring(0, facturas_aplicadas_CM.Length - 1);
                     else
                         row_final[9] = facturas_aplicadas_CM;
+                    row_final[10] = tipo_moneda_CM;
+                    row_final[11] = rutcliente_CM;
                     facturas_pagables.Rows.Add(row_final);
                 }
                 //final de recorrer CM'S
@@ -6766,6 +6863,12 @@ namespace SoprodiApp
         protected void txt_dolar_TextChanged(object sender, EventArgs e)
         {
             string asd = "";
+        }
+
+        protected void chk_enviar_erp_CheckedChanged(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "cambia_Color", "<script language='javascript'>  cambia_color_fondo(); </script>", false);
+
         }
     }
 }

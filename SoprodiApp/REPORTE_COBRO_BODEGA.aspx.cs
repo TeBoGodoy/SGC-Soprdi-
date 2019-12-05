@@ -1221,9 +1221,6 @@ namespace SoprodiApp
                         double kilos = arrastre;
 
 
-
-
-
                         double valor_for = (kilos * (valor_dia * Convert.ToDouble(tx_dolar.Text)) / 1000);
 
                         if (valor_for > 0)

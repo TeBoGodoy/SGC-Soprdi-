@@ -5234,7 +5234,7 @@ namespace SoprodiApp.acceso
             string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
-                string sql = @"SELECT top 1 tipo_doc  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "' AND OPENDOC = 1";
+                string sql = @"SELECT top 1 tipo_doc  FROM V_COBRANZA WHERE  FACTURA = '" + fact + "' AND OPENDOC = 1 AND tipo_doc <> 'PA'";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
 
@@ -8844,7 +8844,7 @@ namespace SoprodiApp.acceso
                 query += "descr, ";
                 query += "'" + HttpContext.Current.Session["user"].ToString() + "', ";
                 query += "CONVERT(datetime, fecha_venc, 103), ";
-                query += "CONVERT(datetime, fecha_trans, 103) from V_COBRANZA where factura = '" + num_factura.Trim() + "'";
+                query += "CONVERT(datetime, fecha_trans, 103) from V_COBRANZA where factura = '" + num_factura.Trim() + "' and  tipo_doc <> 'PA' ";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

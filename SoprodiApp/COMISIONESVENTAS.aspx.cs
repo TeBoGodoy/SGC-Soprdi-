@@ -1351,7 +1351,7 @@ namespace SoprodiApp
                         };
 
             return query.ToList<REGLA>();
-
+            
 
         }
         public static double total_comision2;
