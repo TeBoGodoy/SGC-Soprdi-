@@ -3515,7 +3515,7 @@ namespace SoprodiApp.acceso
             return dt;
         }
 
-        internal static DataTable dia_entrada_noven_y_salida(string condicion, string selectedValue, string text, int i)
+        internal static DataTable dia_entrada_noven_y_salida(string condicion, string selectedValue, string text, int i, string dias)
         {
             DataTable dt = new DataTable();
             double valor = 0;
@@ -3523,7 +3523,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = "select (isnull((select case when stock_diario.stkunit = 'KGR'   then isnull( sum(stock_diario.[Qty]) ,0)	else sum(stock_diario.[Qty]) * isnull(Unidad_stock.equivale_kilos,00) end from stock_diario  left join unidad_stock on Unidad_stock.cod_prod = stock_diario.invtid where convert(datetime , stock_diario.trandate , 103) = " +
-                         "   convert(datetime, dateadd(DAY, -90, '" + text + "-" + selectedValue + "-" + i + "'),103) " +
+                         "   convert(datetime, dateadd(DAY, -"+ dias + ", '" + text + "-" + selectedValue + "-" + i + "'),103) " +
                          "   " + condicion.Replace("where 1=1", "") + " and qty >0 group by stock_diario.stkunit, unidad_stock.equivale_kilos ),0)), " +
 
 

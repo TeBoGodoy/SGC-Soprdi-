@@ -753,9 +753,9 @@ namespace SoprodiApp.negocio
             return ReporteDB.valor_prod_equivale_sp(sw);
         }
 
-        internal static DataTable dia_entrada_noven(string condicion, string selectedValue, string text, int i)
+        internal static DataTable dia_entrada_noven(string condicion, string selectedValue, string text, int i, string dias)
         {
-            return ReporteDB.dia_entrada_noven_y_salida(condicion, selectedValue, text, i);
+            return ReporteDB.dia_entrada_noven_y_salida(condicion, selectedValue, text, i, dias);
         }
 
         internal static double dia_salida(string condicion, string selectedValue, string text, int i)

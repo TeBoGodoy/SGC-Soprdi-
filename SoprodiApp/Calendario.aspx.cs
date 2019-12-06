@@ -1022,10 +1022,17 @@ namespace SoprodiApp
                     try
                     {
                         factura = (db.Scalar("select top 1 num_factura_origen from cobranza_seguimiento where num_factura = '" + factura + "' and rutcliente = '" + rut + "' and tipo_doc = '" + tipo_doc + "'").ToString());
+
+                        if (factura.Contains("--"))
+                        {
+                            factura = factura.Replace("--", ",");
+                        }
                         if (es_cheque_factura != "") { tipo_doc = "IN"; }
                         if (factura == "") { factura = factura_aux; }
                     }
                     catch { }
+
+                   
                 }
                 else
                 {
@@ -1033,15 +1040,17 @@ namespace SoprodiApp
                     dt = db.consultar("SELECT id, nombrecliente, factura, rutcliente, CONVERT(varchar(20), fecha_trans, 103) as fecha_trans, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, (select ISNULL( (select sum(monto) * -1 from Cobranza_pagos where id_cobranza  = '" + factura + "'),0) + monto_doc ) as monto_doc FROM V_COBRANZA_TODOS WHERE RUTCLIENTE = '" + rut + "' AND FACTURA = '" + factura + "'");
 
                 }
+
             }
             else
             {
                 dt = db.consultar("SELECT id, nombrecliente, factura, rutcliente, CONVERT(varchar(20), fecha_trans, 103) as fecha_trans, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, (select ISNULL( (select sum(monto) * -1 from Cobranza_pagos where id_cobranza  = '" + factura + "'),0) + monto_doc ) as monto_doc FROM V_COBRANZA_TODOS WHERE RUTCLIENTE = '" + rut + "' AND FACTURA = '" + factura + "'");
 
             }
+            factura = agregar_comillas(factura);
 
 
-            estado_result = Convert.ToInt32(db.Scalar("select count(*) from cobranza_seguimiento where num_factura = '" + factura + "' and rutcliente = '" + rut + "' ").ToString());
+            estado_result = Convert.ToInt32(db.Scalar("select count(*) from cobranza_seguimiento where num_factura in (" + factura + ") and rutcliente = '" + rut + "' ").ToString());
 
 
             //// TABLA MOV_ASOCIADOS A LA FACTURA
@@ -1052,7 +1061,10 @@ namespace SoprodiApp
             //}
             //else
             //{
-            dt2 = db.consultar("SELECT id, CONVERT(varchar(20), fecha_trans, 103) as fecha_trans, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, '$ ' + dbo.F_Separador_miles(CONVERT(numeric, monto_doc)) as monto_doc, '$ ' + replace(dbo.F_Separador_miles(replace(monto_usd_original, '.',',')),'.,',',') as transfor, descr, factura, tipo_doc, case when estado_doc = '0' then 'CERRADO' when estado_doc = '1' then 'ABIERTO' END AS estado, '$ ' + dbo.F_Separador_miles(CONVERT(numeric, saldo))  as saldo , tipo_moneda, tasa_camb , '$ ' + replace(dbo.F_Separador_miles(replace(saldo_dolar, '.',',')),'.,',',')  AS saldolar  FROM V_COBRANZA_TODOS WHERE RUTCLIENTE = '" + rut + "' AND FACTURA = '" + factura + "' ORDER BY fecha_trans desc");
+            dt2 = db.consultar("SELECT id, CONVERT(varchar(20), fecha_trans, 103) as fecha_trans, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, '$ ' + dbo.F_Separador_miles(CONVERT(numeric, monto_doc)) as monto_doc, " +
+                "           '$ ' + replace(dbo.F_Separador_miles(replace(monto_usd_original, '.',',')),'.,',',') as transfor, descr, factura, tipo_doc, case when estado_doc = '0' then 'CERRADO' when estado_doc = '1' then 'ABIERTO' END AS estado, " +
+                " '$ ' + dbo.F_Separador_miles(CONVERT(numeric, saldo))  as saldo , tipo_moneda, tasa_camb , '$ ' + replace(dbo.F_Separador_miles(replace(saldo_dolar, '.',',')),'.,',',')  AS saldolar  FROM V_COBRANZA_TODOS " +
+                " WHERE RUTCLIENTE = '" + rut + "' AND FACTURA in (" + factura + ") ORDER BY fecha_trans desc");
 
             //}
 
@@ -1145,7 +1157,7 @@ namespace SoprodiApp
                     if (tipo_doc == "IN" || tipo_doc == "DM")
                     {
                         dt3 = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, " +
-                            "observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA = '" + factura + "' or num_factura_origen like '%" + factura.Trim() + "%'  ORDER BY fecha_trans desc");
+                            "observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA in (" + factura + ") or num_factura_origen like '%" + factura.Trim().Replace(",","--").Replace("'", "") + "%'  ORDER BY fecha_trans desc");
 
 
                         DataTable dt4_cheque_pagado = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, " +
@@ -1381,7 +1393,8 @@ namespace SoprodiApp
                                 rutcliente_ = dr["rutcliente"].ToString();
                                 num_factura_ = dr["num_factura"].ToString();
                             }
-                            dt3 = db.consultar("SELECT CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + dbo.F_Separador_miles(CONVERT(numeric, a.monto_doc)) as monto_doc, observacion, num_factura, tipo_doc  FROM COBRANZA_SEGUIMIENTO WHERE RUTCLIENTE = '" + rutcliente_ + "' AND NUM_FACTURA = '" + num_factura_ + "' ORDER BY fecha_trans desc");
+                            dt3 = db.consultar("SELECT CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + dbo.F_Separador_miles(CONVERT(numeric, a.monto_doc)) as monto_doc, observacion, num_factura, tipo_doc  FROM COBRANZA_SEGUIMIENTO " +
+                                                 "   WHERE RUTCLIENTE = '" + rutcliente_ + "' AND NUM_FACTURA = '" + num_factura_ + "' ORDER BY fecha_trans desc");
                             tabla += "<h3>Origen del pago</h3>";
 
                             tabla += "<table class=\"table fill-head table-bordered\">";
@@ -1420,7 +1433,7 @@ namespace SoprodiApp
             // CAMPOS
             if (!Regex.IsMatch(id.Trim(), @"^[0-9]+$"))
             {
-                dt1 = db.consultar("select num_factura_origen from Cobranza_seguimiento where num_factura = '" + id2 + "' and num_factura_origen <> null");
+                dt1 = db.consultar("select num_factura_origen from Cobranza_seguimiento where num_factura in (" + id2 + ") and num_factura_origen <> null");
                 foreach (DataRow dr in dt.Rows)
                 {
                     try
@@ -1431,8 +1444,10 @@ namespace SoprodiApp
                 }
             }
 
+            id2 = agregar_comillas(id2.Replace("'", ""));
+
             //aca se cae CUANDO ES CHEQUE PROTESTADO
-            dt1 = db.consultar("select id_cobranza, (select top 1 nom_accion from acciones a where Cobranza_Acciones.id_accion = a.id_accion) as accion,  fecha_accion as fecha, usuario, obs, id from Cobranza_Acciones where rtrim(ltrim(ID_cobranza)) = '" + id2.Trim() + "'");
+            dt1 = db.consultar("select id_cobranza, (select top 1 nom_accion from acciones a where Cobranza_Acciones.id_accion = a.id_accion) as accion,  fecha_accion as fecha, usuario, obs, id from Cobranza_Acciones where rtrim(ltrim(ID_cobranza)) in (" + id2.Trim() + ")");
 
             tabla += "<table class=\"table fill-head table-bordered\">";
             tabla += "<thead class=\"test\">";
@@ -3353,7 +3368,7 @@ namespace SoprodiApp
                             {
                                 string facturas_aplicadas_CM = str[9].ToString().Trim();
                                 rutcliente_ = str["rutcliente"].ToString().Trim();
-                                moneda_cm = str["tipo_moneda"].ToString().Trim();
+                                moneda_cm = str["tipo_moneda"].ToString().Trim().ToUpper();
 
                                 try
                                 {
@@ -3371,7 +3386,7 @@ namespace SoprodiApp
 
                                 if (str[0].ToString().Trim() == fact.ToString().Trim() && str[4].ToString() != "NOTACREDITO-F")
                                 {
-                                    if (moneda_cm == "peso")
+                                    if (moneda_cm == "PESO" || moneda_cm == "peso")
                                     {
                                         monto_fac = str["saldo_final_peso"].ToString().Replace(".", ",");
                                         if (monto_fac == "")

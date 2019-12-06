@@ -385,7 +385,7 @@ namespace SoprodiApp
                     {
                         row = dias_cobro.NewRow();
                         row[0] = i;
-                        DataTable estrada_y_salida = ReporteRNegocio.dia_entrada_noven(condicion + " and invtid = '" + invtid + "' ", Session["mes"].ToString(), Session["año"].ToString(), i);
+                        DataTable estrada_y_salida = ReporteRNegocio.dia_entrada_noven(condicion + " and invtid = '" + invtid + "' ", Session["mes"].ToString(), Session["año"].ToString(), i, Session["dias"].ToString());
                         double entrada = Convert.ToDouble(estrada_y_salida.Rows[0][0]);
                         double salida = Convert.ToDouble(estrada_y_salida.Rows[0][1]);
 
