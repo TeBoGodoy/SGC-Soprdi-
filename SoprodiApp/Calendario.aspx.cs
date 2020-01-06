@@ -1032,7 +1032,7 @@ namespace SoprodiApp
                     }
                     catch { }
 
-                   
+
                 }
                 else
                 {
@@ -1157,7 +1157,7 @@ namespace SoprodiApp
                     if (tipo_doc == "IN" || tipo_doc == "DM")
                     {
                         dt3 = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, " +
-                            "observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA in (" + factura + ") or num_factura_origen like '%" + factura.Trim().Replace(",","--").Replace("'", "") + "%'  ORDER BY fecha_trans desc");
+                            "observacion, num_factura, tipo_doc, num_factura_origen, '' as sw  FROM COBRANZA_SEGUIMIENTO WHERE NUM_FACTURA in (" + factura + ") or num_factura_origen like '%" + factura.Trim().Replace(",", "--").Replace("'", "") + "%'  ORDER BY fecha_trans desc");
 
 
                         DataTable dt4_cheque_pagado = db.consultar("SELECT id, CONVERT(varchar(20), fecha_venc, 103) as fecha_venc, CONVERT(varchar(20), fecha, 103) as fecha_trans, '$ ' + REPLACE(dbo.F_Separador_miles(monto_doc),'..',',') as monto_doc, " +
@@ -3476,7 +3476,6 @@ namespace SoprodiApp
                                             vars.Add(new SPVars() { nombre = "_tipo_doc", valor = "PA" });
                                             ReporteRNegocio.quitar_pa_f(id);
                                         }
-
                                         else
                                         {
                                             vars.Add(new SPVars() { nombre = "_estado", valor = "NOTA_CREDITO" });
@@ -3499,15 +3498,13 @@ namespace SoprodiApp
                                             ReporteRNegocio.quitar_pa_f(id);
                                         }
                                     }
+
                                     vars.Add(new SPVars() { nombre = "_observacion", valor = descripcion.Replace("'", "") + "(" + moneda_cm + ")" });
                                     vars.Add(new SPVars() { nombre = "_usuario", valor = HttpContext.Current.Session["user"].ToString() });
                                     vars.Add(new SPVars() { nombre = "_num_factura_origen", valor = id });
                                     vars.Add(new SPVars() { nombre = "_aux3", valor = facturas_aplicadas });
                                     vars.Add(new SPVars() { nombre = "_fecha", valor = fecha_pago });
                                     vars.Add(new SPVars() { nombre = "_fecha_venc", valor = DateTime.Now.ToShortDateString() });
-
-
-
                                     //}
                                     db.Scalar2(query, vars);
                                 }
@@ -5960,19 +5957,16 @@ namespace SoprodiApp
                     //INICIAR COBRANZA ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                     DataRow row;
                     row = facturas_pagables.NewRow();
-
                     string tipo_moneda = G_INIT.DataKeys[dtgItem.RowIndex].Values[9].ToString().Trim();
-
-                    if (trues)
-                    { rut_cliente = G_INIT.DataKeys[dtgItem.RowIndex].Values[0].ToString(); trues = false; }
-
+                    //if (trues)
+                    //{ 
+                    rut_cliente = G_INIT.DataKeys[dtgItem.RowIndex].Values[0].ToString();
+                    //    trues = false; 
+                    //}
                     string tipo_doc = G_INIT.DataKeys[dtgItem.RowIndex].Values[4].ToString().Trim();
                     string num_fact = G_INIT.DataKeys[dtgItem.RowIndex].Values[5].ToString().Trim();
-
-
                     ///TASA CAMBIO 
                     string tasa_cambio = G_INIT.DataKeys[dtgItem.RowIndex].Values[8].ToString().Trim();
-
                     try
                     {
                         tasa_Cambio_q += Convert.ToDouble(tasa_cambio);
@@ -5981,7 +5975,6 @@ namespace SoprodiApp
                     {
 
                     }
-
                     if (tasa_cambio != tipo_cambio_iguales)
                     {
                         tasa_cambio_iguales_bool = false;
@@ -5991,8 +5984,6 @@ namespace SoprodiApp
                     {
                         tasa_cambio_iguales_bool = true;
                     }
-
-
                     string peso = "";
                     string dolar = "";
                     if (tipo_doc == "CM" || (tipo_doc == "PA" && !IsNumeric(num_fact)))
@@ -6008,10 +5999,8 @@ namespace SoprodiApp
                         peso = G_INIT.DataKeys[dtgItem.RowIndex].Values[2].ToString(); trues = false;
                         dolar = G_INIT.DataKeys[dtgItem.RowIndex].Values[3].ToString(); trues = false;
                     }
-
                     double tasa_cmb;
                     double.TryParse(tasa_cambio, out tasa_cmb);
-
                     // se modifica valores para aplicar diferente saldo
                     string valors_peso = "";
                     string valors_dolar = "";
@@ -6022,9 +6011,7 @@ namespace SoprodiApp
                     }
                     else
                     {
-
                         valors_peso = ((TextBox)G_INIT.Rows[Convert.ToInt32(dtgItem.RowIndex)].FindControl("txt_peso")).Text.Replace(".", "");
-
                         string valor_dolar = ((TextBox)G_INIT.Rows[Convert.ToInt32(dtgItem.RowIndex)].FindControl("txt_dolar")).Text;
                         if (valor_dolar.Contains(',') && valor_dolar.Contains('.'))
                         {
@@ -6040,14 +6027,7 @@ namespace SoprodiApp
                         {
                             valors_dolar = valor_dolar;
                         }
-
-
-
                     }
-
-
-
-
                     if (tipo_doc == "IN" || tipo_doc == "DM" || tipo_doc == "CM" || (tipo_doc == "PA" && !IsNumeric(num_fact)))
                     {
                         if (tipo_doc == "IN" || tipo_doc == "DM")
@@ -6145,16 +6125,12 @@ namespace SoprodiApp
                 if (existe_nota_credito)
                 {
                     string aux_dolar_texto = row_1[2].ToString();
-
                     double tas_cambio_cm = Convert.ToDouble(tasas_cambio_cm);
                     double saldo_peso = Convert.ToDouble(row_1[1].ToString()); ;
-
                     if (row_1[3].ToString() == "A")
                     {
 
                         float saldo_dolar = float.Parse(aux_dolar_texto);
-
-
                         if (moneda_cm.Contains("PESO"))
                         {
                             row_1[2] = Math.Round((saldo_peso / tas_cambio_cm), 3);
@@ -6186,7 +6162,6 @@ namespace SoprodiApp
                 cobranza2.Visible = true;
                 if (si_insert != "")
                 {
-
                     //aca al INICIAR COBRANZA se llena facturas_pagables
                     HttpContext.Current.Session["facturas_pagables"] = facturas_pagables;
                     string fac = "";
@@ -6222,8 +6197,6 @@ namespace SoprodiApp
                     {
                         ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script language='javascript'>alert('Cobranza Iniciada');Tabla();</script>", false);
                     }
-
-
 
                     try
                     {

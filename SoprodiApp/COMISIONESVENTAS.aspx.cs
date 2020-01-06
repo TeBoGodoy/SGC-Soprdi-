@@ -2523,82 +2523,81 @@ namespace SoprodiApp
 
                 //MARIANA SILVA .....................------------------------------------------------------------------------------------------
                 //pdf
-                row3 = dt_total_cobranza.NewRow();
-                row3["nombre_cobran"] = "MARIANA SILVA";
-                row3["neto"] = "NETO";
-                row3["porct"] = "PORCT";
-                row3["total"] = "TOTAL";
-                dt_total_cobranza.Rows.Add(row3);
+                //row3 = dt_total_cobranza.NewRow();
+                //row3["nombre_cobran"] = "MARIANA SILVA";
+                //row3["neto"] = "NETO";
+                //row3["porct"] = "PORCT";
+                //row3["total"] = "TOTAL";
+                //dt_total_cobranza.Rows.Add(row3);
 
-                tabla_cobranza += "<table class=\"table fill-head table-bordered\">";
-                tabla_cobranza += "<thead style='background-color: #4d9850 !important; color: white !important; '>";
-                tabla_cobranza += "<tr>";
-                tabla_cobranza += "<th style='width: 40%;" + color_cobranza + "'>MARIANA SILVA</th>";
-                tabla_cobranza += "<th style='width: 28%;" + color_cobranza + "'>NETO </th>";
-                tabla_cobranza += "<th style='width: 15%;" + color_cobranza + "'>PORCT </th>";
-                tabla_cobranza += "<th style='width: 17%;" + color_cobranza + "'>TOTAL</th>";
-                tabla_cobranza += "</tr>";
-                tabla_cobranza += "</thead>";
-                tabla_cobranza += "<tbody>";
+                //tabla_cobranza += "<table class=\"table fill-head table-bordered\">";
+                //tabla_cobranza += "<thead style='background-color: #4d9850 !important; color: white !important; '>";
+                //tabla_cobranza += "<tr>";
+                //tabla_cobranza += "<th style='width: 40%;" + color_cobranza + "'>MARIANA SILVA</th>";
+                //tabla_cobranza += "<th style='width: 28%;" + color_cobranza + "'>NETO </th>";
+                //tabla_cobranza += "<th style='width: 15%;" + color_cobranza + "'>PORCT </th>";
+                //tabla_cobranza += "<th style='width: 17%;" + color_cobranza + "'>TOTAL</th>";
+                //tabla_cobranza += "</tr>";
+                //tabla_cobranza += "</thead>";
+                //tabla_cobranza += "<tbody>";
 
-                total_comision_cobranza = 0;
-                foreach (DataRow r4 in comision_cobranza.Rows)
-                {
-                    row3 = dt_total_cobranza.NewRow();
+                //total_comision_cobranza = 0;
+                //foreach (DataRow r4 in comision_cobranza.Rows)
+                //{
+                //    row3 = dt_total_cobranza.NewRow();
 
-                    string nombre_Categoria = r4[0].ToString();
+                //    string nombre_Categoria = r4[0].ToString();
 
-                    double neto_categoria = Convert.ToDouble(r4[1].ToString());
+                //    double neto_categoria = Convert.ToDouble(r4[1].ToString());
 
-                    string porcentaje = r4[4].ToString() + " %";
+                //    string porcentaje = r4[4].ToString() + " %";
 
-                    double comision_categoria = Convert.ToDouble(r4[7].ToString());
-                    total_comision_cobranza += comision_categoria;
+                //    double comision_categoria = Convert.ToDouble(r4[7].ToString());
+                //    total_comision_cobranza += comision_categoria;
 
-                    //pdf
-                    row3 = dt_total_cobranza.NewRow();
-                    row3["nombre_cobran"] = nombre_Categoria;
-                    row3["neto"] = Base.monto_format2(neto_categoria);
-                    row3["porct"] = porcentaje;
-                    row3["total"] = Base.monto_format2(comision_categoria);
-                    dt_total_cobranza.Rows.Add(row3);
+                //    //pdf
+                //    row3 = dt_total_cobranza.NewRow();
+                //    row3["nombre_cobran"] = nombre_Categoria;
+                //    row3["neto"] = Base.monto_format2(neto_categoria);
+                //    row3["porct"] = porcentaje;
+                //    row3["total"] = Base.monto_format2(comision_categoria);
+                //    dt_total_cobranza.Rows.Add(row3);
 
-                    //web
-                    tabla_cobranza += "<tr>";
-                    tabla_cobranza += "<td>" + r4[0].ToString() + "</td>";
-                    tabla_cobranza += "<td>" + Base.monto_format2(neto_categoria) + " </td>";
+                //    //web
+                //    tabla_cobranza += "<tr>";
+                //    tabla_cobranza += "<td>" + r4[0].ToString() + "</td>";
+                //    tabla_cobranza += "<td>" + Base.monto_format2(neto_categoria) + " </td>";
 
-                    if (Convert.ToDouble(r4[4].ToString()) == 0)
-                    {
-                        tabla_cobranza += "<td></td>";
-                    }
-                    else
-                    {
-                        tabla_cobranza += "<td>" + porcentaje + "</td>";
-                    }
+                //    if (Convert.ToDouble(r4[4].ToString()) == 0)
+                //    {
+                //        tabla_cobranza += "<td></td>";
+                //    }
+                //    else
+                //    {
+                //        tabla_cobranza += "<td>" + porcentaje + "</td>";
+                //    }
 
-                    tabla_cobranza += "<td>" + Base.monto_format2(comision_categoria) + "</td>";
-                    tabla_cobranza += "</tr>";
-                }
-                //pdf
-                row3 = dt_total_cobranza.NewRow();
-                row3["nombre_cobran"] = ":::::TOTAL::::::";
-                row3["neto"] = Base.monto_format2(total_neto);
-                row3["porct"] = "";
-                row3["total"] = Base.monto_format2(total_comision_cobranza);
-                dt_total_cobranza.Rows.Add(row3);
+                //    tabla_cobranza += "<td>" + Base.monto_format2(comision_categoria) + "</td>";
+                //    tabla_cobranza += "</tr>";
+                //}
+                ////pdf
+                //row3 = dt_total_cobranza.NewRow();
+                //row3["nombre_cobran"] = ":::::TOTAL::::::";
+                //row3["neto"] = Base.monto_format2(total_neto);
+                //row3["porct"] = "";
+                //row3["total"] = Base.monto_format2(total_comision_cobranza);
+                //dt_total_cobranza.Rows.Add(row3);
 
                 //web
-                tabla_cobranza += "<tr>";
-                tabla_cobranza += "<td>:::::TOTAL::::::</td>";
-                tabla_cobranza += "<td>" + Base.monto_format2(total_neto) + "</td>";
-                tabla_cobranza += "<td></td>";
-                tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
-                tabla_cobranza += "</tr>";
-
-                tabla_cobranza += "</tbody>";
-                tabla_cobranza += "</table>";
-                tabla_cobranza += "</br> ";
+                //tabla_cobranza += "<tr>";
+                //tabla_cobranza += "<td>:::::TOTAL::::::</td>";
+                //tabla_cobranza += "<td>" + Base.monto_format2(total_neto) + "</td>";
+                //tabla_cobranza += "<td></td>";
+                //tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
+                //tabla_cobranza += "</tr>";
+                //tabla_cobranza += "</tbody>";
+                //tabla_cobranza += "</table>";
+                //tabla_cobranza += "</br> ";
 
 
                 Session["dt_cobranza_com_resu"] = dt_total_cobranza;
@@ -3756,82 +3755,80 @@ namespace SoprodiApp
             tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
             tabla_cobranza += "</tr>";
 
-
             tabla_cobranza += "</tbody>";
             tabla_cobranza += "</table>";
             tabla_cobranza += "</br> ";
 
 
             //MARIANA SILVA .....................------------------------------------------------------------------------------------------
-            tabla_cobranza += "<table class=\"table fill-head table-bordered\">";
-            tabla_cobranza += "<thead style='background-color: #4d9850 !important; color: white !important; '>";
-            tabla_cobranza += "<tr>";
-            tabla_cobranza += "<th style='width: 40%;'>MARIANA SILVA</th>";
-            tabla_cobranza += "<th style='width: 28%;'>NETO </th>";
-            tabla_cobranza += "<th style='width: 15%;'>PORCT </th>";
-            tabla_cobranza += "<th style='width: 17%;'>TOTAL</th>";
-            tabla_cobranza += "</tr>";
-            tabla_cobranza += "</thead>";
-            tabla_cobranza += "<tbody>";
+            //tabla_cobranza += "<table class=\"table fill-head table-bordered\">";
+            //tabla_cobranza += "<thead style='background-color: #4d9850 !important; color: white !important; '>";
+            //tabla_cobranza += "<tr>";
+            //tabla_cobranza += "<th style='width: 40%;'>MARIANA SILVA</th>";
+            //tabla_cobranza += "<th style='width: 28%;'>NETO </th>";
+            //tabla_cobranza += "<th style='width: 15%;'>PORCT </th>";
+            //tabla_cobranza += "<th style='width: 17%;'>TOTAL</th>";
+            //tabla_cobranza += "</tr>";
+            //tabla_cobranza += "</thead>";
+            //tabla_cobranza += "<tbody>";
 
-            total_comision_cobranza = 0;
-            foreach (DataRow r4 in comision_cobranza.Rows)
-            {
-                row3 = dt_total_cobranza.NewRow();
+            //total_comision_cobranza = 0;
+            //foreach (DataRow r4 in comision_cobranza.Rows)
+            //{
+            //    row3 = dt_total_cobranza.NewRow();
 
-                string nombre_Categoria = r4[0].ToString();
+            //    string nombre_Categoria = r4[0].ToString();
 
-                double neto_categoria = Convert.ToDouble(r4[1].ToString());
+            //    double neto_categoria = Convert.ToDouble(r4[1].ToString());
 
-                string porcentaje = r4[4].ToString() + " %";
+            //    string porcentaje = r4[4].ToString() + " %";
 
-                double comision_categoria = Convert.ToDouble(r4[7].ToString());
-                total_comision_cobranza += comision_categoria;
+            //    double comision_categoria = Convert.ToDouble(r4[7].ToString());
+            //    total_comision_cobranza += comision_categoria;
 
-                //pdf
-                row3 = dt_total_cobranza.NewRow();
-                row3["nombre_cobran"] = nombre_Categoria;
-                row3["neto"] = Base.monto_format2(neto_categoria);
-                row3["porct"] = porcentaje;
-                row3["total"] = Base.monto_format2(comision_categoria);
-                dt_total_cobranza.Rows.Add(row3);
+            //    //pdf
+            //    row3 = dt_total_cobranza.NewRow();
+            //    row3["nombre_cobran"] = nombre_Categoria;
+            //    row3["neto"] = Base.monto_format2(neto_categoria);
+            //    row3["porct"] = porcentaje;
+            //    row3["total"] = Base.monto_format2(comision_categoria);
+            //    dt_total_cobranza.Rows.Add(row3);
 
-                //web
-                tabla_cobranza += "<tr>";
-                tabla_cobranza += "<td>" + r4[0].ToString() + "</td>";
-                tabla_cobranza += "<td>" + Base.monto_format2(neto_categoria) + " </td>";
+            //    //web
+            //    tabla_cobranza += "<tr>";
+            //    tabla_cobranza += "<td>" + r4[0].ToString() + "</td>";
+            //    tabla_cobranza += "<td>" + Base.monto_format2(neto_categoria) + " </td>";
 
-                if (Convert.ToDouble(r4[4].ToString()) == 0)
-                {
-                    tabla_cobranza += "<td></td>";
-                }
-                else
-                {
-                    tabla_cobranza += "<td>" + porcentaje + "</td>";
-                }
+            //    if (Convert.ToDouble(r4[4].ToString()) == 0)
+            //    {
+            //        tabla_cobranza += "<td></td>";
+            //    }
+            //    else
+            //    {
+            //        tabla_cobranza += "<td>" + porcentaje + "</td>";
+            //    }
 
-                tabla_cobranza += "<td>" + Base.monto_format2(comision_categoria) + "</td>";
-                tabla_cobranza += "</tr>";
-            }
-            //pdf
-            row3 = dt_total_cobranza.NewRow();
-            row3["nombre_cobran"] = ":::::TOTAL::::::";
-            row3["neto"] = Base.monto_format2(total_neto);
-            row3["porct"] = "";
-            row3["total"] = Base.monto_format2(total_comision_cobranza);
-            dt_total_cobranza.Rows.Add(row3);
+            //    tabla_cobranza += "<td>" + Base.monto_format2(comision_categoria) + "</td>";
+            //    tabla_cobranza += "</tr>";
+            //}
+            ////pdf
+            //row3 = dt_total_cobranza.NewRow();
+            //row3["nombre_cobran"] = ":::::TOTAL::::::";
+            //row3["neto"] = Base.monto_format2(total_neto);
+            //row3["porct"] = "";
+            //row3["total"] = Base.monto_format2(total_comision_cobranza);
+            //dt_total_cobranza.Rows.Add(row3);
 
-            //web
-            tabla_cobranza += "<tr>";
-            tabla_cobranza += "<td>:::::TOTAL::::::</td>";
-            tabla_cobranza += "<td>" + Base.monto_format2(total_neto) + "</td>";
-            tabla_cobranza += "<td></td>";
-            tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
-            tabla_cobranza += "</tr>";
-
-            tabla_cobranza += "</tbody>";
-            tabla_cobranza += "</table>";
-            tabla_cobranza += "</br> ";
+            ////web
+            //tabla_cobranza += "<tr>";
+            //tabla_cobranza += "<td>:::::TOTAL::::::</td>";
+            //tabla_cobranza += "<td>" + Base.monto_format2(total_neto) + "</td>";
+            //tabla_cobranza += "<td></td>";
+            //tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
+            //tabla_cobranza += "</tr>";
+            //tabla_cobranza += "</tbody>";
+            //tabla_cobranza += "</table>";
+            //tabla_cobranza += "</br> ";
 
             Session["dt_cobranza_com_resu"] = dt_total_cobranza;
 
@@ -5230,82 +5227,82 @@ namespace SoprodiApp
 
                 //MARIANA SILVA .....................------------------------------------------------------------------------------------------
                 //pdf
-                row3 = dt_total_cobranza.NewRow();
-                row3["nombre_cobran"] = "MARIANA SILVA";
-                row3["neto"] = "NETO";
-                row3["porct"] = "PORCT";
-                row3["total"] = "TOTAL";
-                dt_total_cobranza.Rows.Add(row3);
+                //row3 = dt_total_cobranza.NewRow();
+                //row3["nombre_cobran"] = "MARIANA SILVA";
+                //row3["neto"] = "NETO";
+                //row3["porct"] = "PORCT";
+                //row3["total"] = "TOTAL";
+                //dt_total_cobranza.Rows.Add(row3);
 
-                tabla_cobranza += "<table class=\"table fill-head table-bordered\">";
-                tabla_cobranza += "<thead style='background-color: #4d9850 !important; color: white !important; '>";
-                tabla_cobranza += "<tr>";
-                tabla_cobranza += "<th style='width: 40%;" + color_cobranza + "'>MARIANA SILVA</th>";
-                tabla_cobranza += "<th style='width: 28%;" + color_cobranza + "'>NETO </th>";
-                tabla_cobranza += "<th style='width: 15%;" + color_cobranza + "'>PORCT </th>";
-                tabla_cobranza += "<th style='width: 17%;" + color_cobranza + "'>TOTAL</th>";
-                tabla_cobranza += "</tr>";
-                tabla_cobranza += "</thead>";
-                tabla_cobranza += "<tbody>";
+                //tabla_cobranza += "<table class=\"table fill-head table-bordered\">";
+                //tabla_cobranza += "<thead style='background-color: #4d9850 !important; color: white !important; '>";
+                //tabla_cobranza += "<tr>";
+                //tabla_cobranza += "<th style='width: 40%;" + color_cobranza + "'>MARIANA SILVA</th>";
+                //tabla_cobranza += "<th style='width: 28%;" + color_cobranza + "'>NETO </th>";
+                //tabla_cobranza += "<th style='width: 15%;" + color_cobranza + "'>PORCT </th>";
+                //tabla_cobranza += "<th style='width: 17%;" + color_cobranza + "'>TOTAL</th>";
+                //tabla_cobranza += "</tr>";
+                //tabla_cobranza += "</thead>";
+                //tabla_cobranza += "<tbody>";
 
-                total_comision_cobranza = 0;
-                foreach (DataRow r4 in comision_cobranza.Rows)
-                {
-                    row3 = dt_total_cobranza.NewRow();
+                //total_comision_cobranza = 0;
+                //foreach (DataRow r4 in comision_cobranza.Rows)
+                //{
+                //    row3 = dt_total_cobranza.NewRow();
 
-                    string nombre_Categoria = r4[0].ToString();
+                //    string nombre_Categoria = r4[0].ToString();
 
-                    double neto_categoria = Convert.ToDouble(r4[1].ToString());
+                //    double neto_categoria = Convert.ToDouble(r4[1].ToString());
 
-                    string porcentaje = r4[4].ToString() + " %";
+                //    string porcentaje = r4[4].ToString() + " %";
 
-                    double comision_categoria = Convert.ToDouble(r4[7].ToString());
-                    total_comision_cobranza += comision_categoria;
+                //    double comision_categoria = Convert.ToDouble(r4[7].ToString());
+                //    total_comision_cobranza += comision_categoria;
 
-                    //pdf
-                    row3 = dt_total_cobranza.NewRow();
-                    row3["nombre_cobran"] = nombre_Categoria;
-                    row3["neto"] = Base.monto_format2(neto_categoria);
-                    row3["porct"] = porcentaje;
-                    row3["total"] = Base.monto_format2(comision_categoria);
-                    dt_total_cobranza.Rows.Add(row3);
+                //    //pdf
+                //    row3 = dt_total_cobranza.NewRow();
+                //    row3["nombre_cobran"] = nombre_Categoria;
+                //    row3["neto"] = Base.monto_format2(neto_categoria);
+                //    row3["porct"] = porcentaje;
+                //    row3["total"] = Base.monto_format2(comision_categoria);
+                //    dt_total_cobranza.Rows.Add(row3);
 
-                    //web
-                    tabla_cobranza += "<tr>";
-                    tabla_cobranza += "<td>" + r4[0].ToString() + "</td>";
-                    tabla_cobranza += "<td>" + Base.monto_format2(neto_categoria) + " </td>";
+                //    //web
+                //    tabla_cobranza += "<tr>";
+                //    tabla_cobranza += "<td>" + r4[0].ToString() + "</td>";
+                //    tabla_cobranza += "<td>" + Base.monto_format2(neto_categoria) + " </td>";
 
-                    if (Convert.ToDouble(r4[4].ToString()) == 0)
-                    {
-                        tabla_cobranza += "<td></td>";
-                    }
-                    else
-                    {
-                        tabla_cobranza += "<td>" + porcentaje + "</td>";
-                    }
+                //    if (Convert.ToDouble(r4[4].ToString()) == 0)
+                //    {
+                //        tabla_cobranza += "<td></td>";
+                //    }
+                //    else
+                //    {
+                //        tabla_cobranza += "<td>" + porcentaje + "</td>";
+                //    }
 
-                    tabla_cobranza += "<td>" + Base.monto_format2(comision_categoria) + "</td>";
-                    tabla_cobranza += "</tr>";
-                }
-                //pdf
-                row3 = dt_total_cobranza.NewRow();
-                row3["nombre_cobran"] = ":::::TOTAL::::::";
-                row3["neto"] = Base.monto_format2(total_neto);
-                row3["porct"] = "";
-                row3["total"] = Base.monto_format2(total_comision_cobranza);
-                dt_total_cobranza.Rows.Add(row3);
+                //    tabla_cobranza += "<td>" + Base.monto_format2(comision_categoria) + "</td>";
+                //    tabla_cobranza += "</tr>";
+                //}
+                ////pdf
+                //row3 = dt_total_cobranza.NewRow();
+                //row3["nombre_cobran"] = ":::::TOTAL::::::";
+                //row3["neto"] = Base.monto_format2(total_neto);
+                //row3["porct"] = "";
+                //row3["total"] = Base.monto_format2(total_comision_cobranza);
+                //dt_total_cobranza.Rows.Add(row3);
 
-                //web
-                tabla_cobranza += "<tr>";
-                tabla_cobranza += "<td>:::::TOTAL::::::</td>";
-                tabla_cobranza += "<td>" + Base.monto_format2(total_neto) + "</td>";
-                tabla_cobranza += "<td></td>";
-                tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
-                tabla_cobranza += "</tr>";
+                ////web
+                //tabla_cobranza += "<tr>";
+                //tabla_cobranza += "<td>:::::TOTAL::::::</td>";
+                //tabla_cobranza += "<td>" + Base.monto_format2(total_neto) + "</td>";
+                //tabla_cobranza += "<td></td>";
+                //tabla_cobranza += "<td>" + Base.monto_format2(total_comision_cobranza) + "</td>";
+                //tabla_cobranza += "</tr>";
 
-                tabla_cobranza += "</tbody>";
-                tabla_cobranza += "</table>";
-                tabla_cobranza += "</br> ";
+                //tabla_cobranza += "</tbody>";
+                //tabla_cobranza += "</table>";
+                //tabla_cobranza += "</br> ";
 
 
                 Session["dt_cobranza_com_resu"] = dt_total_cobranza;

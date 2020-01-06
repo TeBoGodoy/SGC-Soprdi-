@@ -2173,12 +2173,18 @@ namespace SoprodiApp
             DataTable dt_sp_encabe_EXT = ReporteRNegocio.ventamovil_sp_enc_EXT(sp);
             DataTable dt_sp_detalle_EXT = ReporteRNegocio.ventamovil_sp_det_EXT(sp);
 
+            string CodCliente = ReporteRNegocio.ventamovil_trae_codcliente(sp);
+
+            DataTable dt_cliente_matriz = ReporteRNegocio.ventamovil_cliente_matriz(CodCliente);
+            DataTable dt_cliente_sucursal = ReporteRNegocio.ventamovil_cliente_sucursal(CodCliente);
+
             string cadena_vm_thx = "Data Source=192.168.10.45;Initial Catalog=SoprodiVenta;Persist Security Info=True;User ID=sa;Password=Soprodi1234";
 
             bool ok = true;
 
             ok = borrar_sp(sp);
-
+            ok = borrar_cliente(CodCliente);
+            //------------------------------------------------------------------------>   encabezado 1 
             SqlBulkCopy bulkcopy = new SqlBulkCopy(cadena_vm_thx);
             bulkcopy.DestinationTableName = "TrnDocumentoCabecera";
             try
@@ -2190,6 +2196,7 @@ namespace SoprodiApp
                 ok = false;
                 Console.Write(ex.Message);
             }
+            //------------------------------------------------------------------------>   detalle 1
             SqlBulkCopy bulkcopy2 = new SqlBulkCopy(cadena_vm_thx);
             bulkcopy2.DestinationTableName = "TrnDocumentoDetalle";
             try
@@ -2202,6 +2209,7 @@ namespace SoprodiApp
                 Console.Write(ex.Message);
             }
             //ext_
+            //------------------------------------------------------------------------>   encabezado 2
             SqlBulkCopy bulkcopy3 = new SqlBulkCopy(cadena_vm_thx);
             bulkcopy3.DestinationTableName = "ext_TrnDocumentoCabecera";
             try
@@ -2213,11 +2221,36 @@ namespace SoprodiApp
                 ok = false;
                 Console.Write(ex.Message);
             }
+            //------------------------------------------------------------------------>   detalle 2
             SqlBulkCopy bulkcopy4 = new SqlBulkCopy(cadena_vm_thx);
             bulkcopy4.DestinationTableName = "ext_TrnDocumentoDetalle";
             try
             {
                 bulkcopy4.WriteToServer(dt_sp_detalle_EXT);
+            }
+            catch (Exception ex)
+            {
+                ok = false;
+                Console.Write(ex.Message);
+            }
+            //------------------------------------------------------------------------>   cliente matriz 1
+            SqlBulkCopy bulkcopy5 = new SqlBulkCopy(cadena_vm_thx);
+            bulkcopy5.DestinationTableName = "MaeClienteMatriz";
+            try
+            {
+                bulkcopy5.WriteToServer(dt_cliente_matriz);
+            }
+            catch (Exception ex)
+            {
+                ok = false;
+                Console.Write(ex.Message);
+            }
+            //------------------------------------------------------------------------>   cliente sucursal 1
+            SqlBulkCopy bulkcopy6 = new SqlBulkCopy(cadena_vm_thx);
+            bulkcopy6.DestinationTableName = "MaeClienteSucursal";
+            try
+            {
+                bulkcopy6.WriteToServer(dt_cliente_sucursal);
             }
             catch (Exception ex)
             {
@@ -2243,6 +2276,33 @@ namespace SoprodiApp
             //}
 
 
+        }
+
+        private bool borrar_cliente(string codCliente)
+        {
+            string cadena_vm_thx = "Data Source=192.168.10.45;Initial Catalog=SoprodiVenta;Persist Security Info=True;User ID=sa;Password=Soprodi1234";
+
+            using (SqlConnection conn = new SqlConnection(cadena_vm_thx))
+            {
+                conn.Open();
+                string sql = @"   delete from MaeClienteSucursal     where codCliente in (@codCliente); " +
+                               "  delete from MaeClienteMatriz       where codCliente in (@codCliente);  ";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@codCliente", codCliente.Trim());
+                    //cmd.Parameters.AddWithValue("@periodo", periodo);
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                    catch (Exception EX)
+                    {
+                        return false;
+                    }
+                }
+            }
         }
 
         private bool borrar_sp(string sp)

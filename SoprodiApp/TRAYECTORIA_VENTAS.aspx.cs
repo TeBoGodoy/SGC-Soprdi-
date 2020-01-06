@@ -43,13 +43,22 @@ namespace SoprodiApp
             if (!IsPostBack)
             {
                 cargar_combo_VENDEDOR();
+                // COMBO PERIODOS
+                DateTime fechahoy = DateTime.Now;
+                CB_PERIODO.Items.Insert(0, new ListItem(fechahoy.ToString("yyyy-MM").Replace("-", ""), "01/" + fechahoy.ToString("MM/yyyy")));
+                CB_PERIODO.Items.Insert(1, new ListItem(fechahoy.AddMonths(-1).ToString("yyyy-MM").Replace("-", ""), "01/" + fechahoy.AddMonths(-1).ToString("MM/yyyy")));
+                CB_PERIODO.Items.Insert(2, new ListItem(fechahoy.AddMonths(-2).ToString("yyyy-MM").Replace("-", ""), "01/" + fechahoy.AddMonths(-2).ToString("MM/yyyy")));
+                CB_PERIODO.Items.Insert(3, new ListItem(fechahoy.AddMonths(-3).ToString("yyyy-MM").Replace("-", ""), "01/" + fechahoy.AddMonths(-3).ToString("MM/yyyy")));
+                CB_PERIODO.Items.Insert(4, new ListItem(fechahoy.AddMonths(-4).ToString("yyyy-MM").Replace("-", ""), "01/" + fechahoy.AddMonths(-4).ToString("MM/yyyy")));
+                CB_PERIODO.Items.Insert(5, new ListItem(fechahoy.AddMonths(-5).ToString("yyyy-MM").Replace("-", ""), "01/" + fechahoy.AddMonths(-5).ToString("MM/yyyy")));
+
             }
         }
 
         private void cargar_combo_VENDEDOR()
         {
             DBUtil db = new DBUtil();
-            CB_VENDEDORES.DataSource = db.consultar("select cod_usuario, nombre_usuario from [V_CTZ_VENDEDORES] order by nombre_usuario ");
+            CB_VENDEDORES.DataSource = db.consultar("select cod_usuario, nombre_usuario from [V_CTZ_VENDEDORES] where correo_trayectoria = 1 order by nombre_usuario ");
             CB_VENDEDORES.DataValueField = "cod_usuario";
             CB_VENDEDORES.DataTextField = "nombre_usuario";
             CB_VENDEDORES.DataBind();
@@ -100,33 +109,34 @@ namespace SoprodiApp
                 string cod_vendedor = CB_VENDEDORES.SelectedValue;
 
                 string nombre_vendedor = CB_VENDEDORES.SelectedItem.Text;
-                DateTime fechaactual = DateTime.Now;
-                DateTime primerdiadelmes = Convert.ToDateTime("01/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("yyyy"));
+                //DateTime fechaactual = DateTime.Now;
+                DateTime fechaactual = Convert.ToDateTime(CB_PERIODO.SelectedValue);
+                DateTime primerdiadelmes = Convert.ToDateTime("01/" + fechaactual.ToString("MM") + "/" + fechaactual.ToString("yyyy"));
 
-                int mesanterior1 = int.Parse((DateTime.Now.ToString("MM")));
-                int mesanterior2 = int.Parse((DateTime.Now.AddMonths(-1)).ToString("MM"));
-                int mesanterior3 = int.Parse((DateTime.Now.AddMonths(-2)).ToString("MM"));
-                int mesanterior4 = int.Parse((DateTime.Now.AddMonths(-3)).ToString("MM"));
-                int mesanterior5 = int.Parse((DateTime.Now.AddMonths(-4)).ToString("MM"));
-                int mesanterior6 = int.Parse((DateTime.Now.AddMonths(-5)).ToString("MM"));
+                int mesanterior1 = int.Parse((fechaactual.ToString("MM")));
+                int mesanterior2 = int.Parse((fechaactual.AddMonths(-1)).ToString("MM"));
+                int mesanterior3 = int.Parse((fechaactual.AddMonths(-2)).ToString("MM"));
+                int mesanterior4 = int.Parse((fechaactual.AddMonths(-3)).ToString("MM"));
+                int mesanterior5 = int.Parse((fechaactual.AddMonths(-4)).ToString("MM"));
+                int mesanterior6 = int.Parse((fechaactual.AddMonths(-5)).ToString("MM"));
 
-                DateTime inicio_1 = Convert.ToDateTime("01/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("yyyy"));
-                DateTime fin_1 = Convert.ToDateTime("" + DateTime.DaysInMonth(DateTime.Now.Year, mesanterior1) + "/" + mesanterior1 + "/" + DateTime.Now.ToString("yyyy"));
+                DateTime inicio_1 = Convert.ToDateTime("01/" + fechaactual.ToString("MM") + "/" + fechaactual.ToString("yyyy"));
+                DateTime fin_1 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.Year, mesanterior1) + "/" + mesanterior1 + "/" + fechaactual.ToString("yyyy"));
 
-                DateTime inicio_2 = Convert.ToDateTime("01/" + DateTime.Now.AddMonths(-1).ToString("MM") + "/" + DateTime.Now.AddMonths(-1).ToString("yyyy"));
-                DateTime fin_2 = Convert.ToDateTime("" + DateTime.DaysInMonth(DateTime.Now.AddMonths(-1).Year, mesanterior2) + "/" + mesanterior2 + "/" + DateTime.Now.AddMonths(-1).ToString("yyyy"));
+                DateTime inicio_2 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-1).ToString("MM") + "/" + fechaactual.AddMonths(-1).ToString("yyyy"));
+                DateTime fin_2 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-1).Year, mesanterior2) + "/" + mesanterior2 + "/" + fechaactual.AddMonths(-1).ToString("yyyy"));
 
-                DateTime inicio_3 = Convert.ToDateTime("01/" + DateTime.Now.AddMonths(-2).ToString("MM") + "/" + DateTime.Now.AddMonths(-2).ToString("yyyy"));
-                DateTime fin_3 = Convert.ToDateTime("" + DateTime.DaysInMonth(DateTime.Now.AddMonths(-2).Year, mesanterior3) + "/" + mesanterior3 + "/" + DateTime.Now.AddMonths(-2).ToString("yyyy"));
+                DateTime inicio_3 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-2).ToString("MM") + "/" + fechaactual.AddMonths(-2).ToString("yyyy"));
+                DateTime fin_3 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-2).Year, mesanterior3) + "/" + mesanterior3 + "/" + fechaactual.AddMonths(-2).ToString("yyyy"));
 
-                DateTime inicio_4 = Convert.ToDateTime("01/" + DateTime.Now.AddMonths(-3).ToString("MM") + "/" + DateTime.Now.AddMonths(-3).ToString("yyyy"));
-                DateTime fin_4 = Convert.ToDateTime("" + DateTime.DaysInMonth(DateTime.Now.AddMonths(-3).Year, mesanterior4) + "/" + mesanterior4 + "/" + DateTime.Now.AddMonths(-3).ToString("yyyy"));
+                DateTime inicio_4 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-3).ToString("MM") + "/" + fechaactual.AddMonths(-3).ToString("yyyy"));
+                DateTime fin_4 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-3).Year, mesanterior4) + "/" + mesanterior4 + "/" + fechaactual.AddMonths(-3).ToString("yyyy"));
 
-                DateTime inicio_5 = Convert.ToDateTime("01/" + DateTime.Now.AddMonths(-4).ToString("MM") + "/" + DateTime.Now.AddMonths(-4).ToString("yyyy"));
-                DateTime fin_5 = Convert.ToDateTime("" + DateTime.DaysInMonth(DateTime.Now.AddMonths(-4).Year, mesanterior5) + "/" + mesanterior5 + "/" + DateTime.Now.AddMonths(-4).ToString("yyyy"));
+                DateTime inicio_5 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-4).ToString("MM") + "/" + fechaactual.AddMonths(-4).ToString("yyyy"));
+                DateTime fin_5 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-4).Year, mesanterior5) + "/" + mesanterior5 + "/" + fechaactual.AddMonths(-4).ToString("yyyy"));
 
-                DateTime inicio_6 = Convert.ToDateTime("01/" + DateTime.Now.AddMonths(-5).ToString("MM") + "/" + DateTime.Now.AddMonths(-5).ToString("yyyy"));
-                DateTime fin_6 = Convert.ToDateTime("" + DateTime.DaysInMonth(DateTime.Now.AddMonths(-5).Year, mesanterior6) + "/" + mesanterior6 + "/" + DateTime.Now.AddMonths(-5).ToString("yyyy"));
+                DateTime inicio_6 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-5).ToString("MM") + "/" + fechaactual.AddMonths(-5).ToString("yyyy"));
+                DateTime fin_6 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-5).Year, mesanterior6) + "/" + mesanterior6 + "/" + fechaactual.AddMonths(-5).ToString("yyyy"));
 
                 DataTable dt_clientes = new DataTable();
                 dt_clientes = db.consultar("select distinct X.rutcliente, X.[Nombre Cliente], X.[Periodo Ultima Factur.], " +
@@ -145,7 +155,7 @@ namespace SoprodiApp
                 double ss8 = 0;
                 double ss9 = 0;
                 double suma_lc = 0;
-                double suma_var_ano_anterior = 0;
+
                 clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
 
                 int contador_ventas1 = 0;
@@ -185,6 +195,8 @@ namespace SoprodiApp
                     " and fechafactura <= convert(date,'" + fin_6.ToString("dd/MM/yyyy") + "',103)" +
                     " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
 
+                // SUMA META
+                double suma_meta = 0;
                 foreach (DataRow dr in dt_clientes.Rows)
                 {
                     string suma1 = "";
@@ -357,17 +369,19 @@ namespace SoprodiApp
                     dr_final["VARANOANTERIOR"] = VAR_ANO_ANTERIOR;
                     dr_final["LCDISPONIBLE"] = int.Parse(dr["disponible"].ToString());
                     dr_final["METAMES"] = int.Parse(dr["valor"].ToString());
+                    suma_meta += int.Parse(dr["valor"].ToString());
                     //
                     try
                     {
-                        if (FACT_ACUMULADA == 0)
+                        if (C1 == 0)
                         {
                             dr_final["PER_VARIACION"] = 0;
                         }
                         else
                         {
-                            double var_meta = (((double.Parse(dr["valor"].ToString()) / FACT_ACUMULADA) - 1) * 100);
-                            dr_final["PER_VARIACION"] = var_meta;
+                            //double var_meta = (((double.Parse(dr["valor"].ToString()) / C1) - 1) * 100) * -1;
+                            double var_meta = (C1 * 100) / double.Parse(dr["valor"].ToString());
+                            dr_final["PER_VARIACION"] = (100 - Math.Round(var_meta, 1));
                         }
                     }
                     catch (Exception ex)
@@ -409,11 +423,11 @@ namespace SoprodiApp
                 {
                     html += "<tr>";
                     html += "   <td class='td-sticky2'><a onclick='fuera22(\"" + encriptador.EncryptData(dr[16].ToString()) + "\",\"" + encriptador.EncryptData("88") + "\");'><b>" + dr[0].ToString() + "</b></a></td>";
-                    html += "<td>";
+                    html += "<td data-order='" + int.Parse(dr[14].ToString()) + "'>";                   
                     html += "<table style='width:100%'>";
                     html += "   <tr>";
                     html += "       <td>$</td>";
-                    html += "       <td><input type='number' class='text-right' style='width:100px;' id='T_META_CLT_" + dr[16].ToString() + "' value='" + dr[14].ToString() + "' />";
+                    html += "       <td><input type='text' class='text-right' style='width:100px;' id='T_META_CLT_" + dr[16].ToString() + "' value='" + int.Parse(dr[14].ToString()).ToString("#,##0") + "' />";
 
                     html += "       <br><small>" + dr[17].ToString() + "</small></td>";
 
@@ -421,14 +435,23 @@ namespace SoprodiApp
                     html += "   </tr>";
                     html += "</table>";
                     html += "</td>";
-                    html += "   <td class='text-right'>" + double.Parse(dr[15].ToString()).ToString("#,##0") + "%</td>";
+                    if (double.Parse(dr[15].ToString()) >= 0)
+                    {
+                        // ES LO QUE FALTA PARA LA META ASI QUE SI EL VALOR ES POSITIVO ES POR QUE FALTA Y POR ESO ES ROJO
+                        html += "   <td class='text-right' style='color:red !important;'><b>" + double.Parse(dr[15].ToString()).ToString("#,##0") + "% </b></td>";
+                    }
+                    else
+                    {
+                        html += "   <td class='text-right' style='color:green !important;'><b>" + double.Parse(dr[15].ToString()).ToString("#,##0") + "%</b></td>";
+                    }
+
                     html += "   <td class='text-right'>$" + double.Parse(dr[2].ToString()).ToString("#,##0") + "</td>";
-                    html += "   <td class='text-right'>$" + double.Parse(dr[8].ToString()).ToString("#,##0") + "</td>";
-                    html += "   <td class='text-right'>$" + double.Parse(dr[7].ToString()).ToString("#,##0") + "</td>";
-                    html += "   <td class='text-right'>$" + double.Parse(dr[6].ToString()).ToString("#,##0") + "</td>";
-                    html += "   <td class='text-right'>$" + double.Parse(dr[5].ToString()).ToString("#,##0") + "</td>";
-                    html += "   <td class='text-right'>$" + double.Parse(dr[4].ToString()).ToString("#,##0") + "</td>";
-                    html += "   <td class='text-right'>$" + double.Parse(dr[3].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_1.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[8].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_2.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[7].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_3.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[6].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_4.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");''>$" + double.Parse(dr[5].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_5.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[4].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_6.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[3].ToString()).ToString("#,##0") + "</td>";
                     html += "   <td class='text-right'><b>$" + double.Parse(dr[1].ToString()).ToString("#,##0") + "</b></td>";
                     if (double.Parse(dr[9].ToString()) >= 0)
                     {
@@ -455,7 +478,7 @@ namespace SoprodiApp
                 }
                 html += "<tr>";
                 html += "   <td class='td-sticky5'><b>TOTAL:</b></td>";
-                html += "   <td class='td-sticky4'></td>"; // META
+                html += "   <td class='td-sticky4'><b>$" + suma_meta.ToString("#,##0") + "</b></td>"; // META
                 html += "   <td class='td-sticky4'></td>"; // VAR META
                 html += "   <td class='td-sticky4'><b>$" + ss9.ToString("#,##0") + "</b></td>";
                 html += "   <td class='td-sticky4'><b>$" + ss1.ToString("#,##0") + "</b></td>";
@@ -668,6 +691,7 @@ namespace SoprodiApp
                 // FIN
                 HTML_DIV.InnerHtml = html;
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "asdasdcas", "<script>javascript:Datatables();</script>", false);
+                DIV_ENVIAR_CORREO.Visible = true;
             }
             catch (Exception ex)
             {
@@ -675,7 +699,580 @@ namespace SoprodiApp
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "cerrarreloj", "<script>javascript:relojito(false);</script>", false);
             }
         }
+
+        protected void B_ENVIAR_CORREO_Click(object sender, EventArgs e)
+        {
+            DBUtil db = new DBUtil();
+
+            try
+            {
+                string cod_usuario = CB_VENDEDORES.SelectedValue;
+                string nombre_vendedor = CB_VENDEDORES.SelectedItem.Text;
+                string correo_ = T_CORREO.Text;
+                string cc = T_CC.Text;
+                //string correo_ = "xrsfirex@gmail.com";
+
+                // ARMA TABLA TRAYECTORIA DE VENTAS
+                string html_correo = TraeVentasVendedor(cod_usuario, nombre_vendedor);
+
+                // CONFIG CORREO
+                MailMessage email = new MailMessage();
+                email.To.Add(new MailAddress(correo_));
+                if (cc != "")
+                {
+                    email.CC.Add(cc);
+                }
+                email.From = new MailAddress("informes@soprodi.cl");
+                email.Subject = "SOPRODI: TRAYECTORIA VENTAS";
+
+                email.Body += "<div style='text-align:center;     display: block !important;' > ";
+                email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
+                email.Body += "</div>";
+                email.Body += "<div><img src='http://a58.imgup.net/Sopro4d9d.png' style='    float: right;     width: 90px;'> </div><br><br><br><br><br>";
+
+                string body_correo = html_correo;
+                email.Body += "<div> Estimado  <b>" + nombre_vendedor + "</b>:<br> <br> Se encuentra disponible para su revisión la trayectoria de ventas de la semana.</div></br> <br><br><div>" + body_correo + "</div> <br>";
+
+                email.Body += "<br> Para más detalles diríjase a:  <a href='http://srv-app.soprodi.cl' > srv-app.soprodi.cl  </a> <span style='font:5px; color:gray; float:right;'>No Responder Este Correo</span> <br><br>";
+                email.Body += "<div style='text-align:center;     display: block !important;' > ";
+                email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "  <div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
+                email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
+                email.Body += "</div>";
+
+                email.IsBodyHtml = true;
+                email.Priority = MailPriority.Normal;
+                email.BodyEncoding = System.Text.Encoding.UTF8;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "srv-correo-2.soprodi.cl";
+                smtp.Port = 25;
+                smtp.EnableSsl = false;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+                try
+                {
+                    smtp.Send(email);
+                    email.Dispose();
+                    alert("Mail enviado con éxito", 1);
+                }
+                catch (Exception ex)
+                {
+                    string dd = "error correo servidor " + ex.Message;
+                    alert(dd, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                alert("No se pudo enviar correo", 0);
+            }
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "cerrarreloj", "<script>javascript:relojito(false);Datatables();</script>", false);
+
+        }
+
+        public string TraeVentasVendedor(string cod_vendedor, string nombre_vendedor)
+        {
+            string html = "";
+            try
+            {
+                DataTable Final = new DataTable();
+                Final.Columns.Add("CLIENTE");
+                Final.Columns.Add("FACTACUMULADA", typeof(double));
+                Final.Columns.Add("PROMFACT", typeof(double));
+                Final.Columns.Add("MES1", typeof(double));
+                Final.Columns.Add("MES2", typeof(double));
+                Final.Columns.Add("MES3", typeof(double));
+                Final.Columns.Add("MES4", typeof(double));
+                Final.Columns.Add("MES5", typeof(double));
+                Final.Columns.Add("MES6", typeof(double));
+                Final.Columns.Add("TENDENCIA", typeof(double));
+                Final.Columns.Add("MESESSINVENTA");
+                Final.Columns.Add("FACTACUMULADAPERANTERIOR");
+                Final.Columns.Add("VARANOANTERIOR", typeof(double));
+                Final.Columns.Add("LCDISPONIBLE");
+                Final.Columns.Add("METAMES", typeof(double));
+                Final.Columns.Add("PER_VARIACION", typeof(double));
+                Final.Columns.Add("RUTCLIENTE");
+                Final.Columns.Add("FECHAMETA");
+                DBUtil db = new DBUtil();
+
+                //DateTime fechaactual = DateTime.Now;
+                DateTime fechaactual = Convert.ToDateTime(CB_PERIODO.SelectedValue);
+                DateTime primerdiadelmes = Convert.ToDateTime("01/" + fechaactual.ToString("MM") + "/" + fechaactual.ToString("yyyy"));
+
+                int mesanterior1 = int.Parse((fechaactual.ToString("MM")));
+                int mesanterior2 = int.Parse((fechaactual.AddMonths(-1)).ToString("MM"));
+                int mesanterior3 = int.Parse((fechaactual.AddMonths(-2)).ToString("MM"));
+                int mesanterior4 = int.Parse((fechaactual.AddMonths(-3)).ToString("MM"));
+                int mesanterior5 = int.Parse((fechaactual.AddMonths(-4)).ToString("MM"));
+                int mesanterior6 = int.Parse((fechaactual.AddMonths(-5)).ToString("MM"));
+
+                DateTime inicio_1 = Convert.ToDateTime("01/" + fechaactual.ToString("MM") + "/" + fechaactual.ToString("yyyy"));
+                DateTime fin_1 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.Year, mesanterior1) + "/" + mesanterior1 + "/" + fechaactual.ToString("yyyy"));
+
+                DateTime inicio_2 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-1).ToString("MM") + "/" + fechaactual.AddMonths(-1).ToString("yyyy"));
+                DateTime fin_2 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-1).Year, mesanterior2) + "/" + mesanterior2 + "/" + fechaactual.AddMonths(-1).ToString("yyyy"));
+
+                DateTime inicio_3 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-2).ToString("MM") + "/" + fechaactual.AddMonths(-2).ToString("yyyy"));
+                DateTime fin_3 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-2).Year, mesanterior3) + "/" + mesanterior3 + "/" + fechaactual.AddMonths(-2).ToString("yyyy"));
+
+                DateTime inicio_4 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-3).ToString("MM") + "/" + fechaactual.AddMonths(-3).ToString("yyyy"));
+                DateTime fin_4 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-3).Year, mesanterior4) + "/" + mesanterior4 + "/" + fechaactual.AddMonths(-3).ToString("yyyy"));
+
+                DateTime inicio_5 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-4).ToString("MM") + "/" + fechaactual.AddMonths(-4).ToString("yyyy"));
+                DateTime fin_5 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-4).Year, mesanterior5) + "/" + mesanterior5 + "/" + fechaactual.AddMonths(-4).ToString("yyyy"));
+
+                DateTime inicio_6 = Convert.ToDateTime("01/" + fechaactual.AddMonths(-5).ToString("MM") + "/" + fechaactual.AddMonths(-5).ToString("yyyy"));
+                DateTime fin_6 = Convert.ToDateTime("" + DateTime.DaysInMonth(fechaactual.AddMonths(-5).Year, mesanterior6) + "/" + mesanterior6 + "/" + fechaactual.AddMonths(-5).ToString("yyyy"));
+
+                DataTable dt_clientes = new DataTable();
+                dt_clientes = db.consultar("select distinct X.rutcliente, X.[Nombre Cliente], X.[Periodo Ultima Factur.], " +
+                    " X.[Monto Ultima Factur.], X.[Dias Diferencia], X.LC, isnull(X.disponible,0) as'disponible' " +
+                    " , isnull((select top(1) meta.valor from capi_meta_vendedor meta where meta.codvendedor = '" + cod_vendedor + "' and meta.rutcliente = X.rutcliente order by meta.id desc),0) as 'valor' " +
+                    " , isnull((select top(1) convert(varchar,meta.fecha_actualizacion,103) from capi_meta_vendedor meta where meta.codvendedor = '" + cod_vendedor + "' and meta.rutcliente = X.rutcliente order by meta.id desc),'n/a') as 'fechameta' " +
+                    " from V_CTZ_GESTION_VENTAS_FIN X where codvendedor = '" + cod_vendedor + "'");
+
+                double ss1 = 0;
+                double ss2 = 0;
+                double ss3 = 0;
+                double ss4 = 0;
+                double ss5 = 0;
+                double ss6 = 0;
+                double ss7 = 0;
+                double ss8 = 0;
+                double ss9 = 0;
+                double suma_lc = 0;
+
+                clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
+
+                int contador_ventas1 = 0;
+                int contador_ventas2 = 0;
+                int contador_ventas3 = 0;
+                int contador_ventas4 = 0;
+                int contador_ventas5 = 0;
+                int contador_ventas6 = 0;
+
+                contador_ventas1 = db.consultar("select distinct rutcliente from THX_v_reporte " +
+                        " where fechafactura >= convert(date,'" + inicio_1.ToString("dd/MM/yyyy") + "',103)" +
+                    " and fechafactura <= convert(date,'" + fin_1.ToString("dd/MM/yyyy") + "',103)" +
+                    " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
+
+                contador_ventas2 = db.consultar("select distinct rutcliente from THX_v_reporte " +
+                        " where fechafactura >= convert(date,'" + inicio_2.ToString("dd/MM/yyyy") + "',103)" +
+                    " and fechafactura <= convert(date,'" + fin_2.ToString("dd/MM/yyyy") + "',103)" +
+                    " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
+
+                contador_ventas3 = db.consultar("select distinct rutcliente from THX_v_reporte " +
+                        " where fechafactura >= convert(date,'" + inicio_3.ToString("dd/MM/yyyy") + "',103)" +
+                    " and fechafactura <= convert(date,'" + fin_3.ToString("dd/MM/yyyy") + "',103)" +
+                    " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
+
+                contador_ventas4 = db.consultar("select distinct rutcliente from THX_v_reporte " +
+                        " where fechafactura >= convert(date,'" + inicio_4.ToString("dd/MM/yyyy") + "',103)" +
+                    " and fechafactura <= convert(date,'" + fin_4.ToString("dd/MM/yyyy") + "',103)" +
+                    " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
+
+                contador_ventas5 = db.consultar("select distinct rutcliente from THX_v_reporte " +
+                        " where fechafactura >= convert(date,'" + inicio_5.ToString("dd/MM/yyyy") + "',103)" +
+                    " and fechafactura <= convert(date,'" + fin_5.ToString("dd/MM/yyyy") + "',103)" +
+                    " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
+
+                contador_ventas6 = db.consultar("select distinct rutcliente from THX_v_reporte " +
+                        " where fechafactura >= convert(date,'" + inicio_6.ToString("dd/MM/yyyy") + "',103)" +
+                    " and fechafactura <= convert(date,'" + fin_6.ToString("dd/MM/yyyy") + "',103)" +
+                    " and codvendedor = '" + cod_vendedor + "'").Rows.Count;
+                // SUMA META
+                double suma_meta = 0;
+                foreach (DataRow dr in dt_clientes.Rows)
+                {
+                    string suma1 = "";
+                    string suma2 = "";
+                    string suma3 = "";
+                    string suma4 = "";
+                    string suma5 = "";
+                    string suma6 = "";
+
+                    string sql_query_suma = "" +
+                       "   select isnull(sum(neto_pesos),0) as 'neto_pesos', isnull(count(1),0) as 'cont' from [THX_v_reporte] " +
+                       " where fechafactura >= convert(date,'" + inicio_1.ToString("dd/MM/yyyy") + "',103)" +
+                       " and fechafactura <= convert(date,'" + fin_1.ToString("dd/MM/yyyy") + "',103)" +
+                       " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    DataTable dt1 = new DataTable();
+                    dt1 = db.consultar(sql_query_suma);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        suma1 = dt1.Rows[0][0].ToString();
+
+                    }
+
+
+
+                    string sql_query_suma2 = "" +
+                      "   select isnull(sum(neto_pesos),0) as 'neto_pesos' , isnull(count(1),0) as 'cont' from [THX_v_reporte] " +
+                      " where fechafactura >= convert(date,'" + inicio_2.ToString("dd/MM/yyyy") + "',103)" +
+                      " and fechafactura <= convert(date,'" + fin_2.ToString("dd/MM/yyyy") + "',103)" +
+                      " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    dt1 = db.consultar(sql_query_suma2);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        suma2 = dt1.Rows[0][0].ToString();
+
+                    }
+
+                    string sql_query_suma3 = "" +
+                      "   select isnull(sum(neto_pesos),0) as 'neto_pesos' , isnull(count(1),0) as 'cont' from [THX_v_reporte] " +
+                      " where fechafactura >= convert(date,'" + inicio_3.ToString("dd/MM/yyyy") + "',103)" +
+                      " and fechafactura <= convert(date,'" + fin_3.ToString("dd/MM/yyyy") + "',103)" +
+                      " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    dt1 = db.consultar(sql_query_suma3);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        suma3 = dt1.Rows[0][0].ToString();
+
+                    }
+
+                    string sql_query_suma4 = "" +
+                      "   select isnull(sum(neto_pesos),0) as 'neto_pesos', isnull(count(1),0) as 'cont' from [THX_v_reporte] " +
+                      " where fechafactura >= convert(date,'" + inicio_4.ToString("dd/MM/yyyy") + "',103)" +
+                      " and fechafactura <= convert(date,'" + fin_4.ToString("dd/MM/yyyy") + "',103)" +
+                      " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    dt1 = db.consultar(sql_query_suma4);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        suma4 = dt1.Rows[0][0].ToString();
+
+                    }
+                    string sql_query_suma5 = "" +
+                      "   select isnull(sum(neto_pesos),0) as 'neto_pesos', isnull(count(1),0) as 'cont' from [THX_v_reporte] " +
+                      " where fechafactura >= convert(date,'" + inicio_5.ToString("dd/MM/yyyy") + "',103)" +
+                      " and fechafactura <= convert(date,'" + fin_5.ToString("dd/MM/yyyy") + "',103)" +
+                      " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    dt1 = db.consultar(sql_query_suma5);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        suma5 = dt1.Rows[0][0].ToString();
+
+                    }
+
+
+                    string sql_query_suma6 = "" +
+                      "   select isnull(sum(neto_pesos),0) as 'neto_pesos', isnull(count(1),0) as 'cont' from [THX_v_reporte] " +
+                      " where fechafactura >= convert(date,'" + inicio_6.ToString("dd/MM/yyyy") + "',103)" +
+                      " and fechafactura <= convert(date,'" + fin_6.ToString("dd/MM/yyyy") + "',103)" +
+                      " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    dt1 = db.consultar(sql_query_suma6);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        suma6 = dt1.Rows[0][0].ToString();
+
+                    }
+
+                    // FACTURACION ACTUAL
+                    //sql_query_suma = "" +
+                    //    "   select isnull(sum(neto_pesos),0) as 'neto_pesos' from [THX_v_reporte] " +
+                    //    " where fechafactura >= convert(date,'" + primerdiadelmes.ToString("dd/MM/yyyy") + "',103)" +
+                    //    " and fechafactura <= convert(date,'" + DateTime.Now.ToString("dd/MM/yyyy") + "',103)" +
+                    //    " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    //string facturacion_actual = db.Scalar(sql_query_suma).ToString();
+
+                    // FACTURACION ACUMULADA AÑO ANTERIOR
+                    sql_query_suma = "" +
+                        "   select isnull(sum(neto_pesos),0) as 'neto_pesos' from [THX_v_reporte] " +
+                        " where fechafactura >= convert(date,'" + inicio_6.AddYears(-1).ToString("dd/MM/yyyy") + "',103)" +
+                        " and fechafactura <= convert(date,'" + fin_1.AddYears(-1).ToString("dd/MM/yyyy") + "',103)" +
+                        " and rutcliente = '" + dr["rutcliente"].ToString() + "' and codvendedor = '" + cod_vendedor + "'";
+                    string facturacion_ano_anterior = db.Scalar(sql_query_suma).ToString();
+
+                    double C1 = double.Parse(suma1);
+                    double C2 = double.Parse(suma2);
+                    double C3 = double.Parse(suma3);
+                    double C4 = double.Parse(suma4);
+                    double C5 = double.Parse(suma5);
+                    double C6 = double.Parse(suma6);
+                    double FACT_ACUMULADA = C1 + C2 + C3 + C4 + C5 + C6;
+                    double FACT_ACUMULADA_ANO_ANTERIOR = double.Parse(facturacion_ano_anterior);
+                    double promedio_cuatrimestres = ((C1 + C2 + C3 + C4 + C5 + C6) / 6);
+
+                    // TOTALES
+                    ss1 += C1;
+                    ss2 += C2;
+                    ss3 += C3;
+                    ss4 += C4;
+                    ss5 += C5;
+                    ss6 += C6;
+                    ss7 += FACT_ACUMULADA;
+                    ss8 += FACT_ACUMULADA_ANO_ANTERIOR;
+                    ss9 += promedio_cuatrimestres;
+                    // ******************************
+
+                    double VAR_ANO_ANTERIOR = 0;
+                    if (FACT_ACUMULADA > 0)
+                    {
+                        double division = FACT_ACUMULADA_ANO_ANTERIOR / FACT_ACUMULADA;
+                        division = division - 1;
+                        VAR_ANO_ANTERIOR = (division * 100) * -1;
+                    }
+
+                    DataRow dr_final = Final.NewRow();
+                    dr_final["CLIENTE"] = dr[1].ToString();
+                    dr_final["FACTACUMULADA"] = FACT_ACUMULADA;
+                    dr_final["PROMFACT"] = promedio_cuatrimestres;
+                    dr_final["MES1"] = C6;
+                    dr_final["MES2"] = C5;
+                    dr_final["MES3"] = C4;
+                    dr_final["MES4"] = C3;
+                    dr_final["MES5"] = C2;
+                    dr_final["MES6"] = C1;
+
+                    // c1 c6 - c2 c5 - c3 c4 -c4 c3 -c5 c2 - c6 c1
+                    try
+                    {
+                        if ((C4 + C3) == 0 && (C6 + C5) == 0)
+                        {
+                            dr_final["TENDENCIA"] = 0;
+                        }
+                        else if ((C4 + C3) == 0 && (C6 + C5) > 0)
+                        {
+                            dr_final["TENDENCIA"] = ((((C4 + C3) / (C6 + C5)) - 1) * 100);
+                        }
+                        else if ((C4 + C3) > 0 && (C6 + C5) == 0)
+                        {
+                            dr_final["TENDENCIA"] = ((((C2 + C1) / (C4 + C3)) - 1) * 100);
+                        }
+                        else
+                        {
+                            dr_final["TENDENCIA"] = (((((C2 + C1) / (C4 + C3)) - 1) + (((C4 + C3) / (C6 + C5)) - 1)) * 100);
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dr_final["TENDENCIA"] = 0;
+                    }
+
+                    dr_final["MESESSINVENTA"] = int.Parse(dr[4].ToString());
+                    dr_final["FACTACUMULADAPERANTERIOR"] = FACT_ACUMULADA_ANO_ANTERIOR;
+                    dr_final["VARANOANTERIOR"] = VAR_ANO_ANTERIOR;
+                    dr_final["LCDISPONIBLE"] = int.Parse(dr["disponible"].ToString());
+                    dr_final["METAMES"] = int.Parse(dr["valor"].ToString());
+                    suma_meta += int.Parse(dr["valor"].ToString());
+                    //
+                    try
+                    {
+                        if (C1 == 0)
+                        {
+                            dr_final["PER_VARIACION"] = 0;
+                        }                      
+                        else
+                        {
+                            //double var_meta = (((double.Parse(dr["valor"].ToString()) / C1) - 1) * 100) * -1;
+                            double var_meta = (C1 * 100) / double.Parse(dr["valor"].ToString());
+                            dr_final["PER_VARIACION"] = (100 - Math.Round(var_meta, 1));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dr_final["PER_VARIACION"] = 0;
+                    }
+                    //
+
+                    dr_final["RUTCLIENTE"] = dr["rutcliente"].ToString();
+                    dr_final["FECHAMETA"] = dr["fechameta"].ToString();
+                    Final.Rows.Add(dr_final);
+                }
+                html += "<hr>Trayectoria ultimos 6 meses</h4><table id='TABLITA_PRODUCTO' border=1 style='width:1500px;' class='table table-sm table-bordered table-stripped condensed'>";
+                html += "<thead>";
+                html += "   <tr>";
+                html += "       <th class='td-sticky3'><b>Cliente</b></th>";
+                html += "       <th>Meta Mes</th>";
+                html += "       <th>% Var</th>";
+                html += "       <th>Promedio facturacion mensual</th>";
+                html += "       <th>" + inicio_1.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html += "       <th>" + inicio_2.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html += "       <th>" + inicio_3.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html += "       <th>" + inicio_4.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html += "       <th>" + inicio_5.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html += "       <th>" + inicio_6.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html += "       <th>Fact. Acumulada Periodo</th>";
+                html += "       <th>Tendencia</th>";
+                html += "       <th># Meses sin Venta</th>";
+                html += "       <th>Fact. Acumulada periodo año anterior</th>";
+                html += "       <th>% Var r/año anterior</th>";
+                html += "       <th>L/C Disponible</th>";
+
+                html += "   </tr>";
+                html += "</thead>";
+                html += "<tbody>";
+                Final.DefaultView.Sort = "FACTACUMULADA DESC";
+                Final = Final.DefaultView.ToTable();
+                foreach (DataRow dr in Final.Rows)
+                {
+                    html += "<tr>";
+                    html += "   <td><b>" + dr[0].ToString() + "</b></td>";
+                    html += "<td><b>$" + int.Parse(dr[14].ToString()).ToString("#,##0") + "</b><br><small>" + dr[17].ToString() + "</small></td>";
+
+                    if (double.Parse(dr[15].ToString()) >= 0)
+                    {
+                        // ES LO QUE FALTA PARA LA META ASI QUE SI EL VALOR ES POSITIVO ES POR QUE FALTA Y POR ESO ES ROJO
+                        html += "   <td class='text-right' style='color:red !important;'><b>" + double.Parse(dr[15].ToString()).ToString("#,##0") + "% </b></td>";
+                    }
+                    else
+                    {
+                        html += "   <td class='text-right' style='color:green !important;'><b>" + double.Parse(dr[15].ToString()).ToString("#,##0") + "%</b></td>";
+                    }
+
+                    html += "   <td class='text-right'>$" + double.Parse(dr[2].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_1.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[8].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_2.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[7].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_3.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[6].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_4.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");''>$" + double.Parse(dr[5].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_5.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[4].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right clickeame' onclick='fuera(\"" + encriptador.EncryptData(inicio_6.ToString("yyyy-MM").Replace("-", "")) + "\", \"" + encriptador.EncryptData(cod_vendedor) + "\", \"" + encriptador.EncryptData(dr[16].ToString()) + "\", \"" + encriptador.EncryptData("8") + "\");'>$" + double.Parse(dr[3].ToString()).ToString("#,##0") + "</td>";
+                    html += "   <td class='text-right'><b>$" + double.Parse(dr[1].ToString()).ToString("#,##0") + "</b></td>";
+                    if (double.Parse(dr[9].ToString()) >= 0)
+                    {
+                        html += "   <td class='text-right' style='color:green;'>" + double.Parse(dr[9].ToString()).ToString("#,##0") + "%</td>"; // TENDENCIA
+                    }
+                    else
+                    {
+                        html += "   <td class='text-right' style='color:red;'>" + double.Parse(dr[9].ToString()).ToString("#,##0") + "%</td>"; // TENDENCIA
+                    }
+
+                    html += "   <td class='text-right'>" + (double.Parse(dr[10].ToString()) / 30).ToString("#,##0") + "</td>"; // DIAS SIN VENTA
+                    html += "   <td class='text-right'>$" + double.Parse(dr[11].ToString()).ToString("#,##0") + "</td>"; // ACUMULADO AÑO ANTERIOR
+                    if (double.Parse(dr[12].ToString()) >= 0)
+                    {
+                        html += "   <td class='text-right' style='color:green;'>" + double.Parse(dr[12].ToString()).ToString("#,##0") + "% </td>"; // TENDENCIA
+                    }
+                    else
+                    {
+                        html += "   <td class='text-right' style='color:red;'>" + double.Parse(dr[12].ToString()).ToString("#,##0") + "% </td>"; // TENDENCIA
+                    }
+                    html += "   <td class='text-right'>$" + double.Parse(dr[13].ToString()).ToString("#,##0") + "</td>"; // LC DISPONIBLE
+                    suma_lc += double.Parse(dr[13].ToString());
+                    html += "</tr>";
+                }
+                html += "<tr>";
+                html += "   <td class='td-sticky5'><b>TOTAL:</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + suma_meta.ToString("#,##0") + "</b></td>"; // META
+                html += "   <td class='td-sticky4'></td>"; // VAR META
+                html += "   <td class='td-sticky4'><b>$" + ss9.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss1.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss2.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss3.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss4.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss5.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss6.ToString("#,##0") + "</b></td>";
+                html += "   <td class='td-sticky4'><b>$" + ss7.ToString("#,##0") + "</b></td>"; // FACT ACUMULADA
+                try
+                {
+                    double var_total = 0;
+                    //if ((C3 + C4) == 0 && (C1 + C2) == 0)
+                    //{
+                    //    dr_final["TENDENCIA"] = 0;
+                    //}
+                    //else if ((C3 + C4) == 0 && (C1 + C2) > 0)
+                    //{
+                    //    dr_final["TENDENCIA"] = ((((C3 + C4) / (C1 + C2)) - 1) * 100) * -1;
+                    //}
+                    //else if ((C3 + C4) > 0 && (C1 + C2) == 0)
+                    //{
+                    //    dr_final["TENDENCIA"] = ((((C5 + C6) / (C3 + C4)) - 1) * 100) * -1;
+                    //}
+                    //else
+                    //{
+                    //    dr_final["TENDENCIA"] = (((((C5 + C6) / (C3 + C4)) - 1) + (((C3 + C4) / (C1 + C2)) - 1)) * 100) * -1;
+                    //}
+                    if ((ss3 + ss4) == 0 && (ss1 + ss2) > 0)
+                    {
+                        var_total = ((((ss3 + ss4) / (ss1 + ss2)) - 1) * 100);
+                    }
+                    else if ((ss3 + ss4) > 0 && (ss1 + ss2) == 0)
+                    {
+                        var_total = ((((ss5 + ss6) / (ss3 + ss4)) - 1) * 100);
+                    }
+                    else
+                    {
+                        var_total = (((((ss5 + ss6) / (ss3 + ss4)) - 1) + (((ss3 + ss4) / (ss1 + ss2)) - 1)) * 100);
+                    }
+                    if (var_total >= 0)
+                    {
+                        html += "   <td class='td-sticky4 text-right' style='color:green;'>" + var_total.ToString("#,##0") + "% </td>"; // TENDENCIA     
+                    }
+                    else
+                    {
+                        html += "   <td class='td-sticky4 text-right' style='color:red;'>" + var_total.ToString("#,##0") + "% </td>"; // TENDENCIA     
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+                html += "   <td class='td-sticky4'></td>"; // meses SIN VENTA              
+                html += "   <td class='td-sticky4'><b>$" + ss8.ToString("#,##0") + "</b></td>"; // ACUMULADO AÑO ANTERIOR
+                html += "   <td class='td-sticky4'></td>"; // TENDENCIA
+                html += "   <td class='td-sticky4'><b>$" + suma_lc.ToString("#,##0") + "</b></td>"; // LC
+
+
+                html += "</tr>";
+                html += "</tbody>";
+                html += "</table>";
+
+                string html2 = "";
+                html2 += "<hr>Clientes con Ventas del periodo</h4><table id='TABLITA_TOTALES' border=1 style='width:100%;' class='table table-sm table-bordered table-stripped condensed'>";
+                html2 += "<thead>";
+                html2 += "   <tr>";
+                html2 += "       <th>&nbsp;</th>";
+                html2 += "       <th>" + inicio_1.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html2 += "       <th>" + inicio_2.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html2 += "       <th>" + inicio_3.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html2 += "       <th>" + inicio_4.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html2 += "       <th>" + inicio_5.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html2 += "       <th>" + inicio_6.ToString("MMMM", CultureInfo.CreateSpecificCulture("es")).ToUpper() + "</th>";
+                html2 += "   </tr>";
+                html2 += "</thead>";
+                html2 += "<tbody>";
+                html2 += "   <tr>";
+                html2 += "       <td><b>Clientes con Ventas</b></td>";
+                html2 += "       <td>" + contador_ventas1 + "</td>";
+                html2 += "       <td>" + contador_ventas2 + "</td>";
+                html2 += "       <td>" + contador_ventas3 + "</td>";
+                html2 += "       <td>" + contador_ventas4 + "</td>";
+                html2 += "       <td>" + contador_ventas5 + "</td>";
+                html2 += "       <td>" + contador_ventas6 + "</td>";
+                html2 += "   </tr>";
+                html2 += "</tbody>";
+                html2 += "</table>";
+
+                return html2 + " <hr> " + html;
+
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message.ToString();
+            }
+        }
+
+        public void alert(string mensaje, int flag)
+        {
+            // ROJO - VERDE 
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "mosnoti", "<script>javascript:MostrarNotificacion('" + mensaje + "', " + flag + ");</script>", false);
+        }
+
     }
+
 }
 
 

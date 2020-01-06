@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Base.Master" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" AutoEventWireup="True" 
-    CodeBehind="TRAYECTORIA_VENTAS.aspx.cs" Inherits="SoprodiApp.TRAYECTORIA_VENTAS" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Base.Master" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" AutoEventWireup="True" CodeBehind="TRAYECTORIA_VENTAS.aspx.cs" Inherits="SoprodiApp.TRAYECTORIA_VENTAS" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
@@ -8,6 +7,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_Master" runat="server">
 
     <style>
+        .clickeame {
+            cursor: pointer;
+        }
+
         .td-sticky {
             position: -webkit-sticky;
             position: sticky;
@@ -36,7 +39,7 @@
             position: -webkit-sticky;
             position: sticky;
             left: 0;
-            top: 72vh;
+            top: 78vh;
             background-color: lightgoldenrodyellow !important;
             z-index: 999;
         }
@@ -45,7 +48,7 @@
             position: -webkit-sticky;
             position: sticky;
             left: 0px;
-            top: 72vh;
+            top: 78vh;
             background-color: lightgoldenrodyellow !important;
             z-index: 9999999;
         }
@@ -96,7 +99,7 @@
                         "thousands": "."
                     },
                     "order": [[10, "desc"]],
-                    "paging": false
+                    "paging": false                   
                 });
             }
             catch (x) {
@@ -104,6 +107,7 @@
             }
         }
         function FijarMeta(rutcliente, codvendedor) {
+            var aux_valor = document.getElementById("T_META_CLT_" + rutcliente).value;
             relojito(true);
             var parameters = new Object();
             parameters.rutcliente = rutcliente;
@@ -112,7 +116,7 @@
             parameters = JSON.stringify(parameters)
             $.ajax({
                 type: "POST",
-                url: "META_VENDEDOR.aspx/ActualizarMeta",
+                url: "TRAYECTORIA_VENTAS.aspx/ActualizarMeta",
                 data: parameters,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -121,10 +125,11 @@
                     relojito(false);
                     console.log(x);
                     if (x.d == "OK") {
-                        Mensajito("Meta fijada con éxito");
+                        document.getElementById("T_META_CLT_" + rutcliente).value = Separadormiles(aux_valor);
+                        MostrarNotificacion("Meta fijada con éxito", 1);
                     }
                     else {
-                        alert(x.d);
+                        MostrarNotificacion(x.d, 0);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -139,7 +144,7 @@
 
         function fuera22(rutcliente, bit) {
 
-            var urlPdf = "/FICHA_CLIENTE.aspx?";           
+            var urlPdf = "/FICHA_CLIENTE.aspx?";
             var param = "R=" + rutcliente + "&i=" + bit;
             var urlPdf_Final = urlPdf + param;
             if (navigator.appName.indexOf('Microsoft Internet Explorer') != -1) {
@@ -151,6 +156,31 @@
                 void 0;
             };
             return false;
+        }
+
+        function fuera(fecha, vendedor, grupos, bit) {
+
+
+            var urlPdf = "/DETALLE_FACTURA.aspx?";
+            //var path2 = "P=" + path;
+            //var filename2 = "&N=" + filename;
+            //var urlPdf_Final = urlPdf + path2 + filename2;
+            var param = "F=" + fecha + "&V=" + vendedor + "&G=" + grupos + "&i=" + bit;
+            var urlPdf_Final = urlPdf + param;
+
+            if (navigator.appName.indexOf('Microsoft Internet Explorer') != -1) {
+                window.showModelessDialog(urlPdf_Final, '', 'dialogTop:50px;dialogLeft:50px;dialogHeight:700px;dialogWidth:1200px');
+            };
+
+            if (navigator.appName.indexOf('Netscape') != -1) {
+                window.open(urlPdf_Final, '', 'width=1200,height=700,left=50,top=50');
+                void 0;
+            };
+            return false;
+        }
+
+        function Separadormiles(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
 
@@ -175,32 +205,51 @@
                 <div class="col-sm-12">
                     <div class="box">
                         <div class="box-content">
-                            <h4>TRAYECTORIA DE VENTAS</h4>                           
+                            <h4>TRAYECTORIA DE VENTAS</h4>
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 text-right">
                                     <asp:DropDownList runat="server" ID="CB_VENDEDORES" CssClass="form-control"></asp:DropDownList>
+                                    <small>VENDEDOR</small>
                                     <div style="display: none">
                                         <asp:TextBox runat="server" ID="T_VENDEDOR"></asp:TextBox>
                                     </div>
+                                </div>
+                                <div class="col-sm-3  text-right">
+                                    <asp:DropDownList runat="server" ID="CB_PERIODO" CssClass="form-control"></asp:DropDownList>
+                                    <small>ULTIMO MES</small>
                                 </div>
                                 <div class="col-sm-3">
                                     <asp:Button runat="server" CssClass="btn btn-primary" ID="B_FILTRAR" OnClick="B_FILTRAR_Click" Text="GENERAR REPORTE" OnClientClick="relojito(true);" />
                                 </div>
                             </div>
+                            <div class="row" runat="server" id="DIV_ENVIAR_CORREO" visible="false">
+                                <hr />
+                                <div class="col-sm-3 text-right">
+                                    <asp:TextBox runat="server" ID="T_CORREO" CssClass="form-control"></asp:TextBox>
+                                    <small>CORREO</small><br />                                 
+                                </div>
+                                 <div class="col-sm-3 text-right">                                  
+                                    <asp:TextBox runat="server" ID="T_CC" CssClass="form-control"></asp:TextBox>
+                                    <small>CC</small>
+                                </div>
+                                <div class="col-sm-3">
+                                    <asp:Button runat="server" CssClass="btn btn-success" ID="B_ENVIAR_CORREO" OnClick="B_ENVIAR_CORREO_Click" Text="ENVIAR REPORTE POR CORREO" OnClientClick="relojito(true);" />
+                                </div>
+                            </div>
                             <hr />
-                              <div class="row">
-                                <div class="col-sm-12">                                    
-                                        <div id="HTML_DIV2" runat="server"></div>                                  
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id="HTML_DIV2" runat="server"></div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div style="width: 100%; height: 80vh; overflow-x: auto">
+                                    <div style="width: 100%; height: 86vh; overflow-x: auto">
                                         <div id="HTML_DIV" runat="server"></div>
                                     </div>
                                 </div>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>

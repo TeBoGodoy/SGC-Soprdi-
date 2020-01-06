@@ -42,6 +42,15 @@ namespace SoprodiApp
         protected global::System.Web.UI.WebControls.TextBox T_VENDEDOR;
 
         /// <summary>
+        /// Control CB_PERIODO.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList CB_PERIODO;
+
+        /// <summary>
         /// Control B_FILTRAR.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,42 @@ namespace SoprodiApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button B_FILTRAR;
+
+        /// <summary>
+        /// Control DIV_ENVIAR_CORREO.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DIV_ENVIAR_CORREO;
+
+        /// <summary>
+        /// Control T_CORREO.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox T_CORREO;
+
+        /// <summary>
+        /// Control T_CC.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox T_CC;
+
+        /// <summary>
+        /// Control B_ENVIAR_CORREO.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button B_ENVIAR_CORREO;
 
         /// <summary>
         /// Control HTML_DIV2.

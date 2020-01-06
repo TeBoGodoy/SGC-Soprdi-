@@ -96,6 +96,16 @@
             padding: 5px;*/
         }
 
+          .bg-red{
+            background-color:red;
+        }
+         .bg-green{
+            background-color:green;
+        }
+          .bg-black{
+            background-color:black;
+        }
+
         #relojito {
             position: fixed;
             top: 0;
@@ -488,6 +498,42 @@
             $(selector).chosen(config[selector]);
         }
 
+        function MostrarNotificacion(mensaje, flag) {
+            var color = 'bg-black';
+            if (flag == 0) { color = 'bg-red' };
+            if (flag == 1) { color = 'bg-green' };
+            if (flag == 2) { color = 'bg-black' };
+            var allowDismiss = true;
+
+            $.notify({
+                message: mensaje
+            },
+                {
+                    type: color,
+                    allow_dismiss: allowDismiss,
+                    newest_on_top: true,
+                    timer: 300,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    },
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                    },
+                    template: '<div data-notify="container" class="bootstrap-notify-container alert alert-dismissible {0} ' + (allowDismiss ? "p-r-35" : "") + '" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message" style="color:white !important;">{2}</span>' +
+                        '<div class="progress" data-notify="progressbar">' +
+                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                        '</div>' +
+                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                        '</div>'
+                });
+        }
+
 
 
 
@@ -508,5 +554,6 @@
     <script src="fullcalendar/lang/es.js"></script>
     <script src="fullcalendar/lang-all.js"></script>
     <script src="assets/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+     <script src="js/bootstrap-notify.js"></script>
 </body>
 </html>

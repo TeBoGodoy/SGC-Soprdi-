@@ -2080,5 +2080,20 @@ namespace SoprodiApp.negocio
         {
             return ReporteDB.tipo_moneda(v);
         }
+
+        internal static DataTable ventamovil_cliente_matriz(string codCliente)
+        {
+            return ReporteDB.ventamovil_cliente_matriz(codCliente);
+        }
+
+        internal static string ventamovil_trae_codcliente(string sp)
+        {
+            return ReporteDB.ventamovil_trae_codcliente(sp);
+        }
+
+        internal static DataTable ventamovil_cliente_sucursal(string codCliente)
+        {
+            return ReporteDB.ventamovil_cliente_sucursal(codCliente);
+        }
     }
 }
