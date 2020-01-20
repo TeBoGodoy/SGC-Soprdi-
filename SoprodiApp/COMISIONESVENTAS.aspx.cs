@@ -2123,14 +2123,15 @@ namespace SoprodiApp
                     tabla += "<tr>";
                     tabla += "<td>" + c_vendedor_r[1].ToString() + "</td>";
                     tabla += "<td> COMISION SOBRE COMISIONES ANDRES NAVARRO</td>";
-                    tabla += "<td>" + Base.monto_format2(tota_comision_vendedor * 0.3) + "</td>";
+                    int jaime_bar = Convert.ToInt32(Math.Round(tota_comision_vendedor * 0.3, MidpointRounding.AwayFromZero));
+                    tabla += "<td>" + Base.monto_format2(jaime_bar) + "</td>";
                     tabla += "</tr>";
 
 
                     row2["codvendedor"] = c_vendedor_r[0].ToString().Trim();
                     row2["nombre_vendedor"] = c_vendedor_r[1].ToString().Trim();
                     row2["nombreregla"] = "COMISION SOBRE COMISIONES ANDRES NAVARRO";
-                    row2["total"] = Base.monto_format2(tota_comision_vendedor * 0.3);
+                    row2["total"] = Base.monto_format2(jaime_bar);
                     row2["es_abarrotes"] = es_abarrote;
                     dt_total_resumen_com.Rows.Add(row2);
                 }
@@ -3365,13 +3366,14 @@ namespace SoprodiApp
                     tabla += "<tr>";
                     tabla += "<td>" + c_vendedor_r[1].ToString() + "</td>";
                     tabla += "<td> COMISION SOBRE COMISIONES ANDRES NAVARRO</td>";
-                    tabla += "<td>" + Base.monto_format2(tota_comision_vendedor * 0.3) + "</td>";
+                    int jaime_bar = Convert.ToInt32( Math.Round ( tota_comision_vendedor * 0.3, MidpointRounding.AwayFromZero ) );
+                    tabla += "<td>" + Base.monto_format2(jaime_bar) + "</td>";
                     tabla += "</tr>";
 
                     row2["codvendedor"] = c_vendedor_r[0].ToString().Trim();
                     row2["nombre_vendedor"] = c_vendedor_r[1].ToString().Trim();
                     row2["nombreregla"] = "COMISION SOBRE COMISIONES ANDRES NAVARRO";
-                    row2["total"] = Base.monto_format2(tota_comision_vendedor * 0.3);
+                    row2["total"] = Base.monto_format2(jaime_bar);
                     row2["es_abarrotes"] = es_abarrote;
                     dt_total_resumen_com.Rows.Add(row2);
                 }
@@ -4813,14 +4815,15 @@ namespace SoprodiApp
                     tabla += "<tr>";
                     tabla += "<td>" + c_vendedor_r[1].ToString() + "</td>";
                     tabla += "<td> COMISION SOBRE COMISIONES ANDRES NAVARRO</td>";
-                    tabla += "<td>" + Base.monto_format2(tota_comision_vendedor * 0.3) + "</td>";
+                    int jaime_bar = Convert.ToInt32(Math.Round(tota_comision_vendedor * 0.3, MidpointRounding.AwayFromZero));
+                    tabla += "<td>" + Base.monto_format2(jaime_bar) + "</td>";
                     tabla += "</tr>";
 
 
                     row2["codvendedor"] = c_vendedor_r[0].ToString().Trim();
                     row2["nombre_vendedor"] = c_vendedor_r[1].ToString().Trim();
                     row2["nombreregla"] = "COMISION SOBRE COMISIONES ANDRES NAVARRO";
-                    row2["total"] = Base.monto_format2(tota_comision_vendedor * 0.3);
+                    row2["total"] = Base.monto_format2(jaime_bar);
                     row2["es_abarrotes"] = es_abarrote;
                     dt_total_resumen_com.Rows.Add(row2);
                 }

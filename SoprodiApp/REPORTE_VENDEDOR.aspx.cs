@@ -1191,7 +1191,6 @@ namespace SoprodiApp
                 //Facturación Mes
                 if (e.Row.RowIndex == 0)
                 {
-
                     e.Row.Cells[0].BackColor = Color.FromArgb(255, 245, 210);
                 }
 

@@ -1357,7 +1357,7 @@ namespace SoprodiApp
                     else
                     {
 
-                        ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee6ee", "<script> alert('Ingresar Fecha Despacho');</script>", false);
+                        ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee6ee", "<script> alert('Ingresar al menos un transportista');</script>", false);
                     }
                 }
                 else
@@ -1888,7 +1888,7 @@ namespace SoprodiApp
             email.Priority = MailPriority.Normal;
             email.BodyEncoding = System.Text.Encoding.UTF8;
             SmtpClient smtp = new SmtpClient();
-                
+            smtp.Host = "srv-correo-2.soprodi.cl";
             smtp.Port = 25;
             smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;

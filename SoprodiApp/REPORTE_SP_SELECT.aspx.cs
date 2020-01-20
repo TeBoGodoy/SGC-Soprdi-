@@ -1079,7 +1079,6 @@ namespace SoprodiApp
             //d_vendedor_.SelectedIndex = -1;
             d_estado_3.DataBind();
         }
-
         private void cargar_vendedor_SP()
         {
             DataTable dt; DataView dtv = new DataView();
@@ -1091,7 +1090,6 @@ namespace SoprodiApp
             //d_vendedor_.SelectedIndex = -1;
             d_vendedor.DataBind();
         }
-
         private void cargar_grupo_sp()
         {
             DataTable dt; DataView dtv = new DataView();
@@ -1103,13 +1101,8 @@ namespace SoprodiApp
             //d_vendedor_.SelectedIndex = -1;
             d_grupo.DataBind();
         }
-
-
-
         private void cargar_productos_no_kg(string clase)
         {
-            //                " and FechaFactura <= CONVERT(datetime,'" + HASTA + "',103) and user1 in (" + grupos + ")";
-
             DataTable dt; DataView dtv = new DataView();
             dt = ReporteRNegocio.listar_ALL_productos_stock_guion_2(" and b.stkunit <>'KGR' ", clase);
             dtv = dt.DefaultView;
@@ -1121,7 +1114,6 @@ namespace SoprodiApp
         }
         private void cargar_estado_SP()
         {
-
             DataTable dt; DataView dtv = new DataView();
             dt = ReporteRNegocio.VM_estados("");
             dtv = dt.DefaultView;
@@ -1133,7 +1125,6 @@ namespace SoprodiApp
         }
         private void cargar_clientes_SP()
         {
-
             DataTable dt; DataView dtv = new DataView();
             dt = ReporteRNegocio.VM_clientes(" where 1=1 " + Session["codvendedor"], "");
             dtv = dt.DefaultView;

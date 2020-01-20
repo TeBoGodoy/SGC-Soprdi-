@@ -91,6 +91,31 @@ namespace SoprodiApp.acceso
             return scalar;
         }
 
+        internal static DataTable VM_productos(string wHERE1, string wHERE2)
+        {
+            DataTable dt = new DataTable();
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            {
+                conn.Open();
+
+                if (wHERE1 != "Granos")
+                {
+                    wHERE1 = " where descemisor <> 'Granos'";
+                }
+                else
+                {
+                    wHERE1 = " where descemisor = 'Granos'";
+                }
+
+                string sql = @"SELECT * FROM   [" + bd_respaldo + "].[dbo].[V_PRODUCTOS_SP]   " + wHERE1.Replace("b.", "");
+
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                ap.Fill(dt);
+            }
+            return dt;
+        }
+
         internal static DataTable usuarios_firman(string periodo)
         {
             DataTable dt = new DataTable();
@@ -360,6 +385,47 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"select distinct(codproducto), codproducto + CAST('-' AS varchar(MAX)) + descproducto as 'descr' from [SoprodiVenta].[dbo].[VPEDIDODETALLE] b where 1=1 " + clase + v;
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                ap.Fill(dt);
+            }
+            return dt;
+        }
+
+        internal static DataTable sp_diaria(string where)
+        {
+            DataTable dt = new DataTable();
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            {
+                conn.Open();
+                string sql = @"SELECT 
+                                       [CLIENTE]
+                                      ,[N°SP]
+                                      ,[PRODUCTO]
+                                      ,[ESTADO]
+                                      ,[BODEGA]
+                                      ,[ENTREGA]
+                                      ,[PRECIO LISTA]
+                                      ,[PRECIO UNIT]
+                                      ,[DESCTO]
+                                      ,[CANT.]
+                                      ,[UN. VENTA]
+                                      ,[MONTO NETO]
+                                      ,[STOCKZT]  
+                                      ,[STOCKZT]  -   [CANTIDAD]       AS  DIFERENCIA  
+                                      ,[CLIENTE] + '  (' + [NOMBREVENDEDOR] + ')' AS [CLIENTE_RMC]
+                                      ,[costocompra]
+									  ,[costoexcel]
+									  ,[ValorTipoCambio]
+									  , CAST([monto_dolar] AS NUMERIC(36,4)) AS monto_dolar
+									  , CAST([utilidad_excel]  AS NUMERIC(36,4)) AS utilidad_excel
+									  , CAST([utilidad_compra]  AS NUMERIC(36,4)) AS utilidad_compra
+									  , CAST( ([utilidad_excel] / [monto_dolar] ) *100 AS NUMERIC(36,1)) as porc_utilidad_excel
+									  , CAST( ([utilidad_compra] / [monto_dolar] ) *100  AS NUMERIC(36,1)) as porc_utilidad_compra
+                                      , CONVERT(VARCHAR, [FECHAEMISION],103) as FECHAEMISION
+                                      , [codproducto]
+                                    FROM [V_SP_DIARIAS]
+                                       where 1=1 " + where +"order by [NOMBREVENDEDOR] ";
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
@@ -3561,6 +3627,20 @@ namespace SoprodiApp.acceso
             return dt;
         }
 
+        internal static DataTable VM_estados_2(string v)
+        {
+            DataTable dt = new DataTable();
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil"].ToString()))
+            {
+                conn.Open();
+                string sql = "select codestadodocumento, descestadodocumento from MaeEstadoDocumento " + v + "  order by DescEstadoDocumento ";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                ap.Fill(dt);
+            }
+            return dt;
+        }
+
         internal static DataTable VM_clientes(string v, string where)
         {
             DataTable dt = new DataTable();
@@ -4627,7 +4707,7 @@ namespace SoprodiApp.acceso
             {
                 conn.Open();
                 string sql = @"delete from COBRANZA_PAGOS " +
-                " where id_cobranza in (" + factura + ") and  convert(datetime, fecha, 103) = convert(datetime, '" + fecha + "', 103) and descripcion = '" + obser + "'";
+                " where id_cobranza in (" + Base.agrega_comillas( factura ) + ") and  convert(datetime, fecha, 103) = convert(datetime, '" + fecha + "', 103) and descripcion = '" + obser + "'";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     //cmd.Parameters.AddWithValue("@id", factura);
@@ -8933,6 +9013,35 @@ namespace SoprodiApp.acceso
             }
             return scalar;
         }
+
+        internal static string insert_referencia(string factura, string referencia)
+        {
+
+            string scalar = "";
+
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            {
+                conn.Open();
+                string query = "";
+                string sql = @"insert into COBRANZA_SEGUIMIENTO_INTER values ( @num_factura, @referencia) ";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@num_factura", factura);
+                    cmd.Parameters.AddWithValue("@referencia", referencia);
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        return "OK";
+                    }
+                    catch (Exception EX)
+                    {
+                        return "Error";
+                    }
+                }
+            }
+            return scalar;
+        }
+
 
         private static bool IsNumeric(string s)
         {

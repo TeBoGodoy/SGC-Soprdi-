@@ -10,10 +10,10 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder_Contenido" runat="server">
     <script>
-   
 
 
-    </script>
+
+</script>
 
     <div id="main-content">
 
@@ -383,6 +383,15 @@
                 <%--       <a class="tile tile-lime" href="REPORTE_LISTADO_DOC.aspx">
                     <p><i class="fa fa-list-alt fa-3x pull-left fa-border"></i>Nº Documento</p>
                 </a>--%>
+            </div>
+
+            <div id="veinti_cinco_sp_diarias" class="col-md-3" runat="server">
+                <a class="tile tile-yellow" style="background-color: #6291a8 !important;" data-stop="0" href="REPORTE_SP_DIARIAS.aspx">
+                    <div class="img img-center">
+                        <i class="fa fa-link fa-2x"></i>
+                    </div>
+                    <p class="title text-center">SP Diarias</p>
+                </a>
             </div>
         </div>
     </div>

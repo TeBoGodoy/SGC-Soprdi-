@@ -1729,7 +1729,7 @@
                         } catch (e) { }
                     }
                         //$(<%=btn_filtra_grilla.ClientID%>).click();
-                    
+
                     //alert(resp);
                     //CARGANDO();
 
@@ -1796,7 +1796,7 @@
 
                     } else {
 
-                        alert("Error al pagar con cheques.  (COD:02)");
+                        alert("Error al pagar con cheques.  (COD:02) + " + respuesta);
 
                     }
                     // FINAL FOR
@@ -1911,6 +1911,17 @@
                     relojito(false);
                     alert("Descripción no puede tener doble guion (--)");
                     return false;
+                }
+
+                if (chk_enviar_erp) {
+
+                    var ok_ref = valida_referencia(descripcion);
+
+                    if (ok_ref == "EXISTE") {
+                        relojito(false);
+                        alert("Descripción (referencia) ya existe");
+                        return false;
+                    }
                 }
 
 
@@ -2429,6 +2440,51 @@
             return respuesta;
 
         }
+
+
+        function valida_referencia(refer) {
+            var respuesta;
+
+            var parameters = new Object();
+            parameters.referencia = refer;
+            parameters = JSON.stringify(parameters);
+
+            $.ajax({
+                type: "POST",
+                url: "Calendario.aspx/validar_referencia",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("Fin de la session");
+                        location.href = "Acceso.aspx";
+                    } else {
+                        alert("Error al cargar evento");
+                    }
+                }
+            }).done(function (resp) {
+                resp = resp.d;
+
+                if (resp == "0") {
+                    //ok cheque
+                    respuesta = "OK";
+                }
+                else {
+                    respuesta = "EXISTE";
+
+                }
+
+            });
+
+
+            return respuesta;
+
+        }
+
+
+
         function quitar_cheque(numero_cheque, monto_cheque) {
             sum_cheques_2 = sum_cheques_2 - monto_cheque;
             cheques = cheques.filter(x => x.num_cheque != [numero_cheque]);
@@ -4175,7 +4231,9 @@
                 $('#T_DESCRIPCION_PAGO2').val('NET' + num);
                 $('#T_DESCRIPCION_PAGO2').val($('#T_DESCRIPCION_PAGO2').val().substring(1, 8));
             }
-            $('#T_DESCRIPCION_PAGO2').val('NET' + num);
+        
+            $('#T_DESCRIPCION_NETEO').val(num);
+            $('#T_BANCO_2_NETEO').text("NET");
 
             let date = new Date();
 
@@ -4202,8 +4260,11 @@
         function rescatarfecha() {
 
             var fecha_neteo = $('#T_FECHA_NETEO').val();
+            var descrip_neteo = $('#T_DESCRIPCION_NETEO').val(); 
 
             $('#t_fech_efec').val(fecha_neteo);
+            $('#T_DESCRIPCION_PAGO2').val('NET' + descrip_neteo);
+
         }
 
         function cambia_color_fondo() {
@@ -4665,16 +4726,20 @@
                         }
                     });
 
-                    const checkbox = document.getElementById('chk_enviar_erp')
+                    try {
+                        const checkbox = document.getElementById('chk_enviar_erp');
+                        checkbox.addEventListener('change', (event) => {
+                            if (event.target.checked) {
+                                cambia_color_fondo();
+                            } else {
+                                cambia_color_fondo2();
+                            }
+                        });
+                    }
+                    catch
+                    {
 
-                    checkbox.addEventListener('change', (event) => {
-                        if (event.target.checked) {
-                            cambia_color_fondo();
-                        } else {
-                            cambia_color_fondo2();
-                        }
-                    });
-
+                    }
 
                     $("#<%=CB_VENDEDOR_GRILLA.ClientID%>").change(function () {
                         document.getElementById("<%=L_CLIENTES.ClientID %>").value = "";
@@ -5423,10 +5488,27 @@
 
                                                             <asp:Panel runat="server" Visible="false" ID="P_FECHA_NET" ClientIDMode="Static">
                                                                 <div class="row">
+                                                                    <label class="col-sm-2 control-label">
+                                                                        <b>Fecha a aplicar :</b>
+                                                                    </label>
                                                                     <div class="col-md-12">
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="width: 20%;">
                                                                             <asp:TextBox runat="server" ID="T_FECHA_NETEO" ClientIDMode="Static" CssClass="form-control input-sm" placeholder="Fecha"></asp:TextBox>
                                                                             <ajaxToolkit:CalendarExtender FirstDayOfWeek="Monday" runat="server" ID="CalendarExtender23" TargetControlID="T_FECHA_NETEO"></ajaxToolkit:CalendarExtender>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <label class="col-sm-2 control-label">
+                                                                        <b>Descripción :</b>
+                                                                    </label>
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group" style="width: 20%;">
+                                                                            <i id="T_BANCO_2_NETEO"></i>
+                                                         
+                                                                            <div class="form-group">
+                                                                                <input maxlength="9" class="form-control input-sm" id="T_DESCRIPCION_NETEO" placeholder="Descripcion..." />
+                                                                            </div>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>

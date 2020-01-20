@@ -134,6 +134,7 @@ namespace SoprodiApp
             veinti_dos_produc.Attributes["style"] = "display:none";
             veinti_tres_REPORTE_SALDOS_SP.Attributes["style"] = "display:none";
             veinti_cuatro_stock_log.Attributes["style"] = "display:none";
+            veinti_cinco_sp_diarias.Attributes["style"] = "display:none";
 
             foreach (string u_ne in app)
             {
@@ -193,7 +194,10 @@ namespace SoprodiApp
                 {
                     veinti_tres_REPORTE_SALDOS_SP.Attributes["style"] = "display:block";
                 }
-
+                if (u_ne.Trim() == "47")
+                {
+                    veinti_cinco_sp_diarias.Attributes["style"] = "display:block";
+                }
 
                 //if (u_ne.Trim() == "35")
                 //{
@@ -232,6 +236,7 @@ namespace SoprodiApp
             veinti_dos_produc.Attributes["style"] = "display:none";
             veinti_tres_REPORTE_SALDOS_SP.Attributes["style"] = "display:none";
             veinti_cuatro_stock_log.Attributes["style"] = "display:none";
+            veinti_cinco_sp_diarias.Attributes["style"] = "display:none";
 
 
             foreach (string u_ne in app)
@@ -336,6 +341,10 @@ namespace SoprodiApp
                 if (u_ne.Trim() == "38")
                 {
                     veinti_cuatro_stock_log.Attributes["style"] = "display:block";
+                }
+                if (u_ne.Trim() == "47")
+                {
+                    veinti_cinco_sp_diarias.Attributes["style"] = "display:block";
                 }
             }
         }

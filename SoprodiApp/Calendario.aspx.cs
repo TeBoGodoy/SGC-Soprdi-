@@ -202,6 +202,9 @@ namespace SoprodiApp
         {
             //if (txt_desde2.Text != "" || txt_hasta2.Text != "" || num_docum.Text != "")
             //{
+
+            bool ningun_filtro = true;
+
             busca_columna_fac = true;
             columna_fac = false;
 
@@ -257,6 +260,11 @@ namespace SoprodiApp
             {
                 tipo_doc += " and [rutcliente] in (" + agregra_comillas(L_CLIENTES.Text) + ") ";
             }
+            else 
+            { 
+            
+            
+            }
 
 
             if (L_VENDEDORES.Text != "")
@@ -304,66 +312,48 @@ namespace SoprodiApp
             }
 
 
-            //if (CB_CLIENTE_GRILLA.SelectedValue != null && CB_CLIENTE_GRILLA.SelectedValue != "-1")
-            //{
-            //    tipo_doc += " and rutcliente = '" + CB_CLIENTE_GRILLA.SelectedValue.ToString() + "'";
-            //}
-
-
-            sum_peso_saldo = 0;
-
-            sum_dolar_saldo = 0;
-
-            sum_peso_monto = 0;
-
-            sum_dolar_monto = 0;
-
-            cont_rows = 0;
-            //CARGA REAL DT
-            DataTable au = new DataTable();
-            if (rd_abi.Checked)
+            if (tipo_doc.Trim() == "")
             {
-                au = ReporteRNegocio.trae_docu_calend(tipo_doc, User.Identity.Name);
-                TOTAL_ROWS = au.Rows.Count;
-                G_INIT.DataSource = au;
-                G_INIT.DataBind();
-                cerrad_abier.Visible = true;
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "relojito_false1", "<script> alert('NINGUN FILTRO APLICADO') </script>", false);
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "relojito_false2", "<script> relojito(false); </script>", false);
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "tqeeee", "<script language='javascript'>Tabla();</script>", false);
+                return;
             }
             else
             {
-                au = ReporteRNegocio.trae_docu_calend_CERRADOS(tipo_doc, User.Identity.Name);
-                TOTAL_ROWS = au.Rows.Count;
-                G_INIT.DataSource = au;
-                G_INIT.DataBind();
-                ////aca para pagar facturas cerradas
-                cerrad_abier.Visible = false;
+
+                sum_peso_saldo = 0;
+                sum_dolar_saldo = 0;
+                sum_peso_monto = 0;
+                sum_dolar_monto = 0;
+                cont_rows = 0;
+                //CARGA REAL DT
+                DataTable au = new DataTable();
+                if (rd_abi.Checked)
+                {
+                    au = ReporteRNegocio.trae_docu_calend(tipo_doc, User.Identity.Name);
+                    TOTAL_ROWS = au.Rows.Count;
+                    G_INIT.DataSource = au;
+                    G_INIT.DataBind();
+                    cerrad_abier.Visible = true;
+                }
+                else
+                {
+                    au = ReporteRNegocio.trae_docu_calend_CERRADOS(tipo_doc, User.Identity.Name);
+                    TOTAL_ROWS = au.Rows.Count;
+                    G_INIT.DataSource = au;
+                    G_INIT.DataBind();
+                    ////aca para pagar facturas cerradas
+                    cerrad_abier.Visible = true;
+                }
+
+                Session["aux_dt_excel"] = au;
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "tweeee", "<script> var elem3 = document.getElementById(\"ocultar_principio\");    elem3.style.display = \"block\";</script>", false);
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "relojito_false1", "<script> relojito(false); </script>", false);
+                btn_pagables.Visible = false;
+                BTN_NETEO_2.Visible = false;
+                P_FECHA_NET.Visible = false;
             }
-
-            Session["aux_dt_excel"] = au;
-
-
-            //DataTable au = ReporteRNegocio.trae_docu_calend(tipo_doc);
-            //TOTAL_ROWS = au.Rows.Count;
-            //G_INIT.DataSource = au;
-            //G_INIT.DataBind();
-
-
-
-            //var elem3 = document.getElementById("ocultar_principio");
-            //elem3.style.display = "block";
-            //ScriptManager.RegisterStartupScript(Page, this.GetType(), "tea2sd121mp", "<script language='javascript'>creagrilla_g_init();</script>", false);
-            ScriptManager.RegisterStartupScript(Page, this.GetType(), "tweeee", "<script> var elem3 = document.getElementById(\"ocultar_principio\");    elem3.style.display = \"block\";</script>", false);
-            ScriptManager.RegisterStartupScript(Page, this.GetType(), "relojito_false1", "<script> relojito(false); </script>", false);
-            //}
-            //else {
-
-            btn_pagables.Visible = false;
-            BTN_NETEO_2.Visible = false;
-            P_FECHA_NET.Visible = false;
-            //    ScriptManager.RegisterStartupScript(Page, this.GetType(), "tq121eeee", "<script> alert('Sin filtro fecha') </script>", false);
-
-
-            //}
         }
 
 
@@ -3278,6 +3268,8 @@ namespace SoprodiApp
                                 moneda = "";
                             }
 
+                            //string validar_referencia = ReporteRNegocio.valida_referecia_cobranza(descripcion);
+
                             vars.Add(new SPVars() { nombre = "descripcion", valor = descripcion.Replace("'", "") + "(" + moneda + ")" });
                             vars.Add(new SPVars() { nombre = "banco", valor = fact.Trim() });
 
@@ -3516,11 +3508,21 @@ namespace SoprodiApp
                     {
                         ReporteRNegocio.insert_seguimiento(fact);
                     }
+
+
+                    try
+                    {
+                        ReporteRNegocio.insert_referencia(fact, descripcion);                     
+                    }
+                    catch
+                    { }
                 }
 
                 //// ACA VALIDA SI ES ENVIO AL SOLOMON----   
                 if (enviar_erp == "True")
                 {
+
+
                     try
                     {
                         if (facturas_al_erp.Count > 0)
@@ -3685,8 +3687,17 @@ namespace SoprodiApp
 
             return dt.Rows[0][0].ToString();
         }
+        [WebMethod]
+        public static string validar_referencia(string referencia)
 
-
+        {
+            DBUtil db = new DBUtil();
+            DataTable dt = new DataTable();
+            dt = db.consultar(" select COUNT(*) " +
+                              "       from COBRANZA_SEGUIMIENTO_INTER " +
+                              "         where LTRIM(RTRIM( referencia ))  = '" + referencia + "' ");
+            return dt.Rows[0][0].ToString();
+        }
 
         [WebMethod]
         public static string Registrar_Pago_cheque2(string id, string monto, string moneda, string tipo_doc, string banco, string vencimiento,
@@ -6149,6 +6160,9 @@ namespace SoprodiApp
             G_FACTURAS_PAGABLES.DataSource = facturas_pagables;
             G_FACTURAS_PAGABLES.DataBind();
 
+            
+            
+            
             tabla_documentos = "<br>";
 
             tabla_documentos += "<input type='submit' name='btn_recalcular_saldos' style='visibility:hidden;position:absolute;' value='ASIGNAR NOTA CREDITO' onclick='recalcular_saldos_cm();' id='btn_recalcular_saldos' class='btn btn-success'> ";

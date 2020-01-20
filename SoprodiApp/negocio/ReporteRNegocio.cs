@@ -130,6 +130,11 @@ namespace SoprodiApp.negocio
             return ReporteDB.traefirmas_periodo(periodo);
         }
 
+        internal static DataTable VM_productos(string WHERE1, string WHERE2)
+        {
+            return ReporteDB.VM_productos(WHERE1, WHERE2);
+        }
+
         public static DataTable listar()
         {
             return ReporteDB.GetAll();
@@ -546,6 +551,11 @@ namespace SoprodiApp.negocio
         public static DataTable listar_usuarios()
         {
             return ReporteDB.listar_usuarios();
+        }
+
+        internal static DataTable sp_diaria(string WHERE)
+        {
+            return ReporteDB.sp_diaria(WHERE);
         }
 
         public static string delete_precalcular(string cod_usuario, string periodo)
@@ -1007,6 +1017,10 @@ namespace SoprodiApp.negocio
         internal static DataTable VM_estados(string v)
         {
             return ReporteDB.VM_estados(v);
+        }
+        internal static DataTable VM_estados_2(string v)
+        {
+            return ReporteDB.VM_estados_2(v);
         }
         internal static DataTable VM_clientes(string v, string where)
         {
@@ -1488,6 +1502,11 @@ namespace SoprodiApp.negocio
         internal static string insert_seguimiento(string num_factura)
         {
             return ReporteDB.insert_seguimiento(num_factura);
+        }
+
+        internal static string insert_referencia(string factura, string refer)
+        {
+            return ReporteDB.insert_referencia(factura, refer);
         }
 
         internal static DataTable trae_acciones_(string where)
@@ -2094,6 +2113,11 @@ namespace SoprodiApp.negocio
         internal static DataTable ventamovil_cliente_sucursal(string codCliente)
         {
             return ReporteDB.ventamovil_cliente_sucursal(codCliente);
+        }
+
+        internal static string valida_referecia_cobranza(string descripcion)
+        {
+            throw new NotImplementedException();
         }
     }
 }

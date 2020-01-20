@@ -2640,6 +2640,7 @@ namespace SoprodiApp
                         e.Row.Cells[1].Text = "  <a href='javascript:' onclick='" + script + "'>" + e.Row.Cells[1].Text + " </a>";
 
                         e.Row.Cells[0].Visible = false;
+
                         G_FACTURAS.HeaderRow.Cells[0].Visible = false;
                     }
                     catch { }

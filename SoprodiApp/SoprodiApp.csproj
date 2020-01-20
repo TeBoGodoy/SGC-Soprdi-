@@ -349,6 +349,13 @@
     <Compile Include="PDF_COMISION.aspx.designer.cs">
       <DependentUpon>PDF_COMISION.aspx</DependentUpon>
     </Compile>
+    <Compile Include="REPORTE_SP_DIARIAS.aspx.cs">
+      <DependentUpon>REPORTE_SP_DIARIAS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="REPORTE_SP_DIARIAS.aspx.designer.cs">
+      <DependentUpon>REPORTE_SP_DIARIAS.aspx</DependentUpon>
+    </Compile>
     <Compile Include="REPORTE_LISTA_SP.aspx.cs">
       <DependentUpon>REPORTE_LISTA_SP.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -860,6 +867,7 @@
     <Content Include="COMISIONES.aspx" />
     <Content Include="PDF_SP.aspx" />
     <Content Include="PDF_COMISION.aspx" />
+    <Content Include="REPORTE_SP_DIARIAS.aspx" />
     <Content Include="REPORTE_LISTA_SP.aspx" />
     <Content Include="REPORTE_VENCIMIENTOS.aspx" />
     <Content Include="REPORTE_PERMANENCIA.aspx" />
