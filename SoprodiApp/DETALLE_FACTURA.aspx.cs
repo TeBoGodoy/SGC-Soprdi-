@@ -2114,14 +2114,16 @@ namespace SoprodiApp
                 string pdfPath = Server.MapPath(@"~\PDFs\") + n_file;
                 Base.crear_sp_pdf(SP, pdfPath);
                 TheDownload2(pdfPath, "", SP.Trim() + ".pdf");
+
+
+
+                //Base.crear_txt("test");
             }
             catch (Exception ee)
             {
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeee", "<script> alert('No se Ha encontrado el Documento " + ee.Message + "') </script>", false);
             }
         }
-
-
 
     }
 }

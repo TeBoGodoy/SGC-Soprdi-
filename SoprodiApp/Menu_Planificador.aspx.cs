@@ -15,6 +15,8 @@ namespace SoprodiApp
         {
             if (!IsPostBack)
             {
+                abarrotes_sp_aspx_capi.Visible = false;
+
                 List<string> u_negocio = ReporteRNegocio.trae_u_negocio(User.Identity.Name).Split(',').ToList();
                 bool correcto_app = false;
                 foreach (string u_ne in u_negocio)
@@ -52,6 +54,9 @@ namespace SoprodiApp
                         titulo2.InnerHtml = "Planificador de Despachos";
                         A1.HRef = "reportes.aspx?s=1";
                         A1.InnerText = "Abarrotes";
+
+                        abarrotes_sp_aspx_capi.Visible = true;
+
                     }
                     else if (Session["SW_PERMI"].ToString() == "2")
                     {

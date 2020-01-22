@@ -110,6 +110,20 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ABARROTES_INSTRUIR.aspx.cs">
+      <DependentUpon>ABARROTES_INSTRUIR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ABARROTES_INSTRUIR.aspx.designer.cs">
+      <DependentUpon>ABARROTES_INSTRUIR.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ABARROTES_SP.aspx.cs">
+      <DependentUpon>ABARROTES_SP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ABARROTES_SP.aspx.designer.cs">
+      <DependentUpon>ABARROTES_SP.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Acceso.aspx.cs">
       <DependentUpon>Acceso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -122,6 +136,10 @@
     <Compile Include="acceso\contactosvendDAL.cs" />
     <Compile Include="acceso\correocontactoDAL.cs" />
     <Compile Include="acceso\ReporteDB.cs" />
+    <Compile Include="acceso\sp_enviadas_planificacionDAL.cs" />
+    <Compile Include="acceso\sp_estados_internosDAL.cs" />
+    <Compile Include="acceso\sp_problemas_vendedorDAL.cs" />
+    <Compile Include="acceso\sp_saldosDAL.cs" />
     <Compile Include="acceso\usuarioDAL.cs" />
     <Compile Include="Base.Master.cs">
       <DependentUpon>Base.Master</DependentUpon>
@@ -275,6 +293,10 @@
     <Compile Include="CALEND.aspx.designer.cs">
       <DependentUpon>CALEND.aspx</DependentUpon>
     </Compile>
+    <Compile Include="entidad\sp_enviadas_planificacionEntity.cs" />
+    <Compile Include="entidad\sp_estados_internosEntity.cs" />
+    <Compile Include="entidad\sp_problemas_vendedorEntity.cs" />
+    <Compile Include="entidad\sp_saldosEntity.cs" />
     <Compile Include="MANT_CAMION.aspx.cs">
       <DependentUpon>MANT_CAMION.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -335,6 +357,10 @@
     <Compile Include="negocio\cobranza_pago_chequeBO.cs" />
     <Compile Include="negocio\contactosvendBO.cs" />
     <Compile Include="negocio\correocontactoBO.cs" />
+    <Compile Include="negocio\sp_enviadas_planificacionBO.cs" />
+    <Compile Include="negocio\sp_estados_internosBO.cs" />
+    <Compile Include="negocio\sp_problemas_vendedorBO.cs" />
+    <Compile Include="negocio\sp_saldosBO.cs" />
     <Compile Include="PDF_SP.aspx.cs">
       <DependentUpon>PDF_SP.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -782,6 +808,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ABARROTES_INSTRUIR.aspx" />
+    <Content Include="ABARROTES_SP.aspx" />
     <Content Include="Acceso.aspx" />
     <Content Include="bin\EPPlus.dll" />
     <Content Include="BODEGA_GRUPOS.aspx" />

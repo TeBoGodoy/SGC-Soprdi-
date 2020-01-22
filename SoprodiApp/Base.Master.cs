@@ -15,6 +15,8 @@ using iTextSharp.text;
 using System.IO;
 using static SoprodiApp.PDF_SP;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace SoprodiApp
 {
@@ -1265,7 +1267,7 @@ namespace SoprodiApp
 
                     double temp_total = temp_CANT * temp_precio_unit_final;
 
-                    total = Base.monto_format2( Math.Round( temp_total, MidpointRounding.AwayFromZero) );
+                    total = Base.monto_format2(Math.Round(temp_total, MidpointRounding.AwayFromZero));
 
                     sub_total += temp_total;
                 }
@@ -1296,7 +1298,7 @@ namespace SoprodiApp
                 SP_formato += "             <span class='table'><span style = 'font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > " + sp_detalle_class.precio_unit_final + "<u></u><u></u></span></span> ";
                 SP_formato += "         </td> ";
                 SP_formato += "         <td style = 'border:solid black 1.0pt;padding:0cm 0cm 0cm 0cm' > ";
-                SP_formato += "             <span class='table'><span style = 'font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > " +  total + "<u></u><u></u></span></span> ";
+                SP_formato += "             <span class='table'><span style = 'font-size:9pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > " + total + "<u></u><u></u></span></span> ";
                 SP_formato += "         </td> ";
                 SP_formato += "     </tr> ";
             }
@@ -1354,7 +1356,7 @@ namespace SoprodiApp
             SP_formato += "         <p class='table' align='right' style='text-align:right'><b><span style = 'font-size:10pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > TOTAL </span></b><u></u><u></u></span> ";
             SP_formato += "     </td> ";
             SP_formato += "     <td style='padding:0cm 0cm 0cm 0cm'> ";
-            SP_formato += "         <p class='table' align='right' style='text-align:right'><b><span style = 'font-size:10pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > " + total_formato   + "</span></b><u></u><u></u></p> ";
+            SP_formato += "         <p class='table' align='right' style='text-align:right'><b><span style = 'font-size:10pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;' > " + total_formato + "</span></b><u></u><u></u></p> ";
             SP_formato += "     </td> ";
             SP_formato += "     <td width = '5 %' style='width:5.0%;padding:0cm 0cm 0cm 0cm'></td> ";
             SP_formato += " </tr> ";
@@ -1460,10 +1462,14 @@ namespace SoprodiApp
             else { return p; }
         }
 
+
+
+
         internal static void crear_sp_pdf(string sp, string pdfPath_)
         {
             string num_sp = sp;
             string pdfPath = pdfPath_;
+
             using (FileStream msReport = new FileStream(pdfPath, FileMode.Create))
             {
                 using (Document pdfDoc = new Document(PageSize.LETTER))
@@ -1509,7 +1515,7 @@ namespace SoprodiApp
                             PdfPCell celda80 = new PdfPCell(new Phrase("Tipo de Cambio: " + sp_datos_class.valor_t_cambio, FontFactory.GetFont(FontFactory.HELVETICA, 8)));
                             celda80.HorizontalAlignment = Element.ALIGN_LEFT;
                             celda80.BorderWidth = 0;
-                            tabla5.AddCell(celda80);                 
+                            tabla5.AddCell(celda80);
                         }
                         else
                         {
@@ -1518,7 +1524,7 @@ namespace SoprodiApp
                             celda80.BorderWidth = 0;
                             tabla5.AddCell(celda80);
                         }
-                        
+
                         pdfDoc.Add(tabla5);
                         pdfDoc.NewPage();
                         pdfDoc.Close();
@@ -1543,6 +1549,163 @@ namespace SoprodiApp
             }
         }
 
+
+        public class ConnectToSharedFolder : IDisposable
+        {
+            readonly string _networkName;
+
+            public ConnectToSharedFolder(string networkName, NetworkCredential credentials)
+            {
+                _networkName = networkName;
+
+                var netResource = new NetResource
+                {
+                    Scope = ResourceScope.GlobalNetwork,
+                    ResourceType = ResourceType.Disk,
+                    DisplayType = ResourceDisplaytype.Share,
+                    RemoteName = networkName
+                };
+
+                var userName = string.IsNullOrEmpty(credentials.Domain)
+                    ? credentials.UserName
+                    : string.Format(@"{0}\{1}", credentials.Domain, credentials.UserName);
+
+                var result = WNetAddConnection2(
+                    netResource,
+                    credentials.Password,
+                    userName,
+                    0);
+
+                if (result != 0)
+                {
+                    throw new Win32Exception(result, "Error connecting to remote share");
+                }
+            }
+
+            ~ConnectToSharedFolder()
+            {
+                Dispose(false);
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                WNetCancelConnection2(_networkName, 0, true);
+            }
+
+            [DllImport("mpr.dll")]
+            private static extern int WNetAddConnection2(NetResource netResource,
+                string password, string username, int flags);
+
+            [DllImport("mpr.dll")]
+            private static extern int WNetCancelConnection2(string name, int flags,
+                bool force);
+
+            [StructLayout(LayoutKind.Sequential)]
+            public class NetResource
+            {
+                public ResourceScope Scope;
+                public ResourceType ResourceType;
+                public ResourceDisplaytype DisplayType;
+                public int Usage;
+                public string LocalName;
+                public string RemoteName;
+                public string Comment;
+                public string Provider;
+            }
+
+            public enum ResourceScope : int
+            {
+                Connected = 1,
+                GlobalNetwork,
+                Remembered,
+                Recent,
+                Context
+            };
+
+            public enum ResourceType : int
+            {
+                Any = 0,
+                Disk = 1,
+                Print = 2,
+                Reserved = 8,
+            }
+
+            public enum ResourceDisplaytype : int
+            {
+                Generic = 0x0,
+                Domain = 0x01,
+                Server = 0x02,
+                Share = 0x03,
+                File = 0x04,
+                Group = 0x05,
+                Network = 0x06,
+                Root = 0x07,
+                Shareadmin = 0x08,
+                Directory = 0x09,
+                Tree = 0x0a,
+                Ndscontainer = 0x0b
+            }
+        }
+        public async void crear_txt(string LocalFile, string networkPath, NetworkCredential credentials)
+        {
+            //string networkPath = @"\\192.168.10.35\PDF_Generados";
+            //NetworkCredential credentials = new NetworkCredential("administrador", "Cx1001xc", "srv-FEL-new");
+            //string myNetworkPath = string.Empty;
+
+            //try
+            //{
+            //    using (new ConnectToSharedFolder(networkPath, credentials))
+            //    {
+            //        var fileList = Directory.GetDirectories(networkPath);
+            //        networkPath = networkPath + "\\MyTest.txt";
+
+            //        if (!File.Exists(networkPath))
+            //        {
+            //            // Create a file to write to.
+            //            using (StreamWriter sw = File.CreateText(networkPath))
+            //            {
+            //                sw.WriteLine("Hello");
+            //                sw.WriteLine("And");
+            //                sw.WriteLine("Welcome");
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+
+            string myNetworkPath;
+            try
+            {
+                string UploadURL = Path.GetFileName(LocalFile);
+                using (new ConnectToSharedFolder(networkPath, credentials))
+                {
+                    byte[] file = File.ReadAllBytes(LocalFile);
+                    myNetworkPath = networkPath + "\\" + UploadURL;
+
+                    using (FileStream fileStream = File.Create(myNetworkPath, file.Length))
+                    {
+                        await fileStream.WriteAsync(file, 0, file.Length);
+                        fileStream.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+
+
         internal static string monto_format2(double y)
         {
             string p = y.ToString();
@@ -1562,8 +1725,8 @@ namespace SoprodiApp
                 double.TryParse(p.Substring(0, p.IndexOf(",")), out d3);
                 string aux3 = "";
                 if (d3 == 0) { aux3 = "0"; } else { aux3 = d3.ToString("N0"); }
-                string ceros_decimales = p.Substring(p.IndexOf(","))+"00000";
-                return aux3 + ceros_decimales.Substring(0,4);
+                string ceros_decimales = p.Substring(p.IndexOf(",")) + "00000";
+                return aux3 + ceros_decimales.Substring(0, 4);
             }
             catch
             {

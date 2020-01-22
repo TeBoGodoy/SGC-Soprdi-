@@ -100,6 +100,7 @@ namespace SoprodiApp
                 string bit = encriptador.DecryptData(Request.QueryString["i"].ToString().Replace(" ", "+"));
 
                 if (bit == "25") { carga_doc_abiertos(clie_rut, User.Identity.Name); }
+                else if (bit == "26") { carga_doc_abiertos_y_cerrados_26(clie_rut, User.Identity.Name); }
                 else
                 {
                     USER = User.Identity.Name.ToString();
@@ -467,6 +468,43 @@ namespace SoprodiApp
             else
             {
                 g_doc.DataSource = ReporteRNegocio.docu_abier(clie_rut.Replace(".", "").Replace("-", ""), "");
+            }
+
+
+            g_doc.DataBind();
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "teeqqqeeeqe", "<script> new Tablesort(document.getElementById('g_doc')) </script>", false);
+
+
+        }
+
+        private void carga_doc_abiertos_y_cerrados_26(string clie_rut, string user)
+        {
+            DataTable cr = ReporteRNegocio.corr_usuario(User.Identity.Name);
+            foreach (DataRow r in cr.Rows)
+            {
+                tx_enviar_.Text = r[1].ToString();
+            }
+
+            titulo.InnerText = "Documentos Abiertos del cliente " + ReporteRNegocio.nombre_cliente(clie_rut.Replace(".", "").Replace("-", ""));
+
+            CLIENTES_FICHA.ActiveViewIndex = 2;
+            busca_columna_fac = true;
+
+            cont = 1;
+            string cod_vend = "";
+            if (ReporteRNegocio.esvendedor(User.Identity.Name) == "2")
+            {
+                cod_vend = User.Identity.Name;
+            }
+            if (cod_vend != "")
+            {
+
+                g_doc.DataSource = ReporteRNegocio.docu_todos(clie_rut.Replace(".", "").Replace("-", ""), cod_vend);
+
+            }
+            else
+            {
+                g_doc.DataSource = ReporteRNegocio.docu_todos(clie_rut.Replace(".", "").Replace("-", ""), "");
             }
 
 

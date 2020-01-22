@@ -8785,6 +8785,36 @@ namespace SoprodiApp.acceso
             }
             return dt;
         }
+        internal static DataTable docu_todos(string clie_rut, string vend)
+        {
+            DataTable dt = new DataTable();
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
+            {
+                conn.Open();
+                string sql = @"select v_cobranza.rutcliente as RutCliente, v_cobranza.nombrecliente as NombCliente, factura as 'Nº Factura', nombrevendedor as NombVendedor, tipo_doc as TipoDocum,descr as 'Descripción', num_ref as NumRef,
+                                 CONVERT(VARCHAR,fecha_trans,103) as FechaTransc, CONVERT(VARCHAR,fecha_venc,103) as FechaVenc, D.tipo_credi as TipoCred, 
+                                       D.lc as 'L.Crédito', 	monto_doc as Monto, 
+                                        saldo as 'Saldo'
+                             from v_cobranza 
+				                   LEFT OUTER JOIN [V_CTZ_GESTION_VENTAS_FIN] D ON D.rutcliente = v_cobranza.rutcliente
+                                where v_cobranza.rutcliente like '%" + clie_rut + "%' ";
+
+                if (vend != "")
+                {
+
+                    sql += " and vendedor = '" + vend + "' ";
+                }
+                sql += " order by fecha_venc asc";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
 
         internal static string linea_credito_disponible(string p)
         {

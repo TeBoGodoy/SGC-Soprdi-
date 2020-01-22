@@ -7,11 +7,13 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace SoprodiApp {
-    
-    
-    public partial class DETALLE_FACTURA {
-        
+namespace SoprodiApp
+{
+
+
+    public partial class DETALLE_FACTURA
+    {
+
         /// <summary>
         /// Control Head1.
         /// </summary>
@@ -20,7 +22,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
-        
+
         /// <summary>
         /// Control ScriptManager1.
         /// </summary>
@@ -29,7 +31,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ScriptManager1;
-        
+
         /// <summary>
         /// Control UpdatePanel1.
         /// </summary>
@@ -38,7 +40,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
+
         /// <summary>
         /// Control normal.
         /// </summary>
@@ -47,7 +49,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl normal;
-        
+
         /// <summary>
         /// Control div_sp.
         /// </summary>
@@ -56,7 +58,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_sp;
-        
+
         /// <summary>
         /// Control filtros.
         /// </summary>
@@ -65,7 +67,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl filtros;
-        
+
         /// <summary>
         /// Control detalle.
         /// </summary>
@@ -74,7 +76,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detalle;
-        
+
         /// <summary>
         /// Control descarga_word.
         /// </summary>
@@ -83,7 +85,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button descarga_word;
-        
+
         /// <summary>
         /// Control descarga_pdf.
         /// </summary>
@@ -92,7 +94,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton descarga_pdf;
-        
+
         /// <summary>
         /// Control btn_excel.
         /// </summary>
@@ -101,7 +103,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btn_excel;
-        
+
         /// <summary>
         /// Control G_DETALLE_FACTURA.
         /// </summary>
@@ -110,7 +112,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView G_DETALLE_FACTURA;
-        
+
         /// <summary>
         /// Control table_almace.
         /// </summary>
@@ -119,7 +121,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl table_almace;
-        
+
         /// <summary>
         /// Control factura.
         /// </summary>
@@ -128,7 +130,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl factura;
-        
+
         /// <summary>
         /// Control num_factura.
         /// </summary>
@@ -137,7 +139,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label num_factura;
-        
+
         /// <summary>
         /// Control fecha_factura.
         /// </summary>
@@ -146,7 +148,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label fecha_factura;
-        
+
         /// <summary>
         /// Control vendedor_.
         /// </summary>
@@ -155,7 +157,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label vendedor_;
-        
+
         /// <summary>
         /// Control codigo_vend.
         /// </summary>
@@ -164,7 +166,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label codigo_vend;
-        
+
         /// <summary>
         /// Control grupo_.
         /// </summary>
@@ -173,7 +175,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label grupo_;
-        
+
         /// <summary>
         /// Control cliente_.
         /// </summary>
@@ -182,7 +184,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label cliente_;
-        
+
         /// <summary>
         /// Control rut_cliente.
         /// </summary>
@@ -191,7 +193,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label rut_cliente;
-        
+
         /// <summary>
         /// Control G_PRODUCTOS.
         /// </summary>
@@ -200,7 +202,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView G_PRODUCTOS;
-        
+
         /// <summary>
         /// Control subtotal.
         /// </summary>
@@ -209,7 +211,7 @@ namespace SoprodiApp {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label subtotal;
-        
+
         /// <summary>
         /// Control total_.
         /// </summary>

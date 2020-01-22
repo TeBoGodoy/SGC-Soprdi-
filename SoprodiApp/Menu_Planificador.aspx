@@ -140,6 +140,15 @@
                     <p><i class="fa fa-columns fa-3x pull-left fa-border"></i>Usuario Producto</p>
                 </a>--%>
             </div>
+            
+            <div class="col-md-3" runat="server" id="abarrotes_sp_aspx_capi">
+                <a class="tile tile-green" style="background-color: #b200ff !important;" data-stop="0" href="ABARROTES_SP.aspx">
+                    <div class="img img-center">
+                        <i class="fa fa-dashboard fa-2x"></i>
+                    </div>
+                    <p class="title text-center">ABARROTES SP</p>
+                </a>
+            </div>
 
 
             <%--    <div class="col-md-3" runat="server" id="cinco_mant_lab">

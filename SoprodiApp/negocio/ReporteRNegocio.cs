@@ -748,6 +748,11 @@ namespace SoprodiApp.negocio
             return ReporteDB.trae_num_factura_origen(factura);
         }
 
+        internal static object docu_todos(string rutcliente, string cod_vend)
+        {
+            return ReporteDB.docu_todos(rutcliente, cod_vend);
+        }
+
         public static DataTable table_totales_c(string where)
         {
             return ReporteDB.table_totasles_c(where);
