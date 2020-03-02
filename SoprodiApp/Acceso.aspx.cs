@@ -94,6 +94,14 @@ namespace SoprodiApp
             u.clave = contrasena;
 
             string respuesta = usuarioBO.validar(ref u);
+
+
+            //string usuario_1_2 = ReporteRNegocio.test_arica();
+
+            //ScriptManager.RegisterStartupScript(Page, this.GetType(), "test", "<script language='javascript'>alert('"+ usuario_1_2 + "');</script>", false);
+
+
+
             if (respuesta == "OK")
             {
                 if (u.activado != "False")

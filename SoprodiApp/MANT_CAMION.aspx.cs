@@ -115,7 +115,7 @@ namespace SoprodiApp
             dt = ReporteRNegocio.listar_transpor_2(where1);
             dtv = dt.DefaultView;
             d_trans.DataSource = dtv;
-            d_trans.DataTextField = "nombre_trans";
+            d_trans.DataTextField = "trans_bodeg";
             d_trans.DataValueField = "cod_trans";
             //d_vendedor_.SelectedIndex = -1;
             d_trans.DataBind();

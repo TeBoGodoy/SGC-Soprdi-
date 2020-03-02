@@ -232,6 +232,32 @@ namespace ThinxsysFramework
                     // SMTP
                     return "OK";
 
+                    //email.IsBodyHtml = true;
+                    //email.Priority = MailPriority.Normal;
+                    //email.BodyEncoding = System.Text.Encoding.UTF8;
+                    //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                    //smtp.EnableSsl = true;
+                    //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    //smtp.UseDefaultCredentials = false;
+                    //////smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+                    //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+                    //try
+                    //{                   
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    ////}
+
+                    //MailSetup.IsBodyHtml = true;
+                    //MailSetup.Priority = MailPriority.Normal;
+                    //MailSetup.BodyEncoding = System.Text.Encoding.UTF8;
+                    //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                    //smtp.EnableSsl = true;
+                    //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    //smtp.UseDefaultCredentials = false;
+                    //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+                    //smtp.Send(MailSetup);
+                    //return "OK";
                 }
             }
             catch (Exception ex)
@@ -394,7 +420,7 @@ namespace ThinxsysFramework
 
         public SqlDataAdapter da;
         public DataTable consultar(string sql)
-        {          
+        {
             da = new SqlDataAdapter(sql, cn);
             da.SelectCommand.CommandTimeout = 350;
             DataSet dts = new DataSet();

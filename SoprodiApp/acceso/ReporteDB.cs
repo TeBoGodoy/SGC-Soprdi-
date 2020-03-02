@@ -91,6 +91,35 @@ namespace SoprodiApp.acceso
             return scalar;
         }
 
+        internal static string test_arica()
+        {
+            //; select scope_identity();
+            string scalar = "";
+            string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["arica"].ToString()))
+            {
+                conn.Open();
+                string sql = @"SELECT top 1 nombreusuario FROM[SMSoprodi].[dbo].[Usuarios] ";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    //cmd.Parameters.AddWithValue("@id_asignado", select_scope);
+
+
+
+                    try
+                    {
+                        scalar = cmd.ExecuteScalar().ToString();
+                    }
+                    catch (Exception EX)
+                    {
+                        return "";
+                    }
+                }
+            }
+            return scalar;
+        
+
+    }
+
         internal static DataTable VM_productos(string wHERE1, string wHERE2)
         {
             DataTable dt = new DataTable();
@@ -1041,6 +1070,7 @@ namespace SoprodiApp.acceso
                               ,[carga_inicial]
                               ,[cod_bodega]
                               ,[grupo]
+                              ,nombre_trans + ' - ' + cod_bodega  as trans_bodeg
                           FROM[" + bd_respaldo + "].[dbo].[Transportista]" + where;
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -3889,6 +3919,7 @@ namespace SoprodiApp.acceso
             string bd_respaldo = ConfigurationManager.AppSettings["BD_PRUEBA"]; using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
                 conn.Open();
+                // sp, producto, cantidad
                 string sql = "EXEC THX_VALIDA_SP '" + v1 + "', '" + v2 + "', " + Convert.ToDouble(v3).ToString().Replace(",", ".");
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);

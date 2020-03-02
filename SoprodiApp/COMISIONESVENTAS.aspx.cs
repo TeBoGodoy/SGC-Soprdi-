@@ -732,6 +732,10 @@ namespace SoprodiApp
 
             string where = "  where 1=1 ";
 
+            //ocultar nelson vargas y claudio guitierrez
+            where += " and codvendedor  not in ('NV075','CG032') ";
+
+
             dt = db.consultar("SELECT DISTINCT codvendedor, isnull(NOMBRE,codvendedor) as nombre  FROM [dbo].[V_COMISION_VENDEDORES] " + where);
 
 
@@ -773,6 +777,9 @@ namespace SoprodiApp
                 where += " and grupo in (" + grupo_para_in + ") ";
             }
 
+            //ocultar nelson vargas y claudio guitierrez
+            where += " and codvendedor  not in ('NV075','CG032') ";
+
             if (int_on_off == 1)
             {
                 dt = db.consultar(" SELECT * FROM V_COMISIONES_FACTURAS where  grupo in (" + grupo_para_in + ") and  CONVERT(DATE,FECHA_PAGO) <= CONVERT(DATE, '" + txt_fecha.Text + "') and (cod_periodo = '" + p + "'" + where + ")");
@@ -813,6 +820,9 @@ namespace SoprodiApp
             {
                 grupo_para_in = grupos;
             }
+
+            //ocultar nelson vargas y claudio guitierrez
+            where += " and codvendedor  not in ('NV075','CG032') ";
 
             if (int_on_off == 1)
             {
@@ -4269,87 +4279,74 @@ namespace SoprodiApp
                             {
                                 final = true;
                             }
-
-
-
-
                         }
-
-
                         float[] medidasCeldas = { 0.30f, 0.50f, 0.15f };
                         tabla.SetWidths(medidasCeldas);
-
                         float[] medidasCeldas_4 = { 0.38f, 0.28f, 0.15f, 0.16f };
                         tabla_COBRANZA.SetWidths(medidasCeldas_4);
-
                         pdfDoc.Add(tabla);
                         pdfDoc.Add(tabla_COBRANZA);
-
-
-
                         ////////------------------------------------------------------------------------------FIRMAS
                         //PdfPTable tabla_firmas = new PdfPTable(usuarios_firman.Rows.Count);
 
                         PdfPTable tabla_firmas = new PdfPTable(3);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
-
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);

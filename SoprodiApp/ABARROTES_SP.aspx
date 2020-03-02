@@ -10,10 +10,6 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder_Contenido" runat="server">
     <script>
-
-
-
-
         function checkEnter(e) {
 
             if (e.keyCode == 13) {
@@ -26,9 +22,6 @@
                 }
             }
         }
-
-
-
         function enter_traer_actualizar_(e) {
 
             if (e.keyCode == 13) {
@@ -36,8 +29,6 @@
                 return false;
             }
         }
-
-
         //function SORT_GRILLA() {
         //    new Tablesort(document.getElementById('ContentPlaceHolder_Contenido_G_PRODUCTOS'));
         //}
@@ -521,7 +512,7 @@
         function fuera(rutcliente, bit) {
 
 
-            var urlPdf = "/FICHA_C.aspx?";
+            var urlPdf = "/CUENTA_CRRTE.aspx?";
             //var path2 = "P=" + path;
             //var filename2 = "&N=" + filename;
             //var urlPdf_Final = urlPdf + path2 + filename2;
@@ -533,7 +524,7 @@
             };
 
             if (navigator.appName.indexOf('Netscape') != -1) {
-                window.open(urlPdf_Final, '', 'width=1100,height=500,left=50,top=50');
+                window.open(urlPdf_Final, '');
                 void 0;
             };
             return false;
@@ -1273,7 +1264,12 @@
                                                         <asp:BoundField HeaderText="Producto" DataField="DescProducto" />
                                                         <asp:BoundField HeaderText="Cantidad" DataField="Cantidad" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />
                                                         <asp:BoundField HeaderText="Tipo" DataField="CodUnVenta" />--%>
-                                                        <asp:BoundField HeaderText="Facturas" DataField="Facturas" />
+                                                          <asp:TemplateField HeaderText="Facturas" ItemStyle-Font-Bold="true">
+                                                            <ItemTemplate>
+                                                              <a href='REPORTE_LISTADO_DOC.aspx?F=<%# Eval("Facturas") %>' target='_blank'><%# Eval("Facturas") %></a>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                     <%--   <asp:BoundField HeaderText="Facturas" DataField="Facturas" />--%>
                                                     </Columns>
                                                     <EmptyDataTemplate>
                                                         No existen datos.
@@ -1353,7 +1349,7 @@
                                         <tr>
                                             <td><b>Vendedor: </b></td>
                                             <td>
-                                                <asp:Label runat="server" ID="LBL_VENDEDOR"></asp:Label></td>
+                                                <asp:Label runat="server" ID="LBL_VENDEDOR"></asp:Label> <asp:Label runat="server" ID="COD_VENDEDOR" Visible="false"></asp:Label></td>
                                         </tr>
                                         <tr>
                                             <td><b>Cliente: </b></td>
@@ -1402,7 +1398,7 @@
                                         <Columns>
                                             <asp:BoundField HeaderText="Cod. Prod" DataField="CodProducto" ItemStyle-Font-Bold="true" />
                                             <asp:BoundField HeaderText="Producto" DataField="DescProducto" ItemStyle-Font-Bold="true" />
-                                            <asp:BoundField HeaderText="$ Lista" DataField="PrecioLista" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" DataFormatString="{0:N0}" />
+                                            <asp:BoundField HeaderText="$ Lista" DataField="PrecioLista" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true"  />
                                             <asp:BoundField HeaderText="$ Unit. SP" DataField="PrecioUnitario" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" DataFormatString="{0:N1}" />
                                             <asp:BoundField HeaderText="Stock" DataField="Stock" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
                                             <asp:TemplateField HeaderText="Cant. SP" ItemStyle-Font-Bold="true">
@@ -1417,7 +1413,7 @@
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderText="Tipo" DataField="CodUnVenta" ItemStyle-Font-Bold="true" />
                                             <asp:BoundField HeaderText="Neto" DataField="det_monto_neto" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
-                                            <asp:BoundField HeaderText="Descuento" DataField="Descuento" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
+                                            <asp:BoundField HeaderText="% Descuento" DataField="Descuento" DataFormatString="{0:N1}" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
                                             <asp:BoundField HeaderText="Neto FInal" DataField="MontoNetoFinal" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
                                         </Columns>
                                         <EmptyDataTemplate>
@@ -1445,7 +1441,7 @@
                                         <tr>
                                             <td>&nbsp;</td>
                                             <td>
-                                                <asp:LinkButton runat="server" Width="300px" ID="B_VER_CUENTA_CORRIENTE" OnClick="B_VER_CUENTA_CORRIENTE_Click" CssClass="btn btn-success btn-block">VER CUENTA CORRIENTE</asp:LinkButton></td>
+                                                <asp:LinkButton runat="server" Width="300px" ID="B_VER_CUENTA_CORRIENTE" OnClick="B_VER_CUENTA_CORRIENTE_Click" CssClass="btn btn-success btn-block">VER DOCUMENTO ABIERTOS</asp:LinkButton></td>
                                         </tr>
                                     </table>
                                 </div>

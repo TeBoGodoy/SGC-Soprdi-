@@ -282,6 +282,13 @@
     <Compile Include="COTIZADOR\Lista_de_Precios.aspx.designer.cs">
       <DependentUpon>Lista_de_Precios.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CUENTA_CRRTE.aspx.cs">
+      <DependentUpon>CUENTA_CRRTE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CUENTA_CRRTE.aspx.designer.cs">
+      <DependentUpon>CUENTA_CRRTE.aspx</DependentUpon>
+    </Compile>
     <Compile Include="entidad\agendacontactoEntity.cs" />
     <Compile Include="entidad\cobranza_pago_chequeEntity.cs" />
     <Compile Include="entidad\contactosvendEntity.cs" />
@@ -853,6 +860,7 @@
     <Content Include="COTIZADOR\LOGOS\banner.jpg" />
     <Content Include="COTIZADOR\LOGOS\dereyes.png" />
     <Content Include="COTIZADOR\LOGOS\soprodi.jpg" />
+    <Content Include="CUENTA_CRRTE.aspx" />
     <Content Include="img\checkbox.png" />
     <Content Include="img\demo\80x80.gif" />
     <Content Include="img\demo\avatar\avatar1.jpg" />

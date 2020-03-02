@@ -135,6 +135,11 @@ namespace SoprodiApp.negocio
             return ReporteDB.VM_productos(WHERE1, WHERE2);
         }
 
+        internal static string test_arica()
+        {
+            return ReporteDB.test_arica();
+        }
+
         public static DataTable listar()
         {
             return ReporteDB.GetAll();

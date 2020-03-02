@@ -1994,7 +1994,7 @@
             }
             else if (tipo_doc == "cheque") {
                 var cont = 0;
-                var descripcion_CHEQUE = $('#T_DESCRIPCION_CHEQUES_3').val();
+                var descripcion_CHEQUE = $('#T_DESCRIPCION_CHEQUES_3').val().toUpperCase();
                 var respuesta = "";
                 if (cheques.length > 0) {
                     for (var i = 0; i < cheques.length; i++) {

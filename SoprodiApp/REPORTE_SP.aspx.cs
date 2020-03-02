@@ -1282,8 +1282,8 @@ namespace SoprodiApp
 
                         if (facturas_aux.Trim() != "")
                         {
-                            facturas_x_sps += row["facturas"].ToString() + ", ";
-                            r[14] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 3);
+                            facturas_x_sps += row["facturas"].ToString() + " ,";
+                            r[14] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
                         }
                         DataRow row_sp1 = sp_for.NewRow();
                         row_sp1["sp"] = cod_aux;
@@ -1291,7 +1291,7 @@ namespace SoprodiApp
                         string aux_aca = "";
                         try
                         {
-                            aux_aca = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
+                            aux_aca = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
                         }
                         catch
                         {
@@ -1310,7 +1310,7 @@ namespace SoprodiApp
                                 estado_univ = r2[1].ToString();
                                 DataRow row_sp = sp_malas.NewRow();
                                 row_sp["sp"] = cod_aux;
-                                row_sp["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 3);
+                                row_sp["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
                                 row_sp["estado"] = estado_univ;
                                 sp_malas.Rows.Add(row_sp);
                                 break;
@@ -1322,7 +1322,7 @@ namespace SoprodiApp
                                 row_sp["sp"] = cod_aux;
                                 try
                                 {
-                                    row_sp["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
+                                    row_sp["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
                                 }
                                 catch
                                 {
@@ -1343,12 +1343,12 @@ namespace SoprodiApp
                         facturas_x_sps = "";
 
                         facturas_x_sps += row["facturas"].ToString() + ", ";
-                        r[14] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
+                        r[14] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
 
                         DataRow row_sp1 = sp_for.NewRow();
                         row_sp1["sp"] = cod_aux;
                         row_sp1["estado"] = row["estado"].ToString().Substring(0, 3);
-                        row_sp1["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
+                        row_sp1["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
                         sp_for.Rows.Add(row_sp1);
                     }
                 }

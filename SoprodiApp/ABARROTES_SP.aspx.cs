@@ -51,12 +51,8 @@ namespace SoprodiApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
             //this.Form.DefaultButton = this.Button1.UniqueID;
-
             //Page.RegisterRedirectOnSessionEndScript();
-
             page = this.Page;
             if (!IsPostBack)
             {
@@ -87,16 +83,12 @@ namespace SoprodiApp
                     //Session["SW_FILTRAR_PRODUCTO"] = "NO";
 
                     ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'none'; </script>", false);
-
                 }
                 else
                 {
                     ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'block'; </script>", false);
                     Session["SW_FILTRAR_PRODUCTO"] = "NO";
-
                 }
-
-
 
                 //TX_AÑO.Text = DateTime.Now.Year.ToString();
                 //CB_TIPO_DOC_GRILLA.SelectedValue = DateTime.Now.Month.ToString();
@@ -1301,35 +1293,7 @@ namespace SoprodiApp
 
         }
 
-        private bool borrar_sp(string sp)
-        {
 
-            string cadena_vm_thx = "Data Source=192.168.10.45;Initial Catalog=SoprodiVenta;Persist Security Info=True;User ID=sa;Password=Soprodi1234";
-
-            using (SqlConnection conn = new SqlConnection(cadena_vm_thx))
-            {
-                conn.Open();
-                string sql = @"   delete from TrnDocumentoCabecera      where coddocumento in (@sp); " +
-                               "  delete from TrnDocumentoDetalle       where coddocumento in (@sp); " +
-                               "  delete from ext_TrnDocumentoCabecera  where coddocumento in (@sp); " +
-                               "  delete from ext_TrnDocumentoDetalle   where coddocumento in (@sp); ";
-
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@sp", sp.Trim());
-                    //cmd.Parameters.AddWithValue("@periodo", periodo);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                        return true;
-                    }
-                    catch (Exception EX)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
 
         private bool procesar_sp_traida(string sp)
         {
@@ -1482,386 +1446,716 @@ namespace SoprodiApp
         protected void Button1_Click(object sender, EventArgs e)
         {
             //REPORTE
-            //string produc = agregra_comillas(l_vendedores.Text);
-            string desde = txt_desde.Text;
-            string hasta = txt_hasta.Text;
-
-            string clientes = agregra_comillas(l_clientes.Text);
-            string estados = agregra_comillas(lb_bodegas2.Text);
-            string estados_p_d = agregra_comillas(lb_bodegas3.Text);
-            string estados_planif = agregra_comillas(lb_planificado.Text);
-            string bodega = agregra_comillas(l_bodega.Text);
-
-            string grupo = agregra_comillas(l_grupo_vm.Text);
-            string vendedor = agregra_comillas(l_vendedor_vm.Text);
-
-            string where3 = " where 1=1 ";
-
-            if (Session["SW_PERMI"].ToString() == "2")
+            if (TraerdeVentaMovil())
             {
-                where3 += " and b.DescEmisor = 'Granos'";
-            }
-            else
-            {
-                where3 += " and b.DescEmisor <> 'Granos'";
-            }
+                //string produc = agregra_comillas(l_vendedores.Text);
+                string desde = txt_desde.Text;
+                string hasta = txt_hasta.Text;
 
-            //select * from[VPEDIDOCABECERA] where FechaEmision >= CONVERT(datetime, '21/07/2017', 103)
-            if (desde != "")
-            {
-                if (rd_em.Checked)
+                string clientes = agregra_comillas(l_clientes.Text);
+                string estados = agregra_comillas(lb_bodegas2.Text);
+                string estados_p_d = agregra_comillas(lb_bodegas3.Text);
+                string estados_planif = agregra_comillas(lb_planificado.Text);
+                string bodega = agregra_comillas(l_bodega.Text);
+
+                string grupo = agregra_comillas(l_grupo_vm.Text);
+                string vendedor = agregra_comillas(l_vendedor_vm.Text);
+
+                string where3 = " where 1=1 ";
+
+                if (Session["SW_PERMI"].ToString() == "2")
                 {
-                    where3 += " and convert(datetime,b.FechaEmision ,103)  >= convert(datetime, '" + desde + "', 103) ";
+                    where3 += " and b.DescEmisor = 'Granos'";
                 }
                 else
                 {
-
-                    where3 += " and convert(datetime,b.FechaDespacho ,103)  >= convert(datetime, '" + desde + "', 103) ";
+                    where3 += " and b.DescEmisor <> 'Granos'";
                 }
 
-            }
-
-            if (hasta != "")
-            {
-                if (rd_em.Checked)
+                //select * from[VPEDIDOCABECERA] where FechaEmision >= CONVERT(datetime, '21/07/2017', 103)
+                if (desde != "")
                 {
-                    where3 += " and convert(datetime,b.FechaEmision ,103)   <= convert(datetime, '" + hasta + "', 103) ";
-                }
-                else
-                {
-
-                    where3 += " and convert(datetime,b.FechaDespacho ,103)   <= convert(datetime, '" + hasta + "', 103) ";
-
-
-                }
-            }
-
-            if (clientes != "")
-            {
-
-                where3 += " and b.rut in (" + clientes + ")";
-
-            }
-
-            if (bodega != "")
-            {
-                where3 += " and b.CodBodega in (" + bodega + ")";
-            }
-
-            string aux_estados = estados;
-
-            Session["estados"] = estados;
-
-
-            Session["estados_p_d"] = estados_p_d;
-            Session["estados_planif"] = estados_planif.Replace("planificado", "si").Replace("pendiente", "no");
-
-            if (estados.Contains("10S"))
-            {
-
-                aux_estados = estados.Replace("10S", "20");
-
-            }
-
-            if (estados.Contains("10P"))
-            {
-
-                aux_estados = estados.Replace("10P", "20");
-
-            }
-
-            if (estados != "")
-            {
-
-                where3 += " and b.CodEstadoDocumento in (" + aux_estados + ")";
-
-            }
-
-
-            if (vendedor != "")
-            {
-
-                where3 += " and b.codvendedor in (" + vendedor + ")";
-
-            }
-            if (Session["codvendedor"].ToString() != "")
-            {
-
-                where3 += Session["codvendedor"].ToString();
-
-            }
-
-
-            if (txt_sp.Text != "")
-            {
-
-                where3 += " and b.CodDocumento in (" + agregra_comillas(txt_sp.Text) + ")";
-
-            }
-
-            string estado = estados_planif.Replace("planificado", "si").Replace("pendiente", "no").Replace("'", "");
-
-            if (estado != "")
-            {
-                if (estado.Trim() == "si")
-                {
-                    where3 += " and ISNUMERIC( isnull(d.coddocumento,'no')  ) = 1 ";
-                }
-                else if (estado.Trim() == "no")
-                {
-
-                    where3 += " and ISNUMERIC( isnull(d.coddocumento,'no')  ) <> 1 ";
-
-                }
-            }
-            div_report.Visible = true;
-
-            if (Session["SW_FILTRAR_PRODUCTO"].ToString() == "SI")
-            {
-                ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'none'; </script>", false);
-
-                where3 = Session["WHERE"].ToString();
-            }
-            where3 += " and a.codproducto not in (select distinct(codproducto)  from VPEDIDODETALLE_THX where ISNUMERIC(CodProducto) <> 1) order by CodDocumento desc";
-
-            //SPSP
-            DataTable dt2 = VM_listar_sp_select_capi(where3);
-            string cod_aux = "";
-            string facturas_aux = "";
-
-            DataTable sp_malas = new DataTable();
-            sp_malas.Columns.Add("sp");
-            sp_malas.Columns.Add("facturas");
-            sp_malas.Columns.Add("estado");
-
-
-            DataTable sp_for = new DataTable();
-            sp_for.Columns.Add("sp");
-            sp_for.Columns.Add("estado");
-            sp_for.Columns.Add("facturas");
-            string facturas_x_sps = "";
-            foreach (DataRow r in dt2.Rows)
-            {
-                //20 -- OK
-                //10S -- SinFactura
-                //10P -- Cantidad Distintas      
-
-                //0  coddoc //24 cod //25 cant
-
-                if (r["DescEstadoDocumento"].ToString() == "Aprobado" && r["AprobadoFull"].ToString() == "no")
-                {
-                    if (cod_aux == "")
+                    if (rd_em.Checked)
                     {
-                        cod_aux = r["CodDocumento"].ToString();
-                        sp_for = new DataTable();
-                        sp_for.Columns.Add("sp");
-                        sp_for.Columns.Add("estado");
-                        sp_for.Columns.Add("facturas");
-                    }
-
-                    DataTable procesado = ReporteRNegocio.SP_Marcelo(r["CodDocumento"].ToString().Trim(), r["CodProducto"].ToString().Trim(), r["Cantidad"].ToString().Trim());
-                    DataRow row = procesado.Rows[0];
-
-                    if (r["CodDocumento"].ToString() == cod_aux)
-                    {
-                        //if (row["estado"].ToString().Substring(0, 3) == "10P")
-                        //{
-
-                        facturas_aux = row["facturas"].ToString();
-
-                        if (facturas_aux.Trim() != "")
-                        {
-                            facturas_x_sps += row["facturas"].ToString() + ", ";
-                            r["Facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 3);
-                        }
-
-                        DataRow row_sp1 = sp_for.NewRow();
-                        row_sp1["sp"] = cod_aux;
-                        row_sp1["estado"] = row["estado"].ToString().Substring(0, 3);
-                        string aux_aca = "";
-                        try
-                        {
-                            aux_aca = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
-                        }
-                        catch
-                        {
-
-
-                        }
-
-                        row_sp1["facturas"] = aux_aca;
-                        sp_for.Rows.Add(row_sp1);
-
-
+                        where3 += " and convert(datetime,b.FechaEmision ,103)  >= convert(datetime, '" + desde + "', 103) ";
                     }
                     else
                     {
-                        string estado_univ = "";
-                        foreach (DataRow r2 in sp_for.Rows)
-                        {
-                            if (r2[1].ToString() == "10P")
-                            {
-                                estado_univ = r2[1].ToString();
-                                DataRow row_sp = sp_malas.NewRow();
-                                row_sp["sp"] = cod_aux;
-                                row_sp["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 3);
-                                row_sp["estado"] = estado_univ;
-                                sp_malas.Rows.Add(row_sp);
-                                break;
-                            }
-                            else
-                            {
-                                estado_univ = r2[1].ToString();
-                                DataRow row_sp = sp_malas.NewRow();
-                                row_sp["sp"] = cod_aux;
 
-                                string aux_fac = "";
-                                try
-                                {
-                                    aux_fac = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
+                        where3 += " and convert(datetime,b.FechaDespacho ,103)  >= convert(datetime, '" + desde + "', 103) ";
+                    }
 
+                }
 
-                                }
-                                catch
-                                {
+                if (hasta != "")
+                {
+                    if (rd_em.Checked)
+                    {
+                        where3 += " and convert(datetime,b.FechaEmision ,103)   <= convert(datetime, '" + hasta + "', 103) ";
+                    }
+                    else
+                    {
 
-
-                                }
-                                row_sp["facturas"] = aux_fac;
-                                row_sp["estado"] = estado_univ;
-                                sp_malas.Rows.Add(row_sp);
-
-                            }
-                        }
-
-                        cod_aux = r["CodDocumento"].ToString();
-                        sp_for = new DataTable();
-                        sp_for.Columns.Add("sp");
-                        sp_for.Columns.Add("estado");
-                        sp_for.Columns.Add("facturas");
-                        facturas_x_sps = "";
-
-                        facturas_x_sps += row["facturas"].ToString() + ", ";
-                        r["Facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
-
-                        DataRow row_sp1 = sp_for.NewRow();
-                        row_sp1["sp"] = cod_aux;
-                        row_sp1["estado"] = row["estado"].ToString().Substring(0, 3);
-                        row_sp1["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2);
-                        sp_for.Rows.Add(row_sp1);
+                        where3 += " and convert(datetime,b.FechaDespacho ,103)   <= convert(datetime, '" + hasta + "', 103) ";
 
 
                     }
-
-
-
                 }
-                else if (r["DescEstadoDocumento"].ToString() == "Aprobado")
+
+                if (clientes != "")
                 {
 
-
-                    DataTable procesado = ReporteRNegocio.SP_Marcelo(r["CodDocumento"].ToString().Trim(), r["CodProducto"].ToString().Trim(), r["Cantidad"].ToString().Trim());
-                    DataRow row = procesado.Rows[0];
-                    r["Facturas"] = row["facturas"].ToString();
-
-
-
+                    where3 += " and b.rut in (" + clientes + ")";
 
                 }
-            }
 
-            string estado_univ1 = "";
-            foreach (DataRow r2 in sp_for.Rows)
-            {
-                if (r2[1].ToString() == "10P")
+                if (bodega != "")
                 {
-                    estado_univ1 = r2[1].ToString();
-                    DataRow row_sp = sp_malas.NewRow();
-                    row_sp["sp"] = cod_aux;
-                    row_sp["facturas"] = r2[2].ToString();
-                    row_sp["estado"] = estado_univ1;
-                    sp_malas.Rows.Add(row_sp);
-                    break;
+                    where3 += " and b.CodBodega in (" + bodega + ")";
                 }
-                else
+
+                string aux_estados = estados;
+
+                Session["estados"] = estados;
+
+
+                Session["estados_p_d"] = estados_p_d;
+                Session["estados_planif"] = estados_planif.Replace("planificado", "si").Replace("pendiente", "no");
+
+                if (estados.Contains("10S"))
                 {
-                    estado_univ1 = r2[1].ToString();
-                    DataRow row_sp = sp_malas.NewRow();
-                    row_sp["sp"] = cod_aux;
-                    row_sp["facturas"] = r2[2].ToString();
-                    row_sp["estado"] = estado_univ1;
-                    sp_malas.Rows.Add(row_sp);
+
+                    aux_estados = estados.Replace("10S", "20");
 
                 }
-            }
 
-
-            foreach (DataRow r in dt2.Rows)
-            {
-                if (r["DescEstadoDocumento"].ToString() == "Aprobado")
+                if (estados.Contains("10P"))
                 {
-                    foreach (DataRow r2 in sp_malas.Rows)
+
+                    aux_estados = estados.Replace("10P", "20");
+
+                }
+
+                if (estados != "")
+                {
+
+                    where3 += " and b.CodEstadoDocumento in (" + aux_estados + ")";
+
+                }
+
+
+                if (vendedor != "")
+                {
+
+                    where3 += " and b.codvendedor in (" + vendedor + ")";
+
+                }
+                if (Session["codvendedor"].ToString() != "")
+                {
+
+                    where3 += Session["codvendedor"].ToString();
+
+                }
+
+
+                if (txt_sp.Text != "")
+                {
+
+                    where3 += " and b.CodDocumento in (" + agregra_comillas(txt_sp.Text) + ")";
+
+                }
+
+                string estado = estados_planif.Replace("planificado", "si").Replace("pendiente", "no").Replace("'", "");
+
+                if (estado != "")
+                {
+                    if (estado.Trim() == "si")
                     {
-                        if (r["CodDocumento"].ToString() == r2[0].ToString())
-                        {
-                            string cad = r2[1].ToString();
-                            Dictionary<string, int> contador = new Dictionary<string, int>();
+                        where3 += " and ISNUMERIC( isnull(d.coddocumento,'no')  ) = 1 ";
+                    }
+                    else if (estado.Trim() == "no")
+                    {
 
-                            foreach (string item in cad.Split(new char[] { ',' }))
+                        where3 += " and ISNUMERIC( isnull(d.coddocumento,'no')  ) <> 1 ";
+
+                    }
+                }
+                div_report.Visible = true;
+
+                if (Session["SW_FILTRAR_PRODUCTO"].ToString() == "SI")
+                {
+                    ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'none'; </script>", false);
+
+                    where3 = Session["WHERE"].ToString();
+                }
+                where3 += " and a.codproducto not in (select distinct(codproducto)  from VPEDIDODETALLE_THX where ISNUMERIC(CodProducto) <> 1) order by CodDocumento desc";
+
+                //SPSP
+                DataTable dt2 = VM_listar_sp_select_capi(where3);
+                string cod_aux = "";
+                string facturas_aux = "";
+
+                DataTable sp_malas = new DataTable();
+                sp_malas.Columns.Add("sp");
+                sp_malas.Columns.Add("facturas");
+                sp_malas.Columns.Add("estado");
+
+
+                DataTable sp_for = new DataTable();
+                sp_for.Columns.Add("sp");
+                sp_for.Columns.Add("estado");
+                sp_for.Columns.Add("facturas");
+                string facturas_x_sps = "";
+                foreach (DataRow r in dt2.Rows)
+                {
+                    //20 -- OK
+                    //10S -- SinFactura
+                    //10P -- Cantidad Distintas      
+
+                    //0  coddoc //24 cod //25 cant
+
+                    if (r["DescEstadoDocumento"].ToString() == "Aprobado" && r["AprobadoFull"].ToString() == "no")
+                    {
+                        if (cod_aux == "")
+                        {
+                            cod_aux = r["CodDocumento"].ToString();
+                            sp_for = new DataTable();
+                            sp_for.Columns.Add("sp");
+                            sp_for.Columns.Add("estado");
+                            sp_for.Columns.Add("facturas");
+                        }
+
+                        DataTable procesado = ReporteRNegocio.SP_Marcelo(r["CodDocumento"].ToString().Trim(), r["CodProducto"].ToString().Trim(), r["Cantidad"].ToString().Trim());
+                        DataRow row = procesado.Rows[0];
+
+                        if (r["CodDocumento"].ToString() == cod_aux)
+                        {
+                            //if (row["estado"].ToString().Substring(0, 3) == "10P")
+                            //{
+
+                            facturas_aux = row["facturas"].ToString();
+
+                            if (facturas_aux.Trim() != "")
                             {
-                                if (contador.ContainsKey(item.Trim()))
+                                facturas_x_sps += row["facturas"].ToString() + " ,";
+                                r["Facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
+                            }
+
+                            DataRow row_sp1 = sp_for.NewRow();
+                            row_sp1["sp"] = cod_aux;
+                            row_sp1["estado"] = row["estado"].ToString().Substring(0, 3);
+                            string aux_aca = "";
+                            try
+                            {
+                                aux_aca = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
+                            }
+                            catch
+                            {
+
+
+                            }
+
+                            row_sp1["facturas"] = aux_aca;
+                            sp_for.Rows.Add(row_sp1);
+
+
+                        }
+                        else
+                        {
+                            string estado_univ = "";
+                            foreach (DataRow r2 in sp_for.Rows)
+                            {
+                                if (r2[1].ToString() == "10P")
                                 {
-                                    contador[item.Trim()] = contador[item.Trim()] + 1;
+                                    estado_univ = r2[1].ToString();
+                                    DataRow row_sp = sp_malas.NewRow();
+                                    row_sp["sp"] = cod_aux;
+                                    row_sp["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
+                                    row_sp["estado"] = estado_univ;
+                                    sp_malas.Rows.Add(row_sp);
+                                    break;
+                                }
+                                else
+                                {
+                                    estado_univ = r2[1].ToString();
+                                    DataRow row_sp = sp_malas.NewRow();
+                                    row_sp["sp"] = cod_aux;
+
+                                    string aux_fac = "";
+                                    try
+                                    {
+                                        aux_fac = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
+
+
+                                    }
+                                    catch
+                                    {
+
+
+                                    }
+                                    row_sp["facturas"] = aux_fac;
+                                    row_sp["estado"] = estado_univ;
+                                    sp_malas.Rows.Add(row_sp);
+
+                                }
+                            }
+
+                            cod_aux = r["CodDocumento"].ToString();
+                            sp_for = new DataTable();
+                            sp_for.Columns.Add("sp");
+                            sp_for.Columns.Add("estado");
+                            sp_for.Columns.Add("facturas");
+                            facturas_x_sps = "";
+
+                            facturas_x_sps += row["facturas"].ToString() + ", ";
+                            r["Facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
+
+                            DataRow row_sp1 = sp_for.NewRow();
+                            row_sp1["sp"] = cod_aux;
+                            row_sp1["estado"] = row["estado"].ToString().Substring(0, 3);
+                            row_sp1["facturas"] = facturas_x_sps.Substring(0, facturas_x_sps.Length - 2).Trim();
+                            sp_for.Rows.Add(row_sp1);
+
+
+                        }
+
+
+
+                    }
+                    else if (r["DescEstadoDocumento"].ToString() == "Aprobado")
+                    {
+
+
+                        DataTable procesado = ReporteRNegocio.SP_Marcelo(r["CodDocumento"].ToString().Trim(), r["CodProducto"].ToString().Trim(), r["Cantidad"].ToString().Trim());
+                        DataRow row = procesado.Rows[0];
+                        r["Facturas"] = row["facturas"].ToString().Trim();
+
+
+
+
+                    }
+                }
+
+                string estado_univ1 = "";
+                foreach (DataRow r2 in sp_for.Rows)
+                {
+                    if (r2[1].ToString() == "10P")
+                    {
+                        estado_univ1 = r2[1].ToString();
+                        DataRow row_sp = sp_malas.NewRow();
+                        row_sp["sp"] = cod_aux;
+                        row_sp["facturas"] = r2[2].ToString().Trim();
+                        row_sp["estado"] = estado_univ1;
+                        sp_malas.Rows.Add(row_sp);
+                        break;
+                    }
+                    else
+                    {
+                        estado_univ1 = r2[1].ToString();
+                        DataRow row_sp = sp_malas.NewRow();
+                        row_sp["sp"] = cod_aux;
+                        row_sp["facturas"] = r2[2].ToString().Trim();
+                        row_sp["estado"] = estado_univ1;
+                        sp_malas.Rows.Add(row_sp);
+
+                    }
+                }
+
+
+                foreach (DataRow r in dt2.Rows)
+                {
+                    if (r["DescEstadoDocumento"].ToString() == "Aprobado")
+                    {
+                        foreach (DataRow r2 in sp_malas.Rows)
+                        {
+                            if (r["CodDocumento"].ToString() == r2[0].ToString())
+                            {
+                                string cad = r2[1].ToString();
+                                Dictionary<string, int> contador = new Dictionary<string, int>();
+
+                                foreach (string item in cad.Split(new char[] { ',' }))
+                                {
+                                    if (contador.ContainsKey(item.Trim()))
+                                    {
+                                        contador[item.Trim()] = contador[item.Trim()] + 1;
+
+                                    }
+                                    else
+                                    {
+                                        contador.Add(item.Trim(), 1);
+                                    }
+                                }
+
+                                string resultado = "";
+                                foreach (KeyValuePair<string, int> item in contador)
+                                {
+                                    if (item.Value >= 1)
+                                    {
+                                        resultado = string.Format("{0},{1}", resultado, item.Key);
+                                    }
+                                }
+                                string cadd = resultado.Remove(0, 1);
+
+                                if (r2[2].ToString() == "10S" && cadd.Trim() != "")
+                                {
+
+                                    r["Facturas"] = cadd;
+                                    r["ESTADO"] = "10P";
 
                                 }
                                 else
                                 {
-                                    contador.Add(item.Trim(), 1);
+
+                                    r["Facturas"] = cadd;
+                                    r["ESTADO"] = r2[2].ToString();
                                 }
-                            }
 
-                            string resultado = "";
-                            foreach (KeyValuePair<string, int> item in contador)
-                            {
-                                if (item.Value >= 1)
-                                {
-                                    resultado = string.Format("{0},{1}", resultado, item.Key);
-                                }
-                            }
-                            string cadd = resultado.Remove(0, 1);
-
-                            if (r2[2].ToString() == "10S" && cadd.Trim() != "")
-                            {
-
-                                r["Facturas"] = cadd;
-                                r["ESTADO"] = "10P";
 
                             }
-                            else
-                            {
-
-                                r["Facturas"] = cadd;
-                                r["ESTADO"] = r2[2].ToString();
-                            }
-
-
                         }
                     }
+                    r["Facturas"] = r["Facturas"].ToString().Replace(",", ", ");
                 }
-                r["Facturas"] = r["Facturas"].ToString().Replace(",", ", ");
+
+                if (dt2.Rows.Count > 0)
+                {
+                    dt2 = dt2.AsEnumerable()
+                   .GroupBy(r => new { Col1 = r["CodDocumento"] })
+                   .Select(g => g.OrderBy(r => r["CodDocumento"]).First())
+                   .CopyToDataTable();
+                }
+
+                G_INFORME_TOTAL_VENDEDOR.DataSource = dt2;
+                G_INFORME_TOTAL_VENDEDOR.DataBind();
+                relojito(false);
             }
 
-            if (dt2.Rows.Count > 0)
+        }
+
+        public bool TraerdeVentaMovil()
+        {
+            string respuesta_servidor = "";
+            DataTable dt_sp_encabe = ventamovil_sp_enc();
+            string in_sp = "";
+            foreach (DataRow dr in dt_sp_encabe.Rows)
             {
-                dt2 = dt2.AsEnumerable()
-               .GroupBy(r => new { Col1 = r["CodDocumento"] })
-               .Select(g => g.OrderBy(r => r["CodDocumento"]).First())
-               .CopyToDataTable();
+                if (in_sp == "")
+                {
+                    in_sp += "'" + dr["codDocumento"].ToString() + "'";
+                }
+                else
+                {
+                    in_sp += ", '" + dr["codDocumento"].ToString() + "'";
+                }
             }
+            DataTable dt_sp_detalle = ventamovil_sp_det(in_sp);
+            DataTable dt_sp_encabe_EXT = ventamovil_sp_enc_EXT(in_sp);
+            DataTable dt_sp_detalle_EXT = ventamovil_sp_det_EXT(in_sp);
+            //DataTable dt_cliente_matriz = ventamovil_cliente_matriz();
+            //DataTable dt_cliente_sucursal = ventamovil_cliente_sucursal();
+            string cadena_vm_thx = "Data Source=192.168.10.45;Initial Catalog=SoprodiVenta;Persist Security Info=True;User ID=sa;Password=Soprodi1234";
+            bool ok = true;
+            if (borrar_sp(in_sp))
+            {
+                if (borrar_cliente())
+                {
 
-            G_INFORME_TOTAL_VENDEDOR.DataSource = dt2;
-            G_INFORME_TOTAL_VENDEDOR.DataBind();
-            relojito(false);
+                    //------------------------------------------------------------------------>   encabezado 1 
+                    SqlBulkCopy bulkcopy = new SqlBulkCopy(cadena_vm_thx);
+                    bulkcopy.DestinationTableName = "TrnDocumentoCabecera";
+                    try
+                    {
+                        bulkcopy.WriteToServer(dt_sp_encabe);
+                    }
+                    catch (Exception ex)
+                    {
+                        ok = false;
+                        respuesta_servidor += "ERROR1: " + ex.Message;
+                    }
+                    //------------------------------------------------------------------------>   detalle 1
+                    SqlBulkCopy bulkcopy2 = new SqlBulkCopy(cadena_vm_thx);
+                    bulkcopy2.DestinationTableName = "TrnDocumentoDetalle";
+                    try
+                    {
+                        bulkcopy2.WriteToServer(dt_sp_detalle);
+                    }
+                    catch (Exception ex)
+                    {
+                        ok = false;
+                        respuesta_servidor += "// ERROR2: " + ex.Message;
+                    }
+                    //ext_
+                    //------------------------------------------------------------------------>   encabezado 2
+                    SqlBulkCopy bulkcopy3 = new SqlBulkCopy(cadena_vm_thx);
+                    bulkcopy3.DestinationTableName = "ext_TrnDocumentoCabecera";
+                    try
+                    {
+                        bulkcopy3.WriteToServer(dt_sp_encabe_EXT);
+                    }
+                    catch (Exception ex)
+                    {
+                        ok = false;
+                        respuesta_servidor += "// ERROR3: " + ex.Message;
+                    }
+                    //------------------------------------------------------------------------>   detalle 2
+                    SqlBulkCopy bulkcopy4 = new SqlBulkCopy(cadena_vm_thx);
+                    bulkcopy4.DestinationTableName = "ext_TrnDocumentoDetalle";
+                    try
+                    {
+                        bulkcopy4.WriteToServer(dt_sp_detalle_EXT);
+                    }
+                    catch (Exception ex)
+                    {
+                        ok = false;
+                        respuesta_servidor += "// ERROR4: " + ex.Message;
+                    }
+                    //------------------------------------------------------------------------>   cliente matriz 1
+                    //SqlBulkCopy bulkcopy5 = new SqlBulkCopy(cadena_vm_thx);
+                    //bulkcopy5.DestinationTableName = "MaeClienteMatriz";
+                    //try
+                    //{
+                    //    bulkcopy5.WriteToServer(dt_cliente_matriz);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ok = false;
+                    //    respuesta_servidor += "// ERROR52: " + ex.Message;
+                    //}
+                    ////------------------------------------------------------------------------>   cliente sucursal 1
+                    //SqlBulkCopy bulkcopy6 = new SqlBulkCopy(cadena_vm_thx);
+                    //bulkcopy6.DestinationTableName = "MaeClienteSucursal";
+                    //try
+                    //{
+                    //    bulkcopy6.WriteToServer(dt_cliente_sucursal);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ok = false;
+                    //    respuesta_servidor += "// ERROR6: " + ex.Message;
+                    //}
+                }
+                else
+                {
+                    // ERROR BORRAR CLIENTE
+                    respuesta_servidor += "// ERROR AL BORRAR CLIENTES ";
+                }
+            }
+            else
+            {
+                respuesta_servidor += "// ERROR AL BORRAR SP ";
+                // ERROR BORRAR SP
+            }
+            alert(respuesta_servidor, 0);
+            return ok;
+        }
+
+        internal static DataTable ventamovil_sp_enc()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil_real"].ToString()))
+            {
+                conn.Open();
+                string sql = @"	select * from [dbo].[TrnDocumentoCabecera] where convert(date, GxActualizado,103) = convert(date,getdate(),103);";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
+
+        internal static DataTable ventamovil_sp_det(string filtro)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil_real"].ToString()))
+            {
+                conn.Open();
+                string sql = @"	select * from [dbo].[TrnDocumentoDetalle]  where coddocumento in (" + filtro + ");";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
+
+        internal static DataTable ventamovil_sp_det_EXT(string filtro)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil_real"].ToString()))
+            {
+                conn.Open();
+                string sql = @"	select * from [dbo].[ext_TrnDocumentoDetalle]  where coddocumento in (" + filtro + ");";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
+
+        internal static DataTable ventamovil_sp_enc_EXT(string filtro)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil_real"].ToString()))
+            {
+                conn.Open();
+                string sql = @"	select * from [dbo].[ext_TrnDocumentoCabecera] where coddocumento in (" + filtro + ");";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
+
+        internal static DataTable ventamovil_cliente_matriz()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil_real"].ToString()))
+            {
+                conn.Open();
+                string sql = @"	select * from [dbo].[MaeClienteMatriz] where convert(date, GxActualizado,103) = convert(date,getdate(),103);";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
+
+        internal static DataTable ventamovil_cliente_sucursal()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ventamovil_real"].ToString()))
+            {
+                conn.Open();
+                string sql = @"	select * from [dbo].[MaeClienteSucursal] where convert(date, GxActualizado,103) = convert(date,getdate(),103);";
+                SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
+                SqlDataAdapter ap = new SqlDataAdapter(cmd);
+                try
+                {
+                    ap.Fill(dt);
+                }
+                catch { return dt = new DataTable(); }
+            }
+            return dt;
+        }
+
+        private bool borrar_sp(string filtro)
+        {
+
+            string cadena_vm_thx = "Data Source=192.168.10.45;Initial Catalog=SoprodiVenta;Persist Security Info=True;User ID=sa;Password=Soprodi1234";
+
+            using (SqlConnection conn = new SqlConnection(cadena_vm_thx))
+            {
+
+                bool Ok = true;
+                conn.Open();
+                string sql = @"  delete from TrnDocumentoDetalle  where coddocumento in (" + filtro + ");   ";
+                string sql2 = @"  delete from TrnDocumentoCabecera where coddocumento in (" + filtro + "); ";
+                string sql3 = @"  delete from ext_TrnDocumentoDetalle where coddocumento in (" + filtro + "); ";
+                string sql4 = @"   delete from ext_TrnDocumentoCabecera where coddocumento in (" + filtro + ");";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+
+                    }
+                    catch (Exception EX)
+                    {
+                        Ok = false;
+                    }
+                }
+                using (SqlCommand cmd = new SqlCommand(sql2, conn))
+                {
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception EX)
+                    {
+                        Ok = false;
+                    }
+                }
+                using (SqlCommand cmd = new SqlCommand(sql3, conn))
+                {
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception EX)
+                    {
+                        Ok = false;
+                    }
+                }
+                using (SqlCommand cmd = new SqlCommand(sql4, conn))
+                {
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception EX)
+                    {
+                        Ok = false;
+                    }
+                }
+                return Ok;
+            }
+        }
+
+        private bool borrar_cliente()
+        {
+            //    bool ok = true;
+            //    string cadena_vm_thx = "Data Source=192.168.10.45;Initial Catalog=SoprodiVenta;Persist Security Info=True;User ID=sa;Password=Soprodi1234";
+            //    using (SqlConnection conn = new SqlConnection(cadena_vm_thx))
+            //    {
+            //        conn.Open();
+            //        string sql = " delete from MaeClienteSucursal where convert(date, GxActualizado,103) = convert(date,getdate(),103); ";   
+            //        string sql2 = " delete from MaeClienteMatriz where convert(date, GxActualizado,103) = convert(date,getdate(),103); ";
+            //        using (SqlCommand cmd = new SqlCommand(sql, conn))
+            //        {
+            //            try
+            //            {
+            //                cmd.ExecuteNonQuery();
+
+            //            }
+            //            catch (Exception EX)
+            //            {
+            //                ok = false;
+            //            }
+            //        }
+            //        using (SqlCommand cmd = new SqlCommand(sql2, conn))
+            //        {
+            //            try
+            //            {
+            //                cmd.ExecuteNonQuery();
+
+            //            }
+            //            catch (Exception EX)
+            //            {
+            //                ok = false;
+            //            }
+            //        }
+            //        return ok;
+            //    }
+            return true;
         }
 
         //public bool BulkCopy_PRA()
@@ -2039,6 +2333,7 @@ namespace SoprodiApp
                     string NombreVendedor = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[2].ToString());
                     string MontoNeto = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[3].ToString());
                     string FechaEmision = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[7].ToString());
+                    string CodVendedor = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[8].ToString());
                     string FechaDespacho = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[5].ToString());
                     string DescBodega = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[4].ToString());
                     string NombreSucursal = (G_INFORME_TOTAL_VENDEDOR.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[31].ToString());
@@ -2087,7 +2382,7 @@ namespace SoprodiApp
                     LBL_TOTAL.Text = "$" + double.Parse(MontoBruto).ToString("#,##0");
                     LBL_FORMA_PAGO.Text = DescFormaPago;
                     LBL_DIRECCION.Text = DirDireccion1;
-
+                    COD_VENDEDOR.Text = CodVendedor;
 
                     // LIMPIAR CAMPOS MODAL
                     DETALLE_REPORTE.Text = "";
@@ -2135,16 +2430,16 @@ namespace SoprodiApp
             {
                 conn.Open();
 
-                string sql = "select a.DescProducto, a.CodProducto, a.CodUnVenta, a.Cantidad, b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, b.DescFormaPago, convert(varchar, b.FechaDespacho,103) as FechaDespacho,  isnull(convert(varchar, d.Fecha_Despacho,103),'N/A') as fPLAN, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
+                string sql = "select a.DescProducto, a.CodProducto, a.CodUnVenta, a.Cantidad, b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, b.DescFormaPago, convert(varchar, b.FechaDespacho,103) as FechaDespacho, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
                 "  , convert(varchar, b.FechaEmision, 103) as FechaEmision , b.CodVendedor, b.NotaLibre, b.NotaDespacho, b.nombreSucursal, b.CodBodega , isnull(b.CodDocumentoERP, 'n/a') as 'CodDocumentoERP', b.CodMoneda, b.DescEstadoDocumento, '' as Facturas,  b.GxEstadoSync,  " +
                 "     convert(varchar, b.GxActualizado, 103) as GxActualizado , b.GxEnviadoERP, convert(varchar, b.FechaCreacion, 103) as FechaCreacion ,  " +
                 "     b.ValorTipoCambio,b.LimiteSeguro, b.TipoCredito, b.CreditoDisponible, b.CreditoAutorizado, b.EmailVendedor, b.CodEstadoDocumento as ESTADO, a.CodProducto, a.Cantidad,isnull(c.coddocumento,'no')  as AprobadoFull " +
-                " , isnull(d.coddocumento,'no')  as Asignada,  e.estado as EstadoParcial, isnull(eee.estado, 'No Procesada') as 'estado_capi', isnull(eee.cod_usuario, 'n/a') as 'usuario_soprodi', isnull(eee.id,-1) as 'id_interno', b.codcliente " +
+                " ,  e.estado as EstadoParcial, isnull(eee.estado, 'No Procesada') as 'estado_capi', isnull(eee.cod_usuario, 'n/a') as 'usuario_soprodi', isnull(eee.id,-1) as 'id_interno', b.codcliente, ' ' as 'fPLAN', ' ' as 'Asignada' " +
 
                 " , b.DirDireccion1, b.IVA, b.MontoBruto " +
                 "" +
-                " from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento      left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
-                "  left join [" + bd_respaldo + "].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join [" + bd_respaldo + "].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " +
+                " from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
+                " left join [" + bd_respaldo + "].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp " +
                 " left join [" + bd_respaldo + "].[dbo].[SP_ESTADOS_INTERNOS] eee on eee.num_sp = a.coddocumento and eee.id = (select MAX(xxxxxx.id) from [" + bd_respaldo + "].[dbo].[SP_ESTADOS_INTERNOS] xxxxxx where xxxxxx.num_sp = a.coddocumento)  "
                 + where3;
 
@@ -2162,15 +2457,15 @@ namespace SoprodiApp
             {
                 conn.Open();
 
-                string sql = "select a.DescProducto, a.CodProducto, a.CodUnVenta, a.PrecioUnitario, a.Cantidad, a.Descuento, a.MontoNetoFinal, convert(decimal, a.MontoNeto) as 'det_monto_neto', b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, convert(varchar, b.FechaDespacho,103) as FechaDespacho,  isnull(convert(varchar, d.Fecha_Despacho,103),'N/A') as fPLAN, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
+                string sql = "select a.DescProducto, a.CodProducto, a.CodUnVenta, a.PrecioUnitario, a.Cantidad, a.Descuento, a.MontoNetoFinal, convert(decimal, a.MontoNeto) as 'det_monto_neto', b.CodDocumento, b.NombreCliente, b.NombreVendedor, b.MontoNeto, b.DescBodega, convert(varchar, b.FechaDespacho,103) as FechaDespacho,  ' ' as fPLAN, DATEDIFF(DAY, CONVERT(datetime,GETDATE(),103), b.FechaDespacho) as DifDias " +
                 "  , convert(varchar, b.FechaEmision, 103) as FechaEmision , b.CodVendedor, b.NotaLibre, b.CodBodega , b.CodMoneda, isnull(b.CodDocumentoERP, 'n/a') as 'CodDocumentoERP', b.DescEstadoDocumento, '' as Facturas,  b.GxEstadoSync,  " +
                 "     convert(varchar, b.GxActualizado, 103) as GxActualizado , b.GxEnviadoERP, convert(varchar, b.FechaCreacion, 103) as FechaCreacion ,  " +
                 "     b.ValorTipoCambio,b.LimiteSeguro, b.TipoCredito, b.CreditoDisponible, b.CreditoAutorizado, b.EmailVendedor, b.CodEstadoDocumento as ESTADO, a.CodProducto, a.Cantidad,isnull(c.coddocumento,'no')  as AprobadoFull " +
-                " , isnull(d.coddocumento,'no')  as Asignada,  e.estado as EstadoParcial, b.codcliente, '' as PrecioLista, '' as Stock " +
+                " , ' '   as Asignada,  e.estado as EstadoParcial, b.codcliente, '' as PrecioLista, '' as Stock " +
                 "" +
                 "" +
                 " from VPEDIDODETALLE_THX a inner join VPEDIDOCABECERA b on a.coddocumento = b.coddocumento      left join THX_Sp_Aprobadas c on a.CodDocumento = c.coddocumento  " +
-                "  left join [" + bd_respaldo + "].[dbo].[SP_Asignados]  d on a.CodDocumento = d.coddocumento  left join [" + bd_respaldo + "].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp where a.CodDocumento = '" + num_sp + "' ";
+                " left join [" + bd_respaldo + "].[dbo].[Estado_SP]  e on a.CodDocumento = e.sp where a.CodDocumento = '" + num_sp + "' ";
 
                 SqlCommand cmd = new SqlCommand(sql, conn); cmd.CommandTimeout = 999999999;
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
@@ -2231,7 +2526,6 @@ namespace SoprodiApp
                 }
             }
         }
-
 
         protected void B_ENVIAR_REPORTE_SP_Click(object sender, EventArgs e)
         {
@@ -2359,6 +2653,32 @@ namespace SoprodiApp
             }
         }
 
+        protected void B_RECHAZAR_SP_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                sp_estados_internosEntity sps = new sp_estados_internosEntity();
+                sps.cod_usuario = User.Identity.Name.ToString();
+                sps.estado = "Rechazada";
+                sps.fecha = DateTime.Now;
+                sps.num_sp = T_NUM_SP.Text;
+                sps.nota_correo = "";
+                if (sp_estados_internosBO.registrar(sps) == "OK")
+                {
+                    CorreoPra3();
+                    Button1_Click(sender, e);
+                    UpdatePanel2.Update();
+                    alert("SP Rechazada con éxito", 1);
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "cierramodal", "<script>javascript:CerrarModal_ReportarSP();</script>", false);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                alert("Problemas al planificar SP Nº: " + T_NUM_SP.Text, 0);
+            }
+        }
+
         public void CorreoPra()
         {
             string html = "";
@@ -2366,7 +2686,7 @@ namespace SoprodiApp
             html += "<h4>Estimado: Guillermo Morales</h4>";
             html += "<p>Se solicita planificar la siguiente SP:</p>";
             html += "<p><b>SP Nº: " + T_NUM_SP.Text + "</b></p>";
-            html += "<p><b>Para el día: " + T_FECHA_PLAN.Text + "</p>";
+            html += "<p><b>Para el día: " + Convert.ToDateTime(T_FECHA_PLAN.Text).ToString("dd/MM/yyyy") + "</p>";
             html += "<p><b>Nota: " + T_NOTA_CORREO.Text + "</p>";
             html += "<hr>";
             html += "<p>Detalle SP:</p>";
@@ -2393,15 +2713,40 @@ namespace SoprodiApp
             }
             html += "   </tbody>";
             html += "</table>";
+            usuarioEntity u = new usuarioEntity();
+            u = (usuarioEntity)(Session["usuario"]);
 
             MailMessage email = new MailMessage();
-            email.To.Add(new MailAddress("gmorales@soprodi.cl "));
+            email.To.Add(new MailAddress(u.correo));
             email.From = new MailAddress("informes@soprodi.cl");
-            email.Subject = "Instruccion Despacho Nº SP " + T_NUM_SP.Text;
-            email.CC.Add("rmc@soprodi.cl");
-            email.CC.Add("pcataldo@soprodi.cl");
-            email.CC.Add("rramirez@soprodi.cl");
-            email.CC.Add("MSILVA@SOPRODI.CL");
+            email.Subject = "Instruccion Despacho Nº SP " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
+
+            if (LBL_SUCURSAL.Text.Trim() == "BODEGA ARICA SOPRODI")
+            {
+                // ARICA
+                email.CC.Add("ovillalobos@soprodi.cl");
+                email.CC.Add("amanez@soprodi.cl");
+                email.CC.Add("ggonzalez@soprodi.cl");
+                email.CC.Add("caguilera@soprodi.cl");
+                email.CC.Add("rflores@soprodi.cl");              
+                email.CC.Add("pcataldo@soprodi.cl");
+                email.CC.Add("rsolis@soprodi.cl");
+                email.CC.Add("contador3@SOPRODI.CL");
+            }
+            else
+            {
+                // ZARATE
+                email.CC.Add("rmc@soprodi.cl");
+                email.CC.Add("gmorales@soprodi.cl");
+                email.CC.Add("rramirez@soprodi.cl");
+                email.CC.Add("pcataldo @soprodi.cl");
+                email.CC.Add("rsolis@soprodi.cl");
+                email.CC.Add("contador3@SOPRODI.CL");
+            }
+          
+            DBUtil db = new DBUtil();
+            string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
+            email.CC.Add(correo_vendedor);
             email.Body = html;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
@@ -2427,9 +2772,6 @@ namespace SoprodiApp
                     email.Attachments.Add(new System.Net.Mail.Attachment(pdfPath));
                 }
                 //---------------------------------------------------------
-
-
-
                 smtp.Send(email);
                 email.Dispose();
             }
@@ -2458,16 +2800,17 @@ namespace SoprodiApp
             html += "<hr>";
             html += "<p>Atte. " + User.Identity.Name.ToString() + "</p>";
 
-
+            usuarioEntity u = new usuarioEntity();
+            u = (usuarioEntity)(Session["usuario"]);
             MailMessage email = new MailMessage();
-            string correovendedor = db.Scalar("select correo from UsuarioWeb where cod_usuario = '" + User.Identity.Name.ToString() + "' ").ToString();
-            email.To.Add(new MailAddress(correovendedor));
+            string correovendedor = db.Scalar("select correo from UsuarioWeb where cod_usuario = '" + COD_VENDEDOR.Text + "' ").ToString();
+            email.To.Add(new MailAddress(u.correo));
             email.From = new MailAddress("informes@soprodi.cl");
-            email.Subject = "Problemas con SP Nº " + T_NUM_SP.Text;
+            email.Subject = "Problemas con SP Nº " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
             email.CC.Add("rmc@soprodi.cl");
             email.CC.Add("mazocar@soprodi.cl");
-            email.CC.Add("pcataldo@soprodi.cl");
-            email.CC.Add("MSILVA@SOPRODI.CL");
+            email.CC.Add("pcataldo @soprodi.cl");
+            email.CC.Add(correovendedor);
             email.Body = html;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
@@ -2524,16 +2867,20 @@ namespace SoprodiApp
             html += "<hr>";
             html += "<p>Atte. " + User.Identity.Name.ToString() + "</p>";
 
+            usuarioEntity u = new usuarioEntity();
+            u = (usuarioEntity)(Session["usuario"]);
 
-            MailMessage email = new MailMessage();           
-            email.To.Add(new MailAddress("rsolis@soprodi.com")); // <--------------------------- AQUI FALTA EL CORREO DE COBRANZA
+            MailMessage email = new MailMessage();
+            email.To.Add(new MailAddress(u.correo)); // <--------------------------- AQUI FALTA EL CORREO DE COBRANZA
             email.From = new MailAddress("informes@soprodi.cl");
-            email.Subject = "SP PARA INSTRUIR Nº " + T_NUM_SP.Text;
+            email.Subject = "SP PARA REVISAR Nº " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
             email.CC.Add("rmc@soprodi.cl");
             email.CC.Add("mazocar@soprodi.cl");
-            email.CC.Add("pcataldo@soprodi.cl");
-            email.CC.Add("MSILVA@SOPRODI.CL");
+            email.CC.Add("rsolis@soprodi.cl");
             email.CC.Add("contador3@SOPRODI.CL");
+            email.CC.Add("pcataldo @soprodi.cl");
+            string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
+            email.CC.Add(correo_vendedor);
             email.Body = html;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
@@ -2575,33 +2922,6 @@ namespace SoprodiApp
             //string respuesta_correo = cr.EnviarCorreo("contacto.pveliz@gmail.com", "contacto.pveliz@gmail.com", "SP CON PROBLEMAS", html);
         }
 
-
-        protected void B_RECHAZAR_SP_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                sp_estados_internosEntity sps = new sp_estados_internosEntity();
-                sps.cod_usuario = User.Identity.Name.ToString();
-                sps.estado = "Rechazada";
-                sps.fecha = DateTime.Now;
-                sps.num_sp = T_NUM_SP.Text;
-                sps.nota_correo = "";
-                if (sp_estados_internosBO.registrar(sps) == "OK")
-                {
-                    CorreoPra3();
-                    Button1_Click(sender, e);
-                    UpdatePanel2.Update();
-                    alert("SP Rechazada con éxito", 1);
-                    ScriptManager.RegisterStartupScript(this, typeof(Page), "cierramodal", "<script>javascript:CerrarModal_ReportarSP();</script>", false);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                alert("Problemas al planificar SP Nº: " + T_NUM_SP.Text, 0);
-            }
-        }
-
         public void CorreoPra3()
         {
             string html = "";
@@ -2612,14 +2932,19 @@ namespace SoprodiApp
             html += "<hr>";
             html += "<p>Atte. " + User.Identity.Name.ToString() + "</p>";
 
+            usuarioEntity u = new usuarioEntity();
+            u = (usuarioEntity)(Session["usuario"]);
+
             MailMessage email = new MailMessage();
-            email.To.Add(new MailAddress("mazocar@soprodi.cl"));
+            email.To.Add(new MailAddress(u.correo));
             email.From = new MailAddress("informes@soprodi.cl");
-            email.Subject = "Instruccion Despacho Nº SP " + T_NUM_SP.Text;
+            email.Subject = "SP RECHAZADA, Nº SP " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
             email.CC.Add("rmc@soprodi.cl");
-            email.CC.Add("pcataldo@soprodi.cl");
-            //email.CC.Add("rramirez@soprodi.cl");
-            email.CC.Add("MSILVA@SOPRODI.CL");
+            email.CC.Add("mazocar@soprodi.cl");
+            email.CC.Add("pcataldo @soprodi.cl");
+            DBUtil db = new DBUtil();
+            string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
+            email.CC.Add(correo_vendedor);
             email.Body = html;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
@@ -2670,7 +2995,7 @@ namespace SoprodiApp
             string rutcliente = T_RUT_CLIENTE.Text;
 
             clsCrypto.CL_Crypto encriptador = new clsCrypto.CL_Crypto("thi");
-            ScriptManager.RegisterStartupScript(Page, this.GetType(), "xwte", "<script> fuera('" + encriptador.EncryptData(rutcliente) + "', '" + encriptador.EncryptData("26") + "') </script>", false);
+            ScriptManager.RegisterStartupScript(Page, this.GetType(), "xwte", "<script> fuera('" + encriptador.EncryptData(rutcliente) + "', '" + encriptador.EncryptData("25") + "') </script>", false);
         }
 
         protected void G_DETALLE_RowDataBound(object sender, GridViewRowEventArgs e)

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using SoprodiApp.entidad;
 using SoprodiApp.negocio;
 using System.Web.Security;
+using System.Web.UI;
 
 namespace CRM
 {
@@ -591,6 +592,9 @@ namespace CRM
                                                     {
                                                         AUX_CC = "rmc@soprodi.cl, mazocar@soprodi.cl, ialfaro@soprodi.cl, " + vend.correo + ", " + enc_pdf.CC;
                                                     }
+
+
+
                                                     string aux_asunto = enc_pdf.ASUNTO + " " + x.nombrecliente;
                                                     // PARA PRODUCCION
                                                     string respuesta_correo = cr.EnviarCorreoCotizacion(correo_de_reyes, pass_de_reyes, correo_de_reyes, x.correocliente, aux_asunto, htmlcorreo, AUX_CC, pdfPath, "COTIZADOR SOPRODI");
@@ -602,6 +606,8 @@ namespace CRM
                                                     }
                                                     else
                                                     {
+                                                       
+                                                        //ScriptManager.RegisterStartupScript(Page, this.GetType(), "test", "<script language='javascript'> alert('"+respuesta_correo+"') </script>", false);
                                                         x.enviado_ok = false;
                                                         x.resp_error = respuesta_correo;
                                                     }

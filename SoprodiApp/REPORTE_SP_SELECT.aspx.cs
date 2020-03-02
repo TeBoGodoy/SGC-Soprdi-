@@ -2332,6 +2332,14 @@ namespace SoprodiApp
             //string cadena_thx = "Data Source=192.168.10.45;Initial Catalog=[new_thx];Persist Security Info=True;User ID=sa;Password=Soprodi1234";
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["default"].ToString()))
             {
+
+                /// LA SP PUEDE ESTAR APROBADA EN VENTAMOVIL (VM)  PERO NO SIGNIFICA QUE ESTE FACTURADA EN SOLOMON....
+                /// DE ESO SE TRATA ESTE PROCESO, EL CUAL LE ASIGNA 3 ESTADOS SEGUN LO ANTERIOR....: 
+                /// 10S------>   ESTA APROBADA (VM) PERO SIN FACTURA
+                /// 10P------>   ESTA APROBADA  (VM) PERO LA CANTIDAD NO COINCIDEN ( OJO QUE PUEDE SER MAYOR LO FACTURADO Y DIRA LO MISMO ) 
+                /// 20------->   LAS CANTIDAD COINCIDEN
+
+
                 conn.Open();
                 string sql = @"select y.*, cast(Cantidad - isnull(CANTIDAD_SOLOMON,0) AS decimal(16,2)) as cantidad_falta  from(
        select   A.* ,
@@ -2361,21 +2369,16 @@ namespace SoprodiApp
                 SqlDataAdapter ap = new SqlDataAdapter(cmd);
                 ap.Fill(dt);
             }
-
-
             try
-
             {
+                string ssqlconnectionstring = ConfigurationManager.ConnectionStrings["default"].ToString();
 
-                string ssqlconnectionstring = ConfigurationManager.ConnectionStrings["default"].ToString(); 
-
-                //string sclearsql = "truncate table Sps_procesadas1";
-                //SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
-                //SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
-                //sqlconn.Open();
-                //sqlcmd.ExecuteNonQuery();
-                //sqlconn.Close();
-
+                string sclearsql = "delete Sps_procesadas1  where CodDocumento = '"+ sp + "'";
+                SqlConnection sqlconn = new SqlConnection(ssqlconnectionstring);
+                SqlCommand sqlcmd = new SqlCommand(sclearsql, sqlconn);
+                sqlconn.Open();
+                sqlcmd.ExecuteNonQuery();
+                sqlconn.Close();
 
                 SqlBulkCopy bulkcopy = new SqlBulkCopy(ssqlconnectionstring);
                 bulkcopy.DestinationTableName = "Sps_procesadas1";

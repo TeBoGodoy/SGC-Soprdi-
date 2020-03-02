@@ -422,69 +422,67 @@ namespace SoprodiApp
 
 
                         PdfPTable tabla_firmas = new PdfPTable(3);
-
-
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
+                        tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
                         tabla_firmas.AddCell(vacio);
 
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
-                        tabla_firmas.AddCell(vacio);
 
                         tabla_firmas.WidthPercentage = 100;
 

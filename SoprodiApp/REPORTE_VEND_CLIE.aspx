@@ -1701,12 +1701,9 @@
 
 
                                 <div class="btn-toolbar pull-right" style="visibility: hidden; position: absolute;">
-
                                     <asp:LinkButton ID="bn_agendar" class="btn btn-circle btn-xlarge show-tooltip fa fa-plus" Visible="true" OnClientClick="cargando_2();" Style="margin-left: 5px; background-color: #8cff94 !important;" title="Traer sin venta" runat="server"
                                         OnClick="bn_agendar_2_Click"></asp:LinkButton>
-
                                 </div>
-
                             </div>
                         </div>
                         <hr>

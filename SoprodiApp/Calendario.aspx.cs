@@ -3678,10 +3678,13 @@ namespace SoprodiApp
         {
             DBUtil db = new DBUtil();
             DataTable dt = new DataTable();
+
+
+
             dt = db.consultar(" select COUNT(*) " +
-                              "       from cobranza_seguimiento CS " +
+                              "       from ARDOC CS " +
                               "      left OUTER JOIN COBRANZA_BANCOS CB ON CB.ID = " + banco +
-                              "         where num_factura = CB.cod_banco + '" + num_cheque + "' ");
+                              "         where CS.refnbr = CB.cod_banco + '" + num_cheque + "' ");
 
 
 
@@ -5581,7 +5584,7 @@ namespace SoprodiApp
 
                 ///eliminar pago directo 
                 ///
-                if (e.Row.Cells[6].Text == "PAGO DIRECTO" || e.Row.Cells[6].Text == "NOTA_CREDITO" || e.Row.Cells[6].Text == "SALDO_FAVOR")
+                if (e.Row.Cells[6].Text == "PAGO DIRECTO" || e.Row.Cells[6].Text == "NOTA_CREDITO" || e.Row.Cells[6].Text == "SALDO_FAVOR" || e.Row.Cells[6].Text == "CHEQUE")
                 {
                     string script22 = string.Format("eliminar_pago_directo(&#39;{0}&#39;);", e.Row.Cells[1].Text);
                     string html_eliminar = "<a style='background-color: rgb(255, 97, 97);' class=\"btn btn-circle show-tooltip fa fa-trash\" onclick=\"" + script22 + "\"></a>";
