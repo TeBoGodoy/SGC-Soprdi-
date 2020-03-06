@@ -2746,7 +2746,14 @@ namespace SoprodiApp
           
             DBUtil db = new DBUtil();
             string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
-            email.CC.Add(correo_vendedor);
+            if (correo_vendedor == "")
+            {
+
+            }
+            else
+            {
+                email.CC.Add(correo_vendedor);
+            }
             email.Body = html;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;

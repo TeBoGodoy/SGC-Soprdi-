@@ -464,6 +464,15 @@
             try {
                 $("#<%=cb_cliente_3.ClientID%>").chosen();
                 $("#<%=cb_cliente_3.ClientID%>").trigger("chosen:updated");
+                $("#<%=cb_cliente_3.ClientID%>").chosen({ width: "300px" });
+
+
+                $("#<%=cb_cliente_3.ClientID%>").style = "min-width: 220px !important;";
+
+                //$("#cb_cliente_3_chosen").chosen({ width: "300px" });
+
+
+
 
             } catch (e) {
 
@@ -4231,7 +4240,7 @@
                 $('#T_DESCRIPCION_PAGO2').val('NET' + num);
                 $('#T_DESCRIPCION_PAGO2').val($('#T_DESCRIPCION_PAGO2').val().substring(1, 8));
             }
-        
+
             $('#T_DESCRIPCION_NETEO').val(num);
             $('#T_BANCO_2_NETEO').text("NET");
 
@@ -4260,7 +4269,7 @@
         function rescatarfecha() {
 
             var fecha_neteo = $('#T_FECHA_NETEO').val();
-            var descrip_neteo = $('#T_DESCRIPCION_NETEO').val(); 
+            var descrip_neteo = $('#T_DESCRIPCION_NETEO').val();
 
             $('#t_fech_efec').val(fecha_neteo);
             $('#T_DESCRIPCION_PAGO2').val('NET' + descrip_neteo);
@@ -4550,7 +4559,11 @@
             $('#PANEL_MONTO3').hide();
             $('#PANEL_BANCO3').hide();
             $('#PANEL_PAGO3').show();
+
+            combos_refresh_directo();
         }
+
+
 
         function reporte_estima_detalle_cargando() {
             var elem3 = document.getElementById("carga_2");
@@ -5504,7 +5517,7 @@
                                                                     <div class="col-md-12">
                                                                         <div class="form-group" style="width: 20%;">
                                                                             <i id="T_BANCO_2_NETEO"></i>
-                                                         
+
                                                                             <div class="form-group">
                                                                                 <input maxlength="9" class="form-control input-sm" id="T_DESCRIPCION_NETEO" placeholder="Descripcion..." />
                                                                             </div>
