@@ -201,7 +201,7 @@ namespace CRM
                                             agregacelda(ref td_columna3, "COTIZACIÓN #", titulo_font, 0, "c");
                                             agregacelda(ref td_columna3, ctz_log.correlativo.ToString(), titulo_font, 0, "c");
                                             agregacelda(ref td_columna3, "Válido hasta", fuente_normal, 0, "c");
-                                            agregacelda(ref td_columna3, ctz.fecha_creacion.AddDays(2).ToString("dd/MM/yyyy"), fuente_negrita, 0, "c");
+                                            agregacelda(ref td_columna3, DateTime.Now.AddDays(2).ToString("dd/MM/yyyy"), fuente_negrita, 0, "c");
                                             agregatabla(ref columna3, td_columna3, 1, "c");
 
                                             agregatabla(ref tabla_encabezado, columna3, 0, "c");
@@ -599,7 +599,7 @@ namespace CRM
                                                     // PARA PRODUCCION
                                                     string respuesta_correo = cr.EnviarCorreoCotizacion(correo_de_reyes, pass_de_reyes, correo_de_reyes, x.correocliente, aux_asunto, htmlcorreo, AUX_CC, pdfPath, "COTIZADOR SOPRODI");
                                                     // PARA TESTING
-                                                    //string respuesta_correo = cr.EnviarCorreoCotizacion(correo_de_reyes, pass_de_reyes, correo_de_reyes, "contacto.pveliz@gmail.com", enc_pdf.ASUNTO, htmlcorreo, enc_pdf.CC, pdfPath, "COTIZADOR SOPRODI");
+                                                    //string respuesta_correo = cr.EnviarCorreoCotizacion(correo_de_reyes, pass_de_reyes, correo_de_reyes, "pveliz@soprodi.cl", enc_pdf.ASUNTO, htmlcorreo, enc_pdf.CC, pdfPath, "COTIZADOR SOPRODI");
                                                     if (respuesta_correo == "OK")
                                                     {
                                                         x.enviado_ok = true;

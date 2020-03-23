@@ -792,6 +792,10 @@
             color: white;
         }
 
+        /*iframe {
+                height: 800px !important;
+            }*/
+
         .badge-rojo {
             background-color: darkred;
             color: white;
@@ -1038,20 +1042,113 @@
         }
 
         function AbreModal_ReportarSP() {
+
             document.getElementById("btn_modal_repvend").click();
+
+            setTimeout(function () {
+                //INSTRUIR
+                //T_NOTA_CORREO
+                var elem1 = document.getElementById("ContentPlaceHolder_Contenido_T_NOTA_CORREO$HtmlEditorExtenderBehavior_ExtenderContainer");
+                elem1.style = "width:1000px !important;";
+                elem1.style = "height:300px !important;";
+                var elem1_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender1_ExtenderContentEditable");
+                elem1_.style.height = "18vh";
+
+                //COBRANZA
+                //T_DETALLE_COBRANZA
+                var elem2 = document.getElementById("ContentPlaceHolder_Contenido_T_DETALLE_COBRANZA$HtmlEditorExtenderBehavior_ExtenderContainer");
+                elem2.style = "width:1000px !important;";
+                elem2.style = "height:300px !important;";
+                var elem2_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender2_ExtenderContentEditable");
+                elem2_.style.height = "18vh";
+
+                //PROBLEMA VENDEDOR
+                //DETALLE_REPORTE
+                var elem3 = document.getElementById("ContentPlaceHolder_Contenido_DETALLE_REPORTE$HtmlEditorExtenderBehavior_ExtenderContainer");
+                elem3.style = "width:1000px !important;";
+                elem3.style = "height:300px !important;";
+                var elem3_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender3_ExtenderContentEditable");
+                elem3_.style.height = "18vh";
+
+                //RECHAZAR
+                //MOTIVO_RECHAZO
+                var elem4 = document.getElementById("ContentPlaceHolder_Contenido_MOTIVO_RECHAZO$HtmlEditorExtenderBehavior_ExtenderContainer");
+                elem4.style = "width:1000px !important;";
+                elem4.style = "height:300px !important;";
+                var elem4_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender4_ExtenderContentEditable");
+                elem4_.style.height = "18vh";
+
+            }, 900);
+
+
+            //var editor = new wysihtml5.Editor('editor', {
+            //    toolbar: 'toolbar',
+            //    parserRules: wysihtml5ParserRules
+            //});
         }
+
+        function cargar_tamaño_detalles() {
+
+            setTimeout(function () {
+                //INSTRUIR
+                //T_NOTA_CORREO
+                var elem1 = document.getElementById("ContentPlaceHolder_Contenido_T_NOTA_CORREO$HtmlEditorExtenderBehavior_ExtenderContainer");
+                //elem1.style.width = "130vh";
+                //elem1.style.height = "20vh";
+                elem1.style = "width:1000px !important;";
+                elem1.style = "height:300px !important;";
+                var elem1_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender1_ExtenderContentEditable");
+                //elem1_.style.height = "18vh";
+                elem1_.style = "height:18vh !important;";
+
+                //COBRANZA
+                //T_DETALLE_COBRANZA
+                var elem2 = document.getElementById("ContentPlaceHolder_Contenido_T_DETALLE_COBRANZA$HtmlEditorExtenderBehavior_ExtenderContainer");
+                //elem2.style.width = "130vh";
+                //elem2.style.height = "20vh";
+                elem2.style = "width:1000px !important;";
+                elem2.style = "height:300px !important;";
+                var elem2_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender2_ExtenderContentEditable");
+                //elem2_.style.height = "18vh";
+                elem2_.style = "height:18vh !important;";
+
+                //PROBLEMA VENDEDOR
+                //DETALLE_REPORTE
+                var elem3 = document.getElementById("ContentPlaceHolder_Contenido_DETALLE_REPORTE$HtmlEditorExtenderBehavior_ExtenderContainer");
+                //elem3.style.width = "130vh";
+                //elem3.style.height = "20vh";
+                elem3.style = "width:1000px !important;";
+                elem3.style = "height:300px !important;";
+                var elem3_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender3_ExtenderContentEditable");
+                //elem3_.style.height = "18vh";
+                elem3_.style = "height:18vh !important;";
+
+                //RECHAZAR
+                //MOTIVO_RECHAZO
+                var elem4 = document.getElementById("ContentPlaceHolder_Contenido_MOTIVO_RECHAZO$HtmlEditorExtenderBehavior_ExtenderContainer");
+                //elem4.style.width = "130vh";
+                //elem4.style.height = "20vh";
+                elem4.style = "width:1000px !important;";
+                elem4.style = "height:300px !important;";
+                var elem4_ = document.getElementById("ContentPlaceHolder_Contenido_HtmlEditorExtender4_ExtenderContentEditable");
+                //elem4_.style.height = "18vh";
+                elem4_.style = "height:18vh !important;";
+
+
+            }, 900);
+
+        }
+
+
         function CerrarModal_ReportarSP() {
             document.getElementById("cerrar_modal_planificacion").click();
         }
 
         function VERSP() {
-            var x = document.getElementById("<%=LBL_NUM_SP.ClientID %>").innerHTML;
+            var x = document.getElementById("<%=LBL_NUM_SP.ClientID%>").innerHTML;
             window.open("PDF_SP.aspx?sp=" + x, '_blank');
+
         }
-
-
-
-
 
     </script>
     <ajaxToolkit:ToolkitScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="900000" EnableScriptGlobalization="True" EnableScriptLocalization="True">
@@ -1264,12 +1361,12 @@
                                                         <asp:BoundField HeaderText="Producto" DataField="DescProducto" />
                                                         <asp:BoundField HeaderText="Cantidad" DataField="Cantidad" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Right" />
                                                         <asp:BoundField HeaderText="Tipo" DataField="CodUnVenta" />--%>
-                                                          <asp:TemplateField HeaderText="Facturas" ItemStyle-Font-Bold="true">
+                                                        <asp:TemplateField HeaderText="Facturas" ItemStyle-Font-Bold="true">
                                                             <ItemTemplate>
-                                                              <a href='REPORTE_LISTADO_DOC.aspx?F=<%# Eval("Facturas") %>' target='_blank'><%# Eval("Facturas") %></a>
+                                                                <a href='REPORTE_LISTADO_DOC.aspx?F=<%# Eval("Facturas") %>' target='_blank'><%# Eval("Facturas") %></a>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                     <%--   <asp:BoundField HeaderText="Facturas" DataField="Facturas" />--%>
+                                                        <%--   <asp:BoundField HeaderText="Facturas" DataField="Facturas" />--%>
                                                     </Columns>
                                                     <EmptyDataTemplate>
                                                         No existen datos.
@@ -1313,7 +1410,7 @@
                                     <small>Nº SP:</small>
                                     <br />
                                     <asp:Label runat="server" ID="LBL_NUM_SP" Font-Bold="true" Font-Size="Large"></asp:Label>
-                                    <asp:TextBox runat="server" ID="T_RUT_CLIENTE" Style="visibility:hidden;position:absolute;" Font-Bold="true" Font-Size="Large"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="T_RUT_CLIENTE" Style="visibility: hidden; position: absolute;" Font-Bold="true" Font-Size="Large"></asp:TextBox>
                                 </div>
                                 <div class="col-sm-2">
                                     <small>Estado Interno:</small>
@@ -1349,7 +1446,8 @@
                                         <tr>
                                             <td><b>Vendedor: </b></td>
                                             <td>
-                                                <asp:Label runat="server" ID="LBL_VENDEDOR"></asp:Label> <asp:Label runat="server" ID="COD_VENDEDOR" Visible="false"></asp:Label></td>
+                                                <asp:Label runat="server" ID="LBL_VENDEDOR"></asp:Label>
+                                                <asp:Label runat="server" ID="COD_VENDEDOR" Visible="false"></asp:Label></td>
                                         </tr>
                                         <tr>
                                             <td><b>Cliente: </b></td>
@@ -1396,9 +1494,16 @@
                                         Font-Size="12px">
                                         <HeaderStyle CssClass="test no-sort" />
                                         <Columns>
+                                            <asp:TemplateField HeaderText="Selecc" ItemStyle-Font-Bold="true">
+                                                <ItemTemplate>
+                                                    <asp:CheckBox ID="chkAccept" runat="server" onchange="cargar_tamaño_detalles();" AutoPostBack="true" CssClass="center" EnableViewState="true" Checked="true"
+                                                        CommandName="chk" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
                                             <asp:BoundField HeaderText="Cod. Prod" DataField="CodProducto" ItemStyle-Font-Bold="true" />
                                             <asp:BoundField HeaderText="Producto" DataField="DescProducto" ItemStyle-Font-Bold="true" />
-                                            <asp:BoundField HeaderText="$ Lista" DataField="PrecioLista" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true"  />
+                                            <asp:BoundField HeaderText="$ Lista" DataField="PrecioLista" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
                                             <asp:BoundField HeaderText="$ Unit. SP" DataField="PrecioUnitario" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" DataFormatString="{0:N1}" />
                                             <asp:BoundField HeaderText="Stock" DataField="Stock" ItemStyle-HorizontalAlign="Right" ItemStyle-Font-Bold="true" />
                                             <asp:TemplateField HeaderText="Cant. SP" ItemStyle-Font-Bold="true">
@@ -1463,11 +1568,14 @@
 
                                     </div>
                                 </div>
+
                                 <br />
                                 <div class="row">
                                     <div class="col-sm-2">Nota Correo:</div>
                                     <div class="col-sm-10">
-                                        <asp:TextBox runat="server" ID="T_NOTA_CORREO" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>
+                                        <%--<asp:TextBox runat="server" ID="T_NOTA_CORREO" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>--%>
+                                        <asp:TextBox ID="T_NOTA_CORREO" runat="server" Style="width: 1000px !important; height: 300px !important;" TextMode="MultiLine" Columns="50" Rows="10" />
+                                        <ajaxToolkit:HtmlEditorExtender ID="HtmlEditorExtender1" EnableSanitization="false" runat="server" TargetControlID="T_NOTA_CORREO"></ajaxToolkit:HtmlEditorExtender>
                                     </div>
                                 </div>
                                 <br />
@@ -1483,7 +1591,9 @@
                                 <div class="row">
                                     <div class="col-sm-2">Detalle:</div>
                                     <div class="col-sm-10">
-                                        <asp:TextBox runat="server" ID="T_DETALLE_COBRANZA" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>
+                                        <%--<asp:TextBox runat="server" ID="T_DETALLE_COBRANZA" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>--%>
+                                        <asp:TextBox ID="T_DETALLE_COBRANZA" runat="server" Style="width: 1000px !important; height: 300px !important;" TextMode="MultiLine" Columns="50" Rows="10" />
+                                        <ajaxToolkit:HtmlEditorExtender ID="HtmlEditorExtender2" EnableSanitization="false" runat="server" TargetControlID="T_DETALLE_COBRANZA"></ajaxToolkit:HtmlEditorExtender>
                                     </div>
                                 </div>
                                 <br />
@@ -1499,14 +1609,18 @@
                                 <div class="row">
                                     <div class="col-sm-2">Detalle:</div>
                                     <div class="col-sm-10">
-                                        <asp:TextBox runat="server" ID="DETALLE_REPORTE" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>
+                                        <%--<asp:TextBox runat="server" ID="DETALLE_REPORTE" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>--%>
+                                        <asp:TextBox ID="DETALLE_REPORTE" runat="server" Style="width: 1000px !important; height: 300px !important;" TextMode="MultiLine" Columns="50" Rows="10" />
+                                        <ajaxToolkit:HtmlEditorExtender ID="HtmlEditorExtender3" EnableSanitization="false" runat="server" TargetControlID="DETALLE_REPORTE"></ajaxToolkit:HtmlEditorExtender>
                                     </div>
                                 </div>
+
                                 <br />
                                 <div class="row">
                                     <div class="col-sm-2">&nbsp;</div>
                                     <div class="col-sm-4">
                                         <asp:LinkButton runat="server" ID="B_ENVIAR_REPORTE_SP" CssClass="btn btn-warning btn-block" OnClick="B_ENVIAR_REPORTE_SP_Click" OnClientClick="relojito(true);"><i class="fa fa-exclamation-triangle"></i>&nbsp;Reportar Problemas al Vendedor</asp:LinkButton>
+                                        <%--<asp:LinkButton runat="server" ID="b_test" CssClass="btn btn-block" OnClick="b_test_Click" OnClientClick="relojito(true);"><i class="fa fa-exclamation-triangle"></i>&nbsp;Reportar Problemas al Vendedor TEST</asp:LinkButton>--%>
                                     </div>
                                 </div>
                                 <hr />
@@ -1515,7 +1629,9 @@
                                 <div class="row">
                                     <div class="col-sm-2">Motivo:</div>
                                     <div class="col-sm-10">
-                                        <asp:TextBox runat="server" ID="MOTIVO_RECHAZO" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>
+                                        <%--<asp:TextBox runat="server" ID="MOTIVO_RECHAZO" TextMode="MultiLine" Rows="2" CssClass="form-control"></asp:TextBox>--%>
+                                        <asp:TextBox ID="MOTIVO_RECHAZO" runat="server" Style="width: 1000px !important; height: 300px !important;" TextMode="MultiLine" Columns="50" Rows="10" />
+                                        <ajaxToolkit:HtmlEditorExtender ID="HtmlEditorExtender4" EnableSanitization="false" runat="server" TargetControlID="MOTIVO_RECHAZO"></ajaxToolkit:HtmlEditorExtender>
                                     </div>
                                 </div>
                                 <br />

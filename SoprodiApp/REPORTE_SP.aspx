@@ -62,6 +62,39 @@
 
         }
 
+
+        function cambia_tipo_pago3(id_factur) {
+
+            var estado = document.getElementById("cb_cambio_pago" + id_factur).value;
+            var parameters = new Object();
+            parameters.factura = id_factur;
+            parameters.estado = estado;
+
+            parameters = JSON.stringify(parameters);
+
+            $.ajax({
+                type: "POST",
+                url: "REPORTE_SP.aspx/cambia_tipo_pago_",
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("Fin de la session");
+                        location.href = "Acceso.aspx";
+                    } else {
+                        alert("Error al cargar evento");
+                    }
+                }
+            }).done(function (resp) {
+                resp = resp.d;
+
+
+
+            });
+        }
+
         function guarda() {
 
             alert('Correo Enviado');

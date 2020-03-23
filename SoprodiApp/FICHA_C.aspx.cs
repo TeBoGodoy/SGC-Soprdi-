@@ -762,7 +762,7 @@ namespace SoprodiApp
 
             MailMessage email = new MailMessage();
             email.To.Add(new MailAddress(correo));
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.From = new MailAddress("informes@soprodi.cl");
 
             email.Subject = "Edición Cliente ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";

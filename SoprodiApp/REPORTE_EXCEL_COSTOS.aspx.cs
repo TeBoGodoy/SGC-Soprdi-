@@ -802,7 +802,7 @@ namespace SoprodiApp
                 tabla += "<thead class=\"test\">";
                 tabla += "<tr style='background-color: #428bca;color: #fff;'>";
 
-                for (int i = 1; i < 20; i++)
+                for (int i = 0; i < 19; i++)
                 {
                     tabla += "<th> TITULO_" + i + " </th>";
                 }
@@ -817,7 +817,7 @@ namespace SoprodiApp
                     if (count_row == 3)
                     {
 
-                        for (int i = 8; i < 20; i++)
+                        for (int i = 7; i < 19; i++)
                         {
                             tabla = tabla.Replace("TITULO_" + i, r[i].ToString());
                         }
@@ -826,13 +826,12 @@ namespace SoprodiApp
                     if (count_row == 4)
                     {
 
-                        for (int i = 1; i < 12; i++)
+                        for (int i = 0; i < 11; i++)
                         {
                             tabla = tabla.Replace("TITULO_" + i, r[i].ToString());
 
                         }
                     }
-
 
                     excel_f ex = new excel_f();
 
@@ -840,7 +839,7 @@ namespace SoprodiApp
                     if (count_row == 1)
                     {
 
-                        ex.fecha = fecha_g = r[1].ToString();
+                        ex.fecha = fecha_g = r[0].ToString();
                         try
                         {
                             ultimo_excel =  ReporteRNegocio.ultimo_excel_dt(fecha_g);
@@ -851,38 +850,38 @@ namespace SoprodiApp
                             errores += "Falló ultimo excel";
                         }
                     }
-                    if (count_row >= 6 && r[6].ToString() != "")
+                    if (count_row >= 6 && r[5].ToString() != "")
                     {
                         ex.fecha = fecha_g;
-                        try { ex.c_f = Convert.ToDouble(r[1].ToString().Replace(".", "")); } catch { ex.c_f = 0; errores += "c_f "; }
-                        try { ex.bod_LZ = Convert.ToDouble(r[2].ToString().Replace(".", "")); } catch { ex.bod_LZ = 0; errores += "bod_LZ "; }
-                        try { ex.PUERTO = Convert.ToDouble(r[3].ToString().Replace(".", "")); } catch { ex.PUERTO = 0; errores += "PUERTO "; }
-                        try { ex.bod_LA = Convert.ToDouble(r[4].ToString().Replace(".", "")); } catch { ex.bod_LA = 0; errores += "bod_LA "; }
-                        try { ex.arica = Convert.ToDouble(r[5].ToString().Replace(".", "")); } catch { ex.arica = 0; errores += "arica "; }
+                        try { ex.c_f = Convert.ToDouble(r[0].ToString().Replace(".", "")); } catch { ex.c_f = 0; errores += "c_f "; }
+                        try { ex.bod_LZ = Convert.ToDouble(r[1].ToString().Replace(".", "")); } catch { ex.bod_LZ = 0; errores += "bod_LZ "; }
+                        try { ex.PUERTO = Convert.ToDouble(r[2].ToString().Replace(".", "")); } catch { ex.PUERTO = 0; errores += "PUERTO "; }
+                        try { ex.bod_LA = Convert.ToDouble(r[3].ToString().Replace(".", "")); } catch { ex.bod_LA = 0; errores += "bod_LA "; }
+                        try { ex.arica = Convert.ToDouble(r[4].ToString().Replace(".", "")); } catch { ex.arica = 0; errores += "arica "; }
 
-                        try { ex.cod_producto = r[6].ToString(); } catch { ex.cod_producto = ""; errores += "cod_producto "; }
-                        try { ex.producto = r[7].ToString(); } catch { ex.producto = ""; errores += "producto "; }
-                        try { ex.pack = r[8].ToString(); } catch { ex.pack = ""; errores += "pack "; }
-                        try { ex.cajas_pallet = Convert.ToInt32(r[9].ToString().Replace(".", "")); } catch { ex.cajas_pallet = 0; errores += "cajas_pallet "; }
-                        try { ex.cajas_camion = Convert.ToInt32(r[10].ToString().Replace(".", "")); } catch { ex.cajas_camion = 0; errores += "cajas_camion "; }
+                        try { ex.cod_producto = r[5].ToString(); } catch { ex.cod_producto = ""; errores += "cod_producto "; }
+                        try { ex.producto = r[6].ToString(); } catch { ex.producto = ""; errores += "producto "; }
+                        try { ex.pack = r[7].ToString(); } catch { ex.pack = ""; errores += "pack "; }
+                        try { ex.cajas_pallet = Convert.ToInt32(r[8].ToString().Replace(".", "")); } catch { ex.cajas_pallet = 0; errores += "cajas_pallet "; }
+                        try { ex.cajas_camion = Convert.ToInt32(r[9].ToString().Replace(".", "")); } catch { ex.cajas_camion = 0; errores += "cajas_camion "; }
 
-                        try { ex.entrega_directa_V_RM = Convert.ToDouble(r[11].ToString().Replace(".", "")); } catch { ex.entrega_directa_V_RM = 0; errores += "entrega_directa_V_RM "; }
+                        try { ex.entrega_directa_V_RM = Convert.ToDouble(r[10].ToString().Replace(".", "")); } catch { ex.entrega_directa_V_RM = 0; errores += "entrega_directa_V_RM "; }
 
-                        try { ex.in_out_cm_qta = Convert.ToDouble(r[12].ToString().Replace(".", "")); } catch { ex.in_out_cm_qta = 0; errores += "int_out_cm_qta "; }
-                        try { ex.quillota = Convert.ToDouble(r[13].ToString().Replace(".", "")); } catch { ex.quillota = 0; errores += "quillota "; }
+                        try { ex.in_out_cm_qta = Convert.ToDouble(r[11].ToString().Replace(".", "")); } catch { ex.in_out_cm_qta = 0; errores += "int_out_cm_qta "; }
+                        try { ex.quillota = Convert.ToDouble(r[12].ToString().Replace(".", "")); } catch { ex.quillota = 0; errores += "quillota "; }
 
-                        try { ex.bod_LZ_vent = Convert.ToDouble(r[14].ToString().Replace(".", "")); } catch { ex.bod_LZ_vent = 0; errores += "bod_LZ_vent "; }
-                        try { ex.arica_vent = Convert.ToDouble(r[15].ToString().Replace(".", "")); } catch { ex.arica_vent = 0; errores += "arica_vent "; }
-                        try { ex.iquique = Convert.ToDouble(r[16].ToString().Replace(".", "")); } catch { ex.iquique = 0; errores += "iquique "; }
+                        try { ex.bod_LZ_vent = Convert.ToDouble(r[13].ToString().Replace(".", "")); } catch { ex.bod_LZ_vent = 0; errores += "bod_LZ_vent "; }
+                        try { ex.arica_vent = Convert.ToDouble(r[14].ToString().Replace(".", "")); } catch { ex.arica_vent = 0; errores += "arica_vent "; }
+                        try { ex.iquique = Convert.ToDouble(r[15].ToString().Replace(".", "")); } catch { ex.iquique = 0; errores += "iquique "; }
 
-                        try { ex.bod_LA_vent = Convert.ToDouble(r[18].ToString().Replace(".", "")); } catch { ex.bod_LA_vent = 0; errores += "bod_LA_vent "; }
-                        try { ex.reparto_RM_V = Convert.ToDouble(r[19].ToString().Replace(".", "")); } catch { ex.reparto_RM_V = 0; errores += "reparto_RM_V "; }
+                        try { ex.bod_LA_vent = Convert.ToDouble(r[17].ToString().Replace(".", "")); } catch { ex.bod_LA_vent = 0; errores += "bod_LA_vent "; }
+                        try { ex.reparto_RM_V = Convert.ToDouble(r[18].ToString().Replace(".", "")); } catch { ex.reparto_RM_V = 0; errores += "reparto_RM_V "; }
 
                         tabla += fila_de_excel(ex, ultimo_excel);
 
                         string estado = ReporteRNegocio.insert_datos_excel(ex);
 
-                        //string estado = "OK";
+                        //////string estado = "OK";
 
                         if (estado != "OK")
                         {
@@ -899,6 +898,7 @@ namespace SoprodiApp
                 if (error_insert)
                 {
                     enviar_correo_error(errores);
+
                     //MessageBox.Show(errores);
                     //return false;
 
@@ -915,7 +915,7 @@ namespace SoprodiApp
                         //return true;
                         CambiaPreciosCotizaciones();
                         ScriptManager.RegisterStartupScript(Page, this.GetType(), "alert2", "<script>alert(' CARGADO ');</script>", false);
-                       
+
                     }
                     else
                     {
@@ -956,23 +956,23 @@ namespace SoprodiApp
 
             foreach (DataRow r in producto)
             {
-                try { c_f = Convert.ToDouble(r[1].ToString().Replace(".", "")); } catch { c_f = 0; }
-                try { bod_LZ = Convert.ToDouble(r[2].ToString().Replace(".", "")); } catch { bod_LZ = 0; }
-                try { PUERTO = Convert.ToDouble(r[3].ToString().Replace(".", "")); } catch { PUERTO = 0; }
-                try { bod_LA = Convert.ToDouble(r[4].ToString().Replace(".", "")); } catch { bod_LA = 0; }
-                try { arica = Convert.ToDouble(r[5].ToString().Replace(".", "")); } catch { arica = 0; }
+                try { c_f = Convert.ToDouble(r[0].ToString().Replace(".", "")); } catch { c_f = 0; }
+                try { bod_LZ = Convert.ToDouble(r[1].ToString().Replace(".", "")); } catch { bod_LZ = 0; }
+                try { PUERTO = Convert.ToDouble(r[2].ToString().Replace(".", "")); } catch { PUERTO = 0; }
+                try { bod_LA = Convert.ToDouble(r[3].ToString().Replace(".", "")); } catch { bod_LA = 0; }
+                try { arica = Convert.ToDouble(r[4].ToString().Replace(".", "")); } catch { arica = 0; }
 
-                try { entrega_directa_V_RM = Convert.ToDouble(r[11].ToString().Replace(".", "")); } catch { entrega_directa_V_RM = 0; }
+                try { entrega_directa_V_RM = Convert.ToDouble(r[10].ToString().Replace(".", "")); } catch { entrega_directa_V_RM = 0; }
 
-                try { in_out_cm_qta = Convert.ToDouble(r[12].ToString().Replace(".", "")); } catch { in_out_cm_qta = 0; }
-                try { quillota = Convert.ToDouble(r[13].ToString().Replace(".", "")); } catch { quillota = 0; }
+                try { in_out_cm_qta = Convert.ToDouble(r[11].ToString().Replace(".", "")); } catch { in_out_cm_qta = 0; }
+                try { quillota = Convert.ToDouble(r[12].ToString().Replace(".", "")); } catch { quillota = 0; }
 
-                try { bod_LZ_vent = Convert.ToDouble(r[14].ToString().Replace(".", "")); } catch { bod_LZ_vent = 0; }
-                try { arica_vent = Convert.ToDouble(r[15].ToString().Replace(".", "")); } catch { arica_vent = 0; }
-                try { iquique = Convert.ToDouble(r[16].ToString().Replace(".", "")); } catch { iquique = 0; }
+                try { bod_LZ_vent = Convert.ToDouble(r[13].ToString().Replace(".", "")); } catch { bod_LZ_vent = 0; }
+                try { arica_vent = Convert.ToDouble(r[14].ToString().Replace(".", "")); } catch { arica_vent = 0; }
+                try { iquique = Convert.ToDouble(r[15].ToString().Replace(".", "")); } catch { iquique = 0; }
 
-                try { bod_LA_vent = Convert.ToDouble(r[18].ToString().Replace(".", "")); } catch { bod_LA_vent = 0; }
-                try { reparto_RM_V = Convert.ToDouble(r[19].ToString().Replace(".", "")); } catch { reparto_RM_V = 0; }
+                try { bod_LA_vent = Convert.ToDouble(r[17].ToString().Replace(".", "")); } catch { bod_LA_vent = 0; }
+                try { reparto_RM_V = Convert.ToDouble(r[18].ToString().Replace(".", "")); } catch { reparto_RM_V = 0; }
             }
 
             if (c_f > ex.c_f)
@@ -1108,7 +1108,7 @@ namespace SoprodiApp
                 string termina = t2.ToShortDateString();
                 string empieza = t.ToShortDateString();
                 string correos = trae_correo(3);
-                string cc = "esteban.godoy15@gmail.com";
+                string cc = "egodoy@soprodi.cl";
 
                 MailMessage email = new MailMessage();
                 email.To.Add(new MailAddress(cc));
@@ -1223,7 +1223,7 @@ namespace SoprodiApp
                 string termina = t2.ToShortDateString();
                 string empieza = t.ToShortDateString();
                 string correos = ReporteRNegocio.trae_correo(3);
-                string cc = "esteban.godoy15@gmail.com";
+                string cc = "egodoy@soprodi.cl";
 
                 MailMessage email = new MailMessage();
                 //email.To.Add(new MailAddress(cc));

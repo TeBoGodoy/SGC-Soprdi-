@@ -1887,7 +1887,7 @@ namespace SoprodiApp
         private void enviar_email(string html, string correo_vend, string sp, string fecha)
         {
             MailMessage email = new MailMessage();
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress(correo_vend));
             email.From = new MailAddress("informes@soprodi.cl");
             string cliente_2 = Session["cliente"].ToString();
@@ -1896,11 +1896,11 @@ namespace SoprodiApp
 
             if (Session["SW_PERMI"].ToString() == "1")
             {
-                email.CC.Add("esteban.godoy15@gmail.com, rmc@soprodi.cl");
+                email.CC.Add("egodoy@soprodi.cl, rmc@soprodi.cl");
             }
             else if (Session["SW_PERMI"].ToString() == "2")
             {
-                email.CC.Add("esteban.godoy15@gmail.com");
+                email.CC.Add("egodoy@soprodi.cl");
             }
 
 
@@ -1976,7 +1976,7 @@ namespace SoprodiApp
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Rechazada desde Sistema ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, esteban.godoy15@gmail.com");
+            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, egodoy@soprodi.cl");
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";

@@ -82,11 +82,11 @@ namespace SoprodiApp
 
                     //Session["SW_FILTRAR_PRODUCTO"] = "NO";
 
-                    ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'none'; </script>", false);
+                    ScriptManager.RegisterStartupScript(Page, this.GetType(), "alert123", "<script language='javascript'>  var elem3=document.getElementById('div_superior'); elem3.style.display='none'; </script>", false);
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(Page, this.GetType(), "teadsaeee", "<script>  var elem3 = document.getElementById('div_superior'); elem3.style.display = 'block'; </script>", false);
+                    ScriptManager.RegisterStartupScript(Page, this.GetType(), "alert1234", "<script language='javascript'>  var elem3=document.getElementById('div_superior'); elem3.style.display='block'; </script>", false);
                     Session["SW_FILTRAR_PRODUCTO"] = "NO";
                 }
 
@@ -944,22 +944,20 @@ namespace SoprodiApp
         private void enviar_email(string html, string correo_vend, string sp, string fecha)
         {
             MailMessage email = new MailMessage();
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress(correo_vend));
             email.From = new MailAddress("informes@soprodi.cl");
             string cliente_2 = Session["cliente"].ToString();
             email.Subject = "QUITADA SP Asignada " + sp + " " + cliente_2 + "( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-
             if (Session["SW_PERMI"].ToString() == "1")
             {
-                email.CC.Add("esteban.godoy15@gmail.com, rmc@soprodi.cl");
+                email.CC.Add("egodoy@soprodi.cl, rmc@soprodi.cl");
             }
             else if (Session["SW_PERMI"].ToString() == "2")
             {
-                email.CC.Add("esteban.godoy15@gmail.com");
+                email.CC.Add("egodoy@soprodi.cl");
             }
-
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
@@ -991,20 +989,22 @@ namespace SoprodiApp
             email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
             email.Body += "</div>";
 
-
-
-
+            //--------------------------------------------------------------------------------------------CORREO--S O P R O D I 
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
             email.BodyEncoding = System.Text.Encoding.UTF8;
+
+            string HOST = ConfigurationManager.AppSettings["host"];
+            string CORREO = ConfigurationManager.AppSettings["correo"];
+            string PASS = ConfigurationManager.AppSettings["pass"];
+
             SmtpClient smtp = new SmtpClient();
-            smtp.Host = "srv-correo-2.soprodi.cl";
+            smtp.Host = HOST;
             smtp.Port = 25;
             smtp.EnableSsl = false;
-
-
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            smtp.Credentials = new NetworkCredential(CORREO, PASS);
+            //-------------------------------------------------------------------------------------------CORREO---S O P R O D I 
             try
             {
                 smtp.Send(email);
@@ -1033,7 +1033,7 @@ namespace SoprodiApp
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Rechazada desde Sistema ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, esteban.godoy15@gmail.com");
+            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, egodoy@soprodi.cl");
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
@@ -1062,9 +1062,7 @@ namespace SoprodiApp
             email.Body += "<div style='background-color:#005D99; float:right; width:12.5%; height:6px'></div> ";
             email.Body += "</div>";
 
-
-
-
+            //--------------------------------------------------------------------------------------------CORREO--S O P R O D I 
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
             email.BodyEncoding = System.Text.Encoding.UTF8;
@@ -1072,10 +1070,11 @@ namespace SoprodiApp
             smtp.Host = "srv-correo-2.soprodi.cl";
             smtp.Port = 25;
             smtp.EnableSsl = false;
-
-
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //-------------------------------------------------------------------------------------------CORREO---S O P R O D I 
+
+       
             try
             {
                 smtp.Send(email);
@@ -2628,8 +2627,8 @@ namespace SoprodiApp
                                     saldo.num_sp = T_NUM_SP.Text;
                                     saldo.cantidad_planificada = cplan;
                                     saldo.cantidad_real = csp;
-                                    saldo.CodProducto = x.Cells[0].Text;
-                                    saldo.CodUnVenta = x.Cells[5].Text;
+                                    saldo.CodProducto = x.Cells[1].Text;
+                                    saldo.CodUnVenta = x.Cells[6].Text;
                                     saldo.fecha = DateTime.Now;
                                     saldo.saldo = csp - cplan;
                                     sp_saldosBO.registrar(saldo);
@@ -2683,10 +2682,24 @@ namespace SoprodiApp
         {
             string html = "";
 
-            html += "<h4>Estimado: Guillermo Morales</h4>";
+            if (LBL_NOM_BODEGA.Text.Trim().Contains("ARICA"))
+            {
+                html += "<h4>Estimados ARICA </h4>";
+            }
+            else
+            {
+                html += "<h4>Estimado: Guillermo Morales</h4>";
+            }
             html += "<p>Se solicita planificar la siguiente SP:</p>";
             html += "<p><b>SP Nº: " + T_NUM_SP.Text + "</b></p>";
-            html += "<p><b>Para el día: " + Convert.ToDateTime(T_FECHA_PLAN.Text).ToString("dd/MM/yyyy") + "</p>";
+            try
+            {
+                html += "<p><b>Para el día: " + Convert.ToDateTime(T_FECHA_PLAN.Text).ToString("dd/MM/yyyy") + "</p>";
+            }
+            catch {
+                html += "<p><b>Para el día: " + T_FECHA_PLAN.Text + "</p>";
+
+            }
             html += "<p><b>Nota: " + T_NOTA_CORREO.Text + "</p>";
             html += "<hr>";
             html += "<p>Detalle SP:</p>";
@@ -2700,17 +2713,25 @@ namespace SoprodiApp
             html += "   </tr>";
             html += "   </thead>";
             html += "   <tbody>";
+
             foreach (GridViewRow x in G_DETALLE.Rows)
             {
-                html += "   <tr>";
-                html += "       <td>" + x.Cells[0].Text + "</td>";
-                html += "       <td>" + x.Cells[1].Text + "</td>";
-                TextBox cant_ = (TextBox)x.FindControl("T_CANTIDAD_PLAN");
-                TextBox cant_1 = (TextBox)x.FindControl("T_CANTIDAD_SP");
-                html += "       <td>" + cant_.Text + "</td>";
-                html += "       <td>" + x.Cells[7].Text + "</td>";
-                html += "   </tr>";
+                CheckBox ChkBoxRows = (CheckBox)x.FindControl("chkAccept");
+
+                if (ChkBoxRows.Checked)
+                {
+
+                    html += "   <tr>";
+                    html += "       <td>" + x.Cells[1].Text + "</td>";
+                    html += "       <td>" + x.Cells[2].Text + "</td>";
+                    TextBox cant_ = (TextBox)x.FindControl("T_CANTIDAD_PLAN");
+                    TextBox cant_1 = (TextBox)x.FindControl("T_CANTIDAD_SP");
+                    html += "       <td>" + cant_.Text + "</td>";
+                    html += "       <td>" + x.Cells[8].Text + "</td>";
+                    html += "   </tr>";
+                }
             }
+
             html += "   </tbody>";
             html += "</table>";
             usuarioEntity u = new usuarioEntity();
@@ -2721,14 +2742,14 @@ namespace SoprodiApp
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "Instruccion Despacho Nº SP " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
 
-            if (LBL_SUCURSAL.Text.Trim() == "BODEGA ARICA SOPRODI")
+            if (LBL_NOM_BODEGA.Text.Trim().Contains("ARICA"))
             {
                 // ARICA
                 email.CC.Add("ovillalobos@soprodi.cl");
                 email.CC.Add("amanez@soprodi.cl");
                 email.CC.Add("ggonzalez@soprodi.cl");
                 email.CC.Add("caguilera@soprodi.cl");
-                email.CC.Add("rflores@soprodi.cl");              
+                email.CC.Add("rflores@soprodi.cl");
                 email.CC.Add("pcataldo@soprodi.cl");
                 email.CC.Add("rsolis@soprodi.cl");
                 email.CC.Add("contador3@SOPRODI.CL");
@@ -2739,34 +2760,46 @@ namespace SoprodiApp
                 email.CC.Add("rmc@soprodi.cl");
                 email.CC.Add("gmorales@soprodi.cl");
                 email.CC.Add("rramirez@soprodi.cl");
-                email.CC.Add("pcataldo @soprodi.cl");
+                email.CC.Add("pcataldo@soprodi.cl");
                 email.CC.Add("rsolis@soprodi.cl");
                 email.CC.Add("contador3@SOPRODI.CL");
             }
-          
+            string correo_vendedor = "";
             DBUtil db = new DBUtil();
-            string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
-            if (correo_vendedor == "")
-            {
+            DataTable DT1 = db.consultar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'");
 
-            }
-            else
+            if (DT1.Rows.Count > 0)
             {
+                correo_vendedor = DT1.Rows[0][0].ToString();
                 email.CC.Add(correo_vendedor);
             }
+            else
+            { }
             email.Body = html;
+            //--------------------------------------------------------------------------------------------CORREO--S O P R O D I 
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
             email.BodyEncoding = System.Text.Encoding.UTF8;
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.EnableSsl = true;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "srv-correo-2.soprodi.cl";
+            smtp.Port = 25;
+            smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;
-            // ADJUNTAR PDF DE SP AQUI
+            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //-------------------------------------------------------------------------------------------CORREO---S O P R O D I 
 
-            //
-            //smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
-            smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+            //email.IsBodyHtml = true;
+            //email.Priority = MailPriority.Normal;
+            //email.BodyEncoding = System.Text.Encoding.UTF8;
+            //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            //smtp.EnableSsl = true;
+            //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //smtp.UseDefaultCredentials = false;
+            //// ADJUNTAR PDF DE SP AQUI
+
+            ////
+            ////smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
             try
             {
                 //ACA ESTUVO EL TEBO
@@ -2789,18 +2822,20 @@ namespace SoprodiApp
             }
 
             //Correo cr = new Correo();
-            //string respuesta_correo = cr.EnviarCorreo("contacto.pveliz@gmail.com", "contacto.pveliz@gmail.com", "PLANIFICACION SP", html);
+            //string respuesta_correo = cr.EnviarCorreo("pveliz@soprodi.cl", "pveliz@soprodi.cl", "PLANIFICACION SP", html);
         }
 
         public void CorreoPra2()
         {
             usuarioEntity vend = new usuarioEntity();
-            vend = (usuarioEntity)(Session["usuario"]);
 
             DBUtil db = new DBUtil();
+            string nombrevend = db.Scalar("select nombre_usuario from UsuarioWeb where cod_usuario = '" + COD_VENDEDOR.Text + "' ").ToString();
+            vend = (usuarioEntity)(Session["usuario"]);
+
             string html = "";
 
-            html += "<h4>Estimado: " + vend.nombre_ + "</h4>";
+            html += "<h4>Estimado: " + nombrevend + "</h4>";
             html += "<p>Se solicita revisar la siguiente SP:</p>";
             html += "<p><b>SP Nº: " + T_NUM_SP.Text + "</b></p>";
             html += "<p><b>Detalle: " + DETALLE_REPORTE.Text + "</p>";
@@ -2816,8 +2851,83 @@ namespace SoprodiApp
             email.Subject = "Problemas con SP Nº " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
             email.CC.Add("rmc@soprodi.cl");
             email.CC.Add("mazocar@soprodi.cl");
-            email.CC.Add("pcataldo @soprodi.cl");
+            email.CC.Add("pcataldo@soprodi.cl");
             email.CC.Add(correovendedor);
+            email.Body = html;
+
+            //--------------------------------------------------------------------------------------------CORREO--S O P R O D I 
+            email.IsBodyHtml = true;
+            email.Priority = MailPriority.Normal;
+            email.BodyEncoding = System.Text.Encoding.UTF8;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "srv-correo-2.soprodi.cl";
+            smtp.Port = 25;
+            smtp.EnableSsl = false;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //-------------------------------------------------------------------------------------------CORREO---S O P R O D I 
+
+            //email.IsBodyHtml = true;
+            //email.Priority = MailPriority.Normal;
+            //email.BodyEncoding = System.Text.Encoding.UTF8;
+            //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            //smtp.EnableSsl = true;
+            //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //smtp.UseDefaultCredentials = false;
+            ////smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+            try
+            {
+                //ACA ESTUVO EL TEBO
+                string n_file = T_NUM_SP.Text.Trim() + ".pdf";
+                string pdfPath = Server.MapPath(@"~\PDFs\") + n_file;
+                Base.crear_sp_pdf(T_NUM_SP.Text.Trim(), pdfPath);
+                System.IO.FileInfo toDownload = new System.IO.FileInfo(pdfPath);
+                if (toDownload.Exists)
+                {
+                    email.Attachments.Add(new System.Net.Mail.Attachment(pdfPath));
+                }
+                //---------------------------------------------------------
+                smtp.Send(email);
+                email.Dispose();
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(Page, this.GetType(), "mant_lab2", "<script language='javascript'>alert('No enviado');</script>", false);
+                Console.Write(ex);
+            }
+            //Correo cr = new Correo();
+            //string respuesta_correo = cr.EnviarCorreo("pveliz@soprodi.cl", "pveliz@soprodi.cl", "SP CON PROBLEMAS", html);
+        }
+
+        public void CorreoPra2_TEST()
+        {
+            usuarioEntity vend = new usuarioEntity();
+
+            DBUtil db = new DBUtil();
+            string nombrevend = db.Scalar("select nombre_usuario from UsuarioWeb where cod_usuario = '" + COD_VENDEDOR.Text + "' ").ToString();
+            vend = (usuarioEntity)(Session["usuario"]);
+
+            string html = "";
+
+            html += "<h4>Estimado: " + nombrevend + "</h4>";
+            html += "<p>Se solicita revisar la siguiente SP:</p>";
+            html += "<p><b>SP Nº: " + T_NUM_SP.Text + "</b></p>";
+            html += "<p><b>Detalle: <br>" + T_NOTA_CORREO.Text + "</p>";
+            html += "<hr>";
+            html += "<p>Atte. " + User.Identity.Name.ToString() + "</p>";
+
+            usuarioEntity u = new usuarioEntity();
+            u = (usuarioEntity)(Session["usuario"]);
+            MailMessage email = new MailMessage();
+            string correovendedor = db.Scalar("select correo from UsuarioWeb where cod_usuario = '" + COD_VENDEDOR.Text + "' ").ToString();
+            email.To.Add(new MailAddress("egodoy@SOPRODI.CL"));
+            email.From = new MailAddress("informes@soprodi.cl");
+            email.Subject = "Problemas con SP Nº " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
+            //email.CC.Add("rmc@soprodi.cl");
+            //email.CC.Add("mazocar@soprodi.cl");
+            //email.CC.Add("pcataldo@soprodi.cl");
+            //email.CC.Add(correovendedor);
             email.Body = html;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
@@ -2843,8 +2953,6 @@ namespace SoprodiApp
                     email.Attachments.Add(new System.Net.Mail.Attachment(pdfPath));
                 }
                 //---------------------------------------------------------
-
-
                 smtp.Send(email);
                 email.Dispose();
             }
@@ -2853,10 +2961,8 @@ namespace SoprodiApp
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "mant_lab2", "<script language='javascript'>alert('No enviado');</script>", false);
                 Console.Write(ex);
             }
-
-
             //Correo cr = new Correo();
-            //string respuesta_correo = cr.EnviarCorreo("contacto.pveliz@gmail.com", "contacto.pveliz@gmail.com", "SP CON PROBLEMAS", html);
+            //string respuesta_correo = cr.EnviarCorreo("pveliz@soprodi.cl", "pveliz@soprodi.cl", "SP CON PROBLEMAS", html);
         }
 
         public void CorreoPra4()
@@ -2885,22 +2991,35 @@ namespace SoprodiApp
             email.CC.Add("mazocar@soprodi.cl");
             email.CC.Add("rsolis@soprodi.cl");
             email.CC.Add("contador3@SOPRODI.CL");
-            email.CC.Add("pcataldo @soprodi.cl");
+            email.CC.Add("PCATALDO@soprodi.cl");
             string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
-            email.CC.Add(correo_vendedor);
+            email.CC.Add(correo_vendedor);           
             email.Body = html;
+
+
+            //email.IsBodyHtml = true;
+            //email.Priority = MailPriority.Normal;
+            //email.BodyEncoding = System.Text.Encoding.UTF8;
+            //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            //smtp.EnableSsl = true;
+            //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //smtp.UseDefaultCredentials = false;
+            //--------------------------------------------------------------------------------------------CORREO--S O P R O D I 
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
             email.BodyEncoding = System.Text.Encoding.UTF8;
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.EnableSsl = true;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "srv-correo-2.soprodi.cl";
+            smtp.Port = 25;
+            smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;
-            // ADJUNTAR PDF DE SP AQUI
+            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //-------------------------------------------------------------------------------------------CORREO---S O P R O D I 
 
+            // ADJUNTAR PDF DE SP AQUI
             //
             //smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
-            smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+            //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
             try
             {
                 //ACA ESTUVO EL TEBO
@@ -2926,7 +3045,7 @@ namespace SoprodiApp
 
 
             //Correo cr = new Correo();
-            //string respuesta_correo = cr.EnviarCorreo("contacto.pveliz@gmail.com", "contacto.pveliz@gmail.com", "SP CON PROBLEMAS", html);
+            //string respuesta_correo = cr.EnviarCorreo("pveliz@soprodi.cl", "pveliz@soprodi.cl", "SP CON PROBLEMAS", html);
         }
 
         public void CorreoPra3()
@@ -2948,23 +3067,31 @@ namespace SoprodiApp
             email.Subject = "SP RECHAZADA, Nº SP " + T_NUM_SP.Text + " de cliente: " + LBL_CLIENTE.Text + ", vendedor: " + LBL_VENDEDOR.Text;
             email.CC.Add("rmc@soprodi.cl");
             email.CC.Add("mazocar@soprodi.cl");
-            email.CC.Add("pcataldo @soprodi.cl");
+            email.CC.Add("PCATALDO@soprodi.cl");
             DBUtil db = new DBUtil();
             string correo_vendedor = db.Scalar("select correo from usuarioweb where cod_usuario = '" + COD_VENDEDOR.Text + "'").ToString();
             email.CC.Add(correo_vendedor);
             email.Body = html;
+
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
             email.BodyEncoding = System.Text.Encoding.UTF8;
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.EnableSsl = true;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "srv-correo-2.soprodi.cl";
+            smtp.Port = 25;
+            smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;
-            // ADJUNTAR PDF DE SP AQUI
+            smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
 
-            //
-            //smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
-            smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
+            //email.IsBodyHtml = true;
+            //email.Priority = MailPriority.Normal;
+            //email.BodyEncoding = System.Text.Encoding.UTF8;
+            //SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            //smtp.EnableSsl = true;
+            //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //smtp.UseDefaultCredentials = false;
+            ////smtp.Credentials = new NetworkCredential("informes@soprodi.cl", "galaxia");
+            //smtp.Credentials = new NetworkCredential("informes.soprodi@gmail.com", "galaxia1234");
             try
             {
                 //ACA ESTUVO EL TEBO
@@ -3022,7 +3149,7 @@ namespace SoprodiApp
                 {
 
                     string precio_lista = dt.Rows[0][0].ToString();
-                    e.Row.Cells[2].Text = string.Format("{0:N1}", Convert.ToDouble(precio_lista));
+                    e.Row.Cells[3].Text = string.Format("{0:N1}", Convert.ToDouble(precio_lista));
 
                     // PRECIO LISTA
                     if (preciounit != precio_lista)
@@ -3034,11 +3161,11 @@ namespace SoprodiApp
 
                             if (x1 >= x2)
                             {
-                                e.Row.Cells[3].ForeColor = Color.Green;
+                                e.Row.Cells[4].ForeColor = Color.Green;
                             }
                             else
                             {
-                                e.Row.Cells[3].ForeColor = Color.Red;
+                                e.Row.Cells[4].ForeColor = Color.Red;
                             }
                         }
                         catch (Exception)
@@ -3069,18 +3196,18 @@ namespace SoprodiApp
                     string scalar_stock = db.Scalar(query).ToString();
                     if (Convert.ToDouble(scalar_stock) <= 0)
                     {
-                        e.Row.Cells[4].Text = Convert.ToDouble(scalar_stock).ToString("0,#") + " <i class='fa fa-close'></i>";
-                        e.Row.Cells[4].ForeColor = Color.Red;
+                        e.Row.Cells[5].Text = Convert.ToDouble(scalar_stock).ToString("0,#") + " <i class='fa fa-close'></i>";
+                        e.Row.Cells[5].ForeColor = Color.Red;
                     }
                     else
                     {
-                        e.Row.Cells[4].Text = Convert.ToDouble(scalar_stock).ToString("0,#") + " <i class='fa fa-check'></i>";
-                        e.Row.Cells[4].ForeColor = Color.Green;
+                        e.Row.Cells[5].Text = Convert.ToDouble(scalar_stock).ToString("0,#") + " <i class='fa fa-check'></i>";
+                        e.Row.Cells[5].ForeColor = Color.Green;
                     }
                 }
                 else
                 {
-                    e.Row.Cells[4].Text = "**";
+                    e.Row.Cells[5].Text = "**";
                 }
             }
         }
@@ -3104,6 +3231,43 @@ namespace SoprodiApp
                     alert("Correo enviado a Cobranza Correctamente", 1);
                     ScriptManager.RegisterStartupScript(this, typeof(Page), "cierramodal", "<script>javascript:CerrarModal_ReportarSP();</script>", false);
                 }
+
+            }
+            catch (Exception ex)
+            {
+                alert("Problemas al planificar SP Nº: " + T_NUM_SP.Text, 0);
+            }
+        }
+
+        protected void b_test_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                sp_estados_internosEntity sps = new sp_estados_internosEntity();
+                sps.cod_usuario = User.Identity.Name.ToString();
+                sps.estado = "Pendiente Vendedor";
+                sps.fecha = DateTime.Now;
+                sps.num_sp = T_NUM_SP.Text;
+                sps.nota_correo = "";
+
+                //if (sp_estados_internosBO.registrar(sps) == "OK")
+                //{
+                    sp_problemas_vendedorEntity plan = new sp_problemas_vendedorEntity();
+                    plan.cod_vendedor = User.Identity.Name.ToString();
+                    plan.detalle = DETALLE_REPORTE.Text;
+                    plan.fecha = DateTime.Now;
+                    plan.num_sp = T_NUM_SP.Text;
+                    plan.estado = "PROBLEMA";
+                //if (sp_problemas_vendedorBO.registrar(plan) == "OK")
+                //{
+                //CorreoPra2();
+                        CorreoPra2_TEST();
+                        Button1_Click(sender, e);
+                        UpdatePanel2.Update();
+                        alert("Correo enviado a Vendedor Correctamente", 1);
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "cierramodal", "<script>javascript:CerrarModal_ReportarSP();</script>", false);
+                    //}
+                //}
 
             }
             catch (Exception ex)

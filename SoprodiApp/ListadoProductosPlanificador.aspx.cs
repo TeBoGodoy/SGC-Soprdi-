@@ -1362,23 +1362,16 @@ namespace SoprodiApp
                 }
                 else
                 {
-
                     ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee6ee", "<script> alert('Ingresar Carga Inicial');</script>", false);
                 }
             }
             else
             {
-
                 ScriptManager.RegisterStartupScript(Page, this.GetType(), "tee6ee", "<script> alert('Ingresar Fecha Despacho');</script>", false);
             }
-
             ScriptManager.RegisterStartupScript(Page, this.GetType(), "load_chosen_combos2", "<script> load_chosen_combos();</script>", false);
-
             string aux = "";
-
-
         }
-
         private bool validar_disponibles_planificados()
         {
             bool valida = true;
@@ -1820,7 +1813,7 @@ namespace SoprodiApp
             //CORREO-CAMBIAR
             //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             //email.To.Add(new MailAddress("daniel@soprodi.cl"));
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress("informatica@soprodi.cl"));
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Asignada " + sp + " " + cliente_2.InnerText + "( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";

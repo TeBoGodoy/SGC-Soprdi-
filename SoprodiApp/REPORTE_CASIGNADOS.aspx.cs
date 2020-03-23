@@ -1459,7 +1459,7 @@ namespace SoprodiApp
         private void enviar_email(string tabla, string EmailVendedor, string codDocumento, string fechaEmision, string cliente)
         {
             MailMessage email = new MailMessage();
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
 
             EmailVendedor = EmailVendedor.Replace(";", ",");
 
@@ -1469,13 +1469,13 @@ namespace SoprodiApp
             }
             //CORREO-CAMBIAR
             //email.To.Add(new MailAddress(emailVendedor));
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress("informatica@soprodi.cl"));
             email.From = new MailAddress("informes@soprodi.cl");
             string cliente_2 = cliente;
             email.Subject = "QUITADA SP Asignada " + codDocumento + " " + cliente_2 + "( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            //email.CC.Add("esteban.godoy15@gmail.com, rmc@soprodi.cl, gmorales@soprodi.cl");
+            //email.CC.Add("egodoy@soprodi.cl, rmc@soprodi.cl, gmorales@soprodi.cl");
             //email.CC.Add("informatica@soprodi.cl");
 
             if (Session["SW_PERMI"].ToString() == "1")
@@ -1601,11 +1601,11 @@ namespace SoprodiApp
 
             MailMessage email = new MailMessage();
             //email.To.Add(new MailAddress("rmc@soprodi.cl"));
-            email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Rechazada desde Sistema ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            //email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, gmorales@soprodi.cl, esteban.godoy15@gmail.com");
+            //email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, gmorales@soprodi.cl, egodoy@soprodi.cl");
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";
@@ -2129,7 +2129,7 @@ namespace SoprodiApp
 
             MailMessage email = new MailMessage();
             //CORREO-CAMBIAR
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress("informatica@soprodi.cl"));
             email.From = new MailAddress("informes@soprodi.cl");
 
@@ -2758,7 +2758,7 @@ namespace SoprodiApp
             }
 
             //email.To.Add(new MailAddress(correos));
-            //email.To.Add(new MailAddress("ESTEBAN.GODOY15@GMAIL.COM"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
 
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "DESPACHOS  -  " + Session["fecha_transporte"].ToString();

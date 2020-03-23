@@ -910,12 +910,12 @@ namespace SoprodiApp
 
             MailMessage email = new MailMessage();
             email.To.Add(new MailAddress("rmc@soprodi.cl"));
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
 
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Rechazada desde Sistema ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, esteban.godoy15@gmail.com");
+            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, egodoy@soprodi.cl");
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";

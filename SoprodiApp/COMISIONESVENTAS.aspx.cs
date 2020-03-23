@@ -3866,7 +3866,7 @@ namespace SoprodiApp
         {
             MailMessage email = new MailMessage();
             email.To.Add(new MailAddress("comisiones@soprodi.cl"));
-            //email.To.Add(new MailAddress("ESTEBAN.GODOY15@GMAIL.COM"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.From = new MailAddress("informes@soprodi.cl");
             string periodo = txt_periodo.Text;
 

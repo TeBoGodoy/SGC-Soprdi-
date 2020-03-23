@@ -727,13 +727,6 @@ namespace SoprodiApp
                             }
                         }
 
-
-                        string script1 = string.Format("javascript:fuera(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;);return false;", encriptador.EncryptData(e.Row.Cells[3].Text), encriptador.EncryptData(""), encriptador.EncryptData(""), encriptador.EncryptData("57"));
-                        e.Row.Cells[3].Text = "  <a href='javascript:' onclick='" + script1 + "'>" + e.Row.Cells[3].Text + " </a>";
-
-
-
-
                         if (e.Row.Cells[16].Text != "Sincronizado" && !((e.Row.Cells[16].Text == "Aprobado" && e.Row.Cells[17].Text == "&nbsp;")))
                         {
 
@@ -748,7 +741,45 @@ namespace SoprodiApp
 
                         e.Row.Cells[6].Text = Base.monto_format(e.Row.Cells[6].Text.Replace(",000", ""));
                         //
+                        int id_ESTADO_INTENTO = GetColumnIndexByName(e.Row, "Estado_Cerrado");
+                        int id_2 = GetColumnIndexByName(e.Row, "CodDocumento");
 
+                        if (e.Row.Cells[id_ESTADO_INTENTO].Text == "&nbsp;")
+                        {
+                            string combo = "";
+                            combo = " <select class=\"form-control input-sm\" style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[id_2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[id_2].Text + "')\"> " +
+                                               "                                        <option value = \"\"></option>  " +
+                                                       "                              <option value = \"pendiente\" selected> PENDIENTE...</option> " +
+                                                        "                              <option value=\"cerrado\"> CERRADO...</option> " +
+                                                          "                         </select > ";
+                            e.Row.Cells[id_ESTADO_INTENTO].Text = combo;
+                        }
+
+                        if (e.Row.Cells[id_ESTADO_INTENTO].Text == "pendiente")
+                        {
+                            string combo = "";
+                            combo = " <select class=\"form-control input-sm\" style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[id_2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[id_2].Text + "')\"> " +
+                                               "                                        <option value = \"\"></option>  " +
+                                                       "                              <option value = \"pendiente\" selected> PENDIENTE...</option> " +
+                                                        "                              <option value=\"cerrado\"> CERRADO...</option> " +
+                                                          "                         </select > ";
+                            e.Row.Cells[id_ESTADO_INTENTO].Text = combo;
+                        }
+
+                        if (e.Row.Cells[id_ESTADO_INTENTO].Text == "despachado")
+                        {
+                            string combo = "";
+                            combo = " <select class=\"form-control input-sm\"  style=\"width: 100px;\" id=\"cb_cambio_pago" + e.Row.Cells[id_2].Text + "\" onchange =\"cambia_tipo_pago3('" + e.Row.Cells[id_2].Text + "')\"> " +
+                                              "                                        <option value = \"\"></option>  " +
+                                                      "                               <option value = \"pendiente\"> PENDIENTE...</option> " +
+                                                        "                              <option value=\"cerrado\" selected> CERRADO...</option> " +
+                                                         "                         </select > ";
+
+                            e.Row.Cells[id_ESTADO_INTENTO].Text = combo;
+                        }
+
+                        string script1 = string.Format("javascript:fuera(&#39;{0}&#39;, &#39;{1}&#39;, &#39;{2}&#39;, &#39;{3}&#39;);return false;", encriptador.EncryptData(e.Row.Cells[3].Text), encriptador.EncryptData(""), encriptador.EncryptData(""), encriptador.EncryptData("57"));
+                        e.Row.Cells[3].Text = "  <a href='javascript:' onclick='" + script1 + "'>" + e.Row.Cells[3].Text + " </a>";
 
 
                         if (Session["codvendedor"].ToString() != "")
@@ -790,6 +821,32 @@ namespace SoprodiApp
 
 
 
+        }
+        int GetColumnIndexByName(GridViewRow row, string columnName)
+        {
+            int columnIndex = 0;
+            foreach (DataControlFieldCell cell in row.Cells)
+            {
+                if (cell.ContainingField is BoundField)
+                    if (((BoundField)cell.ContainingField).DataField.Equals(columnName))
+                        break;
+                columnIndex++; // keep adding 1 while we don't have the correct name
+            }
+            return columnIndex;
+        }
+
+
+        [WebMethod]
+        public static string cambia_tipo_pago_(string factura, string estado)
+        {
+            string aasdf = "";
+
+            if (estado != "pendiente")
+            {
+                ReporteRNegocio.delete_estado_sp(factura);
+                ReporteRNegocio.insert_estado_sp(factura, estado);
+            }
+            return "";
         }
 
         private string monto_miles(string p)
@@ -1683,12 +1740,12 @@ namespace SoprodiApp
 
             MailMessage email = new MailMessage();
             email.To.Add(new MailAddress("rmc@soprodi.cl"));
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
 
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Rechazada desde Sistema ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, esteban.godoy15@gmail.com");
+            email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, egodoy@soprodi.cl");
 
             email.Body += "<div style='text-align:center;     display: block !important;' > ";
             email.Body += "<div style='background-color:#DC1510; float:right; width:12.5%; height:6px'></div>";

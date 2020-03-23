@@ -492,6 +492,15 @@ namespace SoprodiApp
         protected global::System.Web.UI.WebControls.TextBox T_NOTA_CORREO;
 
         /// <summary>
+        /// Control HtmlEditorExtender1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::AjaxControlToolkit.HtmlEditorExtender HtmlEditorExtender1;
+
+        /// <summary>
         /// Control B_PLANIFICAR_SP.
         /// </summary>
         /// <remarks>
@@ -508,6 +517,15 @@ namespace SoprodiApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox T_DETALLE_COBRANZA;
+
+        /// <summary>
+        /// Control HtmlEditorExtender2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::AjaxControlToolkit.HtmlEditorExtender HtmlEditorExtender2;
 
         /// <summary>
         /// Control B_ENVIAR_COBRANZA.
@@ -528,6 +546,15 @@ namespace SoprodiApp
         protected global::System.Web.UI.WebControls.TextBox DETALLE_REPORTE;
 
         /// <summary>
+        /// Control HtmlEditorExtender3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::AjaxControlToolkit.HtmlEditorExtender HtmlEditorExtender3;
+
+        /// <summary>
         /// Control B_ENVIAR_REPORTE_SP.
         /// </summary>
         /// <remarks>
@@ -544,6 +571,15 @@ namespace SoprodiApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox MOTIVO_RECHAZO;
+
+        /// <summary>
+        /// Control HtmlEditorExtender4.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::AjaxControlToolkit.HtmlEditorExtender HtmlEditorExtender4;
 
         /// <summary>
         /// Control B_RECHAZAR_SP.

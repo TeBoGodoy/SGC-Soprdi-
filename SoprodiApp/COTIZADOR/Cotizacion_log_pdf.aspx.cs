@@ -441,7 +441,7 @@ namespace CRM
                                     //htmlcorreo += "</div>";
 
                                     //Correo cr = new Correo();
-                                    //cr.EnviarCorreo("tcontrolsistema@gmail.com", "contacto.pveliz@gmail.com", "Cotización Soprodi", htmlcorreo, "", pdfPath, "SOPRODI");
+                                    //cr.EnviarCorreo("tcontrolsistema@gmail.com", "pveliz@soprodi.cl", "Cotización Soprodi", htmlcorreo, "", pdfPath, "SOPRODI");
                                 }
                                 else
                                 {

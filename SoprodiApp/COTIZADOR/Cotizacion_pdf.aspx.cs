@@ -130,9 +130,9 @@ namespace CRM
                                     td_columna3.WidthPercentage = 100;
 
                                     agregacelda(ref td_columna3, "COTIZACIÓN #", titulo_font, 0, "c");
-                                    agregacelda(ref td_columna3, ctz.id_cotizacion.ToString(), titulo_font, 0, "c");
+                                    agregacelda(ref td_columna3, "***", titulo_font, 0, "c");
                                     agregacelda(ref td_columna3, "Válido hasta", fuente_normal, 0, "c");
-                                    agregacelda(ref td_columna3, ctz.fecha_creacion.AddDays(2).ToString("dd/MM/yyyy"), fuente_negrita, 0, "c");
+                                    agregacelda(ref td_columna3, DateTime.Now.AddDays(2).ToString("dd/MM/yyyy"), fuente_negrita, 0, "c");
                                     agregatabla(ref columna3, td_columna3, 1, "c");
 
                                     agregatabla(ref tabla_encabezado, columna3, 0, "c");
@@ -447,7 +447,7 @@ namespace CRM
                                         htmlcorreo += "</div>";
 
                                         Correo cr = new Correo();
-                                        cr.EnviarCorreo("tcontrolsistema@gmail.com", "contacto.pveliz@gmail.com", "Cotización Soprodi", htmlcorreo, "", pdfPath, "SOPRODI");
+                                        cr.EnviarCorreo("tcontrolsistema@gmail.com", "pveliz@soprodi.cl", "Cotización Soprodi", htmlcorreo, "", pdfPath, "SOPRODI");
                                     }
                                     else
                                     {

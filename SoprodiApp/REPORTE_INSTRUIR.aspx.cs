@@ -1478,7 +1478,7 @@ namespace SoprodiApp
         {
             MailMessage email = new MailMessage();
             //CORREO-CAMBIAR
-            email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             //email.To.Add(new MailAddress("MRAMIREZ@soprodi.cl"));
             //email.To.Add(new MailAddress(emailVendedor));
             email.From = new MailAddress("informes@soprodi.cl");
@@ -1575,14 +1575,14 @@ namespace SoprodiApp
 
             MailMessage email = new MailMessage();
             //CORREO-CAMBIAR
-            //email.To.Add(new MailAddress("ESTEBAN.GODOY15@GMAIL.COM"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress("MRAMIREZ@soprodi.cl"));
 
 
             email.From = new MailAddress("informes@soprodi.cl");
             email.Subject = "SP Rechazada desde Sistema ( " + DateTime.Now.ToString("dd / MMM / yyy hh:mm:ss") + " ) ";
 
-            //email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, esteban.godoy15@gmail.com");
+            //email.CC.Add(EmailVendedor + " , mazocar@soprodi.cl, jcorrea@soprodi.cl, gmorales@soprodi.cl, egodoy@soprodi.cl");
             email.CC.Add("informatica@soprodi.cl");
 
 
@@ -2272,7 +2272,7 @@ namespace SoprodiApp
                 //email.CC.Add(correos);
             }
             //CORREO-CAMBIAR
-            //email.To.Add(new MailAddress("esteban.godoy15@gmail.com"));
+            //email.To.Add(new MailAddress("egodoy@soprodi.cl"));
             email.To.Add(new MailAddress("informatica@soprodi.cl"));
 
             if (Session["SW_PERMI"].ToString() == "1")

@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="CHOSEN/docsupport/prism.css" />
     <link rel="stylesheet" href="CHOSEN/chosen.css" />
 
+
     <link rel="stylesheet" href="assets/gritter/css/jquery.gritter.css" />
     <!--base css styles-->
 
@@ -71,6 +72,11 @@
 
     <%--<link href="css/dataTables.tableTools.css" rel="stylesheet" type="text/css" />--%>
     <link href="https://cdn.datatables.net/tabletools/2.2.1/css/dataTables.tableTools.css" rel="stylesheet" type="text/css" />
+
+
+        <%--editor texto--%>
+ 
+    <link href="assets/wysihtml-0.5.5/examples/css/stylesheet.css" rel="stylesheet" />
 
     <style>
         #footer {
@@ -555,5 +561,9 @@
     <script src="fullcalendar/lang-all.js"></script>
     <script src="assets/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
      <script src="js/bootstrap-notify.js"></script>
+
+        <%--editor texto--%>
+    <script src="assets/wysihtml-0.5.5/dist/wysihtml-toolbar.min.js"></script>
+    <script src="assets/wysihtml-0.5.5/parser_rules/advanced_and_extended.js"></script>
 </body>
 </html>

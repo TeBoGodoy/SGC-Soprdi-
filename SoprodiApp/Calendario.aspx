@@ -1900,11 +1900,14 @@
                     alert("Seleccione tipo de Documento");
                     return false;
                 }
+
+                //VALIDAR_REFERENCIA
+                //if (descripcion.length > 30) {
                 if (descripcion.length > 7) {
                     //var gif = document.getElementById("GIF_COMPLETO");
                     //gif.style.display = "none";
                     relojito(false);
-                    alert("Descripción no debe superar 7 letras como máximo. (considerando letras banco)");
+                    alert("Descripción no debe superar 30 letras como máximo. (considerando letras banco)");
                     return false;
                 }
                 if (fecha == "") {
@@ -1921,6 +1924,9 @@
                     alert("Descripción no puede tener doble guion (--)");
                     return false;
                 }
+
+                //VALIDAR_REFERENCIA
+                //COMENTAR VALIDACION DE N°
 
                 if (chk_enviar_erp) {
 
@@ -3828,15 +3834,19 @@
                     $('#T_BANCO_2_LABEL_LETRAS').text('(' + tipo_DEPOSITO2.length + ')');
 
                     var largo_cod_banco = tipo_DEPOSITO2.length;
-                    var id2 = id2.replace('--', '-');
+                    var id2 = id2.replace(/--/gi, '-');
+
+                    //VALIDAR_REFERENCIA
                     var cantidades_facturas = id2.length;
                     if (cantidades_facturas <= 9) {
                         if (largo_cod_banco == 3) {
                             var id_aux = id2.slice(-4);
+                            //var id_aux = id2;
                             document.getElementById("T_DESCRIPCION_PAGO2").value = id_aux;
                         }
                         else if (largo_cod_banco == 4) {
                             var id_aux = id2.slice(-3);
+                            //var id_aux = id2;
                             document.getElementById("T_DESCRIPCION_PAGO2").value = id_aux;
                         }
                         else {
@@ -3846,13 +3856,11 @@
                     else {
                         document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
                     }
+                    //VALIDAR_REFERENCIA
 
                     var maximo_permitido = 7 - largo_cod_banco;
-
+                    //var maximo_permitido = 30;
                     $("#T_DESCRIPCION_PAGO2").attr('maxlength', maximo_permitido);
-
-                    //document.getElementById("T_DESCRIPCION_PAGO2").value = id2;
-
                 }
                 else {
                     document.getElementById("T_DESCRIPCION_PAGO2").value = "";
@@ -4230,6 +4238,43 @@
 
         function APLICAR_NETEO() {
 
+            //////$('#T_MONTO_PAGO2').val('0');
+            //////$('#CB_TIPO_PAGO2').val('efectivo');
+            ////////VALIDAR_REFERENCIA
+            //////try {
+            //////    var num = $('#fact_sele').val().replace(/--/gi, '-');
+            //////    //var num = $('#fact_sele').val();
+            //////}
+            //////catch
+            //////{
+            //////    $('#T_DESCRIPCION_PAGO2').val('NET' + num);
+            //////    //$('#T_DESCRIPCION_PAGO2').val($('#T_DESCRIPCION_PAGO2').val().substring(1, 30));
+            //////}
+
+            //////$('#T_DESCRIPCION_NETEO').val(num);
+            //////$('#T_BANCO_2_NETEO').text("NET");
+
+            //////let date = new Date();
+
+            //////let day = date.getDate();
+            //////let month = date.getMonth();
+            //////let year = date.getFullYear();
+            //////month = month + 1;
+            //////var fecha_hoy;
+            //////if (month < 10) {
+            //////    fecha_hoy = day + '/0' + month + '/' + year;
+            //////} else {
+            //////    fecha_hoy = day + '/' + month + '/' + year;
+            //////}
+
+            //////$('#CB_TIPO_MONEDA2').val("peso");
+
+            //////var fecha_neteo = $('#T_FECHA_NETEO').val();
+
+            //////$('#t_fech_efec').val(fecha_neteo);
+            //////document.getElementById("BTN_NETEO").style.display = "block";
+
+
             $('#T_MONTO_PAGO2').val('0');
             $('#CB_TIPO_PAGO2').val('efectivo');
 
@@ -4263,10 +4308,19 @@
 
             $('#t_fech_efec').val(fecha_neteo);
             document.getElementById("BTN_NETEO").style.display = "block";
+
         }
 
 
         function rescatarfecha() {
+
+            //////var fecha_neteo = $('#T_FECHA_NETEO').val();
+            //////var descrip_neteo = $('#T_DESCRIPCION_NETEO').val();
+
+            //////$('#t_fech_efec').val(fecha_neteo);
+            ////////VALIDAR_REFERENCIA
+            //////$('#T_DESCRIPCION_PAGO2').val('NET' + descrip_neteo);
+
 
             var fecha_neteo = $('#T_FECHA_NETEO').val();
             var descrip_neteo = $('#T_DESCRIPCION_NETEO').val();
@@ -4823,8 +4877,7 @@
                                     <div class="col-sm-12">
 
                                         <i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom" id="cargando_gif" style="display: none; font-size: 3em;"></i>
-
-
+                            
                                         <div class="row">
                                             <div class="pull-right" style="position: relative; left: -5%;">
                                             </div>
@@ -5745,7 +5798,10 @@
                                                                                                                 <i style="font-size: 13px; color: yellowgreen;" id="T_BANCO_2_LABEL_LETRAS"></i>
                                                                                                                 <%--                <h4 style="font-size:13px;color:yellowgreen;" id="T_BANCO_2_LABEL_LETRAS"></h4>--%>
 
+
+                                                                                                                <%--     //VALIDAR_REFERENCIA      --%>
                                                                                                                 <div class="form-group">
+                                                                                                                    <%--<input maxlength="30" class="form-control input-sm" id="T_DESCRIPCION_PAGO2" placeholder="Descripcion..." />--%>
                                                                                                                     <input maxlength="9" class="form-control input-sm" id="T_DESCRIPCION_PAGO2" placeholder="Descripcion..." />
                                                                                                                 </div>
 

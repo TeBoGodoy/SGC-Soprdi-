@@ -3313,7 +3313,7 @@ namespace SoprodiApp
                             {
                                 try
                                 {
-                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 10) });
+                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 30) });
                                 }
                                 catch
                                 {
@@ -3324,7 +3324,7 @@ namespace SoprodiApp
                             {
                                 try
                                 {
-                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 10) });
+                                    vars.Add(new SPVars() { nombre = "_aux4", valor = descripcion.Replace("'", "").Trim().Substring(0, 30) });
                                 }
                                 catch
                                 {
@@ -3509,10 +3509,10 @@ namespace SoprodiApp
                         ReporteRNegocio.insert_seguimiento(fact);
                     }
 
-
+                    //VALIDAR_REFERENCIA
                     try
                     {
-                        ReporteRNegocio.insert_referencia(fact, descripcion);                     
+                        ReporteRNegocio.insert_referencia(fact, descripcion);
                     }
                     catch
                     { }
@@ -3670,29 +3670,23 @@ namespace SoprodiApp
         private static string cheques_insert;
 
 
-
-
         [WebMethod]
         public static string validar_cheque_(string banco, string num_cheque)
-
         {
             DBUtil db = new DBUtil();
             DataTable dt = new DataTable();
-
-
 
             dt = db.consultar(" select COUNT(*) " +
                               "       from ARDOC CS " +
                               "      left OUTER JOIN COBRANZA_BANCOS CB ON CB.ID = " + banco +
                               "         where CS.refnbr = CB.cod_banco + '" + num_cheque + "' ");
 
-
-
             return dt.Rows[0][0].ToString();
         }
+
+        //VALIDAR_REFERENCIA
         [WebMethod]
         public static string validar_referencia(string referencia)
-
         {
             DBUtil db = new DBUtil();
             DataTable dt = new DataTable();
